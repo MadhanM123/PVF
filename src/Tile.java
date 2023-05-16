@@ -5,7 +5,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import javax.swing.JComponent;
 
-import sprites.zombies.Zombie;
+import sprites.plants.*;
+import sprites.zombies.*;
 
 public class Tile extends JComponent{
     private Queue<Zombie> zombies;
