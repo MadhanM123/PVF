@@ -4,10 +4,18 @@ import javax.swing.JButton;
 
 public class PlantSelector implements ActionListener{
 
-    JButton prevClicked;
+    private JButton prevClicked;
+    private JButton sunflowerButton;
+    private JButton peashooterButton;
+    private JButton walnutButton;
+    private JButton repeaterButton;
 
-    public PlantSelector(){
-
+    public PlantSelector(JButton sunflowerButton, JButton peashooterButton, JButton walnutButton, JButton repeaterButton){
+        prevClicked = null;
+        this.sunflowerButton = sunflowerButton;
+        this.peashooterButton = peashooterButton;
+        this.walnutButton = walnutButton;
+        this.repeaterButton = repeaterButton;
     }
 
     public boolean checkTile(){
@@ -17,8 +25,22 @@ public class PlantSelector implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
-    }
+        if(e.getSource() == sunflowerButton){
+            if(prevClicked != null){
+                
+            }
+        }
+        else if(e.getSource() == walnutButton){
 
+        }
+        else if(e.getSource() == peashooterButton){
+
+        }
+        else if(e.getSource() == repeaterButton){
+
+        }
+        else if(e.getSource() instanceof Tile){
+
+        }
+    }
 }

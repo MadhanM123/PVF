@@ -10,16 +10,19 @@ public abstract class Sprite{
     private int realScreenX;
     private int realScreenY;
 
-    private double actionRate;
+    // private double actionRate;
 
-    private int health;
-    private int damage;
-    private int hitBox;
+    // private int health;
+    // private int damage;
+    // private int hitBox;
 
     private BufferedImage defaultImg;
 
-    public Sprite(int gridX, int gridY, int screenX, int screenY, double actionRate, int health, int damage, int hitBox){
-
+    public Sprite(int gridX, int gridY, int screenX, int screenY){
+        this.gridX = gridX;
+        this.gridY = gridY;
+        this.realScreenX = screenX;
+        this.realScreenY = screenY;
     }
 
     public abstract void update();

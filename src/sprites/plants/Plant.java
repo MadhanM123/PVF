@@ -2,6 +2,7 @@ package sprites.plants;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import sprites.Sprite;
 
 public abstract class Plant extends Sprite{
     private BufferedImage action1;
@@ -9,8 +10,8 @@ public abstract class Plant extends Sprite{
     private BufferedImage tookDamage;
     private BufferedImage death;
 
-    public Plant(int gridX, int gridY, int screenX, int screenY, double actionRate, int health, int damage, int hitBox){
-
+    public Plant(int gridX, int gridY, int screenX, int screenY){
+        super(gridX, gridY, screenX, screenY);
     }
 
     public abstract void update();
