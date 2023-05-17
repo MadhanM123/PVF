@@ -16,7 +16,7 @@ public abstract class Sprite{
     // private int damage;
     // private int hitBox;
 
-    private BufferedImage defaultImg;
+    private BufferedImage defaultImg = null;
 
     public Sprite(int gridX, int gridY, int screenX, int screenY){
         this.gridX = gridX;
@@ -26,6 +26,6 @@ public abstract class Sprite{
     }
 
     public abstract void update();
-
+    
     public abstract void draw(Graphics g);
 }

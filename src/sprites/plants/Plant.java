@@ -1,4 +1,5 @@
 package sprites.plants;
+import sprites.*;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -13,6 +14,7 @@ public abstract class Plant extends Sprite{
     public Plant(int gridX, int gridY, int screenX, int screenY){
         super(gridX, gridY, screenX, screenY);
     }
+
 
     public abstract void update();
 

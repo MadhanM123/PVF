@@ -1,8 +1,12 @@
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.LinkedList;
 import java.util.Queue;
 import javax.swing.JComponent;
+
+import sprites.plants.*;
+import sprites.zombies.*;
 
 public class Tile extends JComponent{
     private Queue<Zombie> zombies;
@@ -10,32 +14,60 @@ public class Tile extends JComponent{
 
     private BufferedImage img;
 
-    public Tile(BufferedImage img){
-
+    /**
+     * initilizes a tile with no sprites and default background
+     */
+    public Tile(){
+        plant = null;
+        zombies = new LinkedList<Zombie>();
+        img = //path of tile image
     }
 
+    /**
+     * checks if the tile has anything on it
+     * @return true if tile is empty and false if there is anything on the tile
+     */
     public boolean isEmpty(){
-
+        return (zombies.isEmpty() && plant == null);
     }
 
+    /**
+     * gets the first zombie in the tile
+     * @return the first zombie in the tile
+     */
     public Zombie getZombie(){
-
+        return zombies.peek();
     }
 
+    /**
+     * gets the plant on the tile
+     * @return the plant on the tile
+     */
     public Plant getPlant(){
-
+        return plant;
     }
 
-    public void addZombie(){
-
+    /**
+     * adds a new zombie into the tile
+     * @param z the zombie to be added into the tile
+     */
+    public void addZombie(Zombie z){
+        zombies.add(z);
     }
 
-    public void addPlant(){
-
+    /**
+     * adds a new plant onto the tile
+     * @param p the plants to be added into the tile
+     */
+    public void addPlant(Plant p){
+        plant = p;
     }
 
+    /**
+     * removes the first zombie in the tile
+     */
     public void removeZombie(){
-
+        zombies.remove();
     }
 
     @Override
