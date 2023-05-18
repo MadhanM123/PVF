@@ -83,8 +83,6 @@ public class Tile extends JComponent{
         return this.col;
     }
 
-
-
     @Override
     public void paintComponent(Graphics g)
     {

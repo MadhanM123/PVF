@@ -7,8 +7,11 @@ import sprites.Sprite;
 
 public abstract class Zombie extends Sprite{
 
-    public Zombie(int gridX, int gridY, int screenX, int screenY, int health){
+    int velocity;
+
+    public Zombie(int gridX, int gridY, int screenX, int screenY, int health, int velocity){
         super(gridX, gridY, screenX, screenY, health);
+        this.velocity = velocity;
     }
 
     public abstract void update();
