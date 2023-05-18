@@ -12,14 +12,19 @@ public class Tile extends JComponent{
     private Queue<Zombie> zombies;
     private Plant plant;
 
+    private int row;
+    private int col;
+
     private BufferedImage img;
 
     /**
      * initilizes a tile with no sprites and default background
      */
-    public Tile(){
+    public Tile(int r, int c){
         plant = null;
         zombies = new LinkedList<Zombie>();
+        this.row = r;
+        this.col = c;
         img = //path of tile image
     }
 
@@ -69,6 +74,16 @@ public class Tile extends JComponent{
     public void removeZombie(){
         zombies.remove();
     }
+
+    public int getGridY(){
+        return this.row;
+    }
+
+    public int getGridX(){
+        return this.col;
+    }
+
+
 
     @Override
     public void paintComponent(Graphics g)
