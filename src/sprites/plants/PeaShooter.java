@@ -4,13 +4,13 @@ import java.awt.Graphics;
 
 public class PeaShooter extends Plant{
 
-    private static final int actionRate = 0;
-    private static final int health = 0;
-    private static final int damage = 0;
-    private static final int hitBox = 0;
+    public static final int ACTION_RATE = 0;
+    public static final int FULL_HEALTH = 0;
+    public static final int DAMAGE = 0;
+    public static final int HITBOX = 0;
 
     public PeaShooter(int gridX, int gridY, int screenX, int screenY){
-        super(gridX, gridY, screenX, screenY);
+        super(gridX, gridY, screenX, screenY, FULL_HEALTH);
     }
 
     private void shoot(){

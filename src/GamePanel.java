@@ -27,8 +27,6 @@ public class GamePanel extends JPanel implements Runnable{
     private final int FPS = 60;
 
     private Tile[][] grid;
-    private Plant[] plants;
-    private Zombie[] zombies;
     
     private CollisionManager collManager;
     private PlantPanel plantPanel;

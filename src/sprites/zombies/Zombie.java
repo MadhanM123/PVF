@@ -6,13 +6,9 @@ import java.awt.image.BufferedImage;
 import sprites.Sprite;
 
 public abstract class Zombie extends Sprite{
-    private BufferedImage action1;
-    private BufferedImage action2;
-    private BufferedImage tookDamage;
-    private BufferedImage death;
 
-    public Zombie(int gridX, int gridY, int screenX, int screenY){
-        super(gridX, gridY, screenX, screenY);
+    public Zombie(int gridX, int gridY, int screenX, int screenY, int health){
+        super(gridX, gridY, screenX, screenY, health);
     }
 
     public abstract void update();

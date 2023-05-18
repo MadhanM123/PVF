@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import sprites.plants.SunFlower;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -200,7 +201,9 @@ public class PlantPanel extends JPanel{
                 if(prevPlantClicked != null){
                     Tile tile = (Tile) e.getSource();
                     if(tile.isEmpty() && prevCost > 0){
-
+                        if(prevPlantClicked == sunflowerButton){
+                            tile.addPlant(new SunFlower(tile.getX, ABORT, realScreenWidth, realScreenLength));
+                        }
                     }
                 }
             }
