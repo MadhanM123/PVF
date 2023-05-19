@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,11 +25,12 @@ public class GamePanel extends JPanel implements Runnable{
     private final int realScreenWidth = tileSize * screenCol;
     private final int realScreenLength = tileSize * screenRow;
 
-    private final int FPS = 60;
+    private final int FPS = 1;
 
     private Tile[][] grid;
     
     private CollisionManager collManager;
+    private InfoPanel infoPanel;
     private PlantPanel plantPanel;
     private int score;
     private JLabel scoreboard;
@@ -40,14 +42,10 @@ public class GamePanel extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
         grid = new Tile[screenRow][screenCol];
         collManager = new CollisionManager();
+        infoPanel = new InfoPanel();
+        this.add(infoPanel, BorderLayout.PAGE_START);
+        this.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
         score = 0;
-
-        scoreboard = new JLabel("60");
-        scoreboard.setIcon(new ImageIcon(new ImageIcon("resources/sprites/scoreboard.png").getImage().getScaledInstance(60, 50, Image.SCALE_FAST)));
-        scoreboard.setHorizontalTextPosition(JLabel.CENTER);
-        scoreboard.setVerticalTextPosition(JLabel.CENTER);
-        scoreboard.setForeground(Color.RED);
-        this.add(scoreboard, BorderLayout.PAGE_START);
     }
 
     @Override
@@ -83,7 +81,7 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void update(){
-        currentSun += 1;
+        infoPanel.increaseWave();
     }
 
     public void paintComponent(Graphics g){

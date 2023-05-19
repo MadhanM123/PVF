@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.IOException;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -87,6 +88,7 @@ public class PlantPanel extends JPanel{
         walnutButton.addActionListener(plantSelector);
         peashooterButton.addActionListener(plantSelector);
 
+        this.setBorder(BorderFactory.createLineBorder(Color.GREEN));
         this.setVisible(true);
     }
 
