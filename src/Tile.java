@@ -1,8 +1,15 @@
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.Buffer;
 import java.util.LinkedList;
 import java.util.Queue;
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 import sprites.plants.*;
@@ -15,7 +22,20 @@ public class Tile extends JComponent{
     private int row;
     private int col;
 
-    private BufferedImage img;
+    public static Image TILE_IMAGE;
+    public static int TILE_SIZE;
+
+    static{
+        try
+        {
+            TILE_SIZE = 100;
+            TILE_IMAGE = ImageIO.read(new File("resources/sprites/tile/grasstile.png")).getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_DEFAULT);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * initilizes a tile with no sprites and default background
@@ -25,7 +45,7 @@ public class Tile extends JComponent{
         zombies = new LinkedList<Zombie>();
         this.row = r;
         this.col = c;
-        img = //path of tile image
+        // this.add
     }
 
     /**
@@ -84,13 +104,6 @@ public class Tile extends JComponent{
     }
 
     @Override
-    public void paintComponent(Graphics g)
-    {
-        // TODO Auto-generated method stub
-        super.paintComponent(g);
-    }
-
-    @Override
     public Dimension getPreferredSize()
     {
         // TODO Auto-generated method stub
@@ -109,5 +122,12 @@ public class Tile extends JComponent{
     {
         // TODO Auto-generated method stub
         return super.getMinimumSize();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
     }
 }

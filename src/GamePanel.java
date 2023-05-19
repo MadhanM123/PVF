@@ -15,21 +15,23 @@ import sprites.zombies.Zombie;
 
 public class GamePanel extends JPanel implements Runnable{
 
-    private final int tileSize = 100;
     private final int scale = 3;
 
     private final int screenCol = 9;
     private final int screenRow = 5;
 
-    private final int realScreenWidth = tileSize * screenCol;
-    private final int realScreenLength = tileSize * screenRow;
+    private final int realScreenWidth = Tile.TILE_SIZE * screenCol;
+    private final int realScreenLength = Tile.TILE_SIZE * screenRow;
 
     private final int FPS = 60;
 
     private Tile[][] grid;
     
     private CollisionManager collManager;
+    private TileManager tileManager;
+
     private PlantPanel plantPanel;
+
     private int score;
     private JLabel scoreboard;
 
@@ -39,8 +41,10 @@ public class GamePanel extends JPanel implements Runnable{
         this.setPreferredSize(new Dimension(realScreenWidth, realScreenLength));
         this.setDoubleBuffered(true);
         grid = new Tile[screenRow][screenCol];
-        collManager = new CollisionManager();
         score = 0;
+
+        collManager = new CollisionManager();
+        tileManager = new TileManager(grid);
 
         scoreboard = new JLabel("60");
         scoreboard.setIcon(new ImageIcon(new ImageIcon("resources/sprites/scoreboard.png").getImage().getScaledInstance(60, 50, Image.SCALE_FAST)));
@@ -88,6 +92,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
+        tileManager.draw(g);
     }
 
     public Tile[][] getGrid(){
