@@ -25,25 +25,27 @@ public class GamePanel extends JPanel implements Runnable{
     private final int realScreenWidth = tileSize * screenCol;
     private final int realScreenLength = tileSize * screenRow;
 
-    private final int FPS = 1;
+    private final int FPS = 10;
 
     private Tile[][] grid;
     
     private CollisionManager collManager;
     private InfoPanel infoPanel;
     private PlantPanel plantPanel;
+
     private int score;
-    private JLabel scoreboard;
+    private int sun;
+    private int wave;
 
-    private int currentSun;
-
-    public GamePanel() throws IOException{
+    public GamePanel(PlantPanel pp, InfoPanel ip) throws IOException{
         this.setPreferredSize(new Dimension(realScreenWidth, realScreenLength));
         this.setDoubleBuffered(true);
+
+        this.plantPanel = pp;
+        this.infoPanel = ip;
+        
         grid = new Tile[screenRow][screenCol];
         collManager = new CollisionManager();
-        infoPanel = new InfoPanel();
-        this.add(infoPanel, BorderLayout.PAGE_START);
         this.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
         score = 0;
     }
@@ -94,15 +96,11 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void incrementSun(){
-        currentSun++;
+        sun++;
     }
 
-    public void addPlantPanel(PlantPanel pp){
-        this.plantPanel = pp;
-    }
-
-    public int getCurrentSun(){
-        return currentSun;
+    public int getsSun(){
+        return sun;
     }
 
     

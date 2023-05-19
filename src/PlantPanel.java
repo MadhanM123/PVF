@@ -39,10 +39,8 @@ public class PlantPanel extends JPanel{
 
     private PlantSelector plantSelector;
 
-    public PlantPanel(GamePanel gp) throws IOException{
+    public PlantPanel() throws IOException{
         this.setPreferredSize(new Dimension(realScreenWidth, realScreenLength));
-
-        this.gp = gp;
 
         sunflowerButton = new JButton();
         peashooterButton = new JButton();
@@ -99,6 +97,10 @@ public class PlantPanel extends JPanel{
     private void clearButton(JButton button){
         button.setBackground(Color.WHITE);
         button.setForeground(Color.GREEN);
+    }
+
+    public void addGamePanel(GamePanel gp){
+        this.gp = gp;
     }
 
     public void paintComponent(Graphics g){
