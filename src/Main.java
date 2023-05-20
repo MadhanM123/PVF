@@ -4,15 +4,19 @@ import javax.swing.JFrame;
 
 public class Main{
     public static void main(String[] args) throws IOException {
+        
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
         window.setTitle("PVZ");
 
-        GamePanel gp = new GamePanel();
-        PlantPanel pp = new PlantPanel(gp);
-        gp.add(pp);
+        PlantPanel pp = new PlantPanel();
+        InfoPanel ip = new InfoPanel();
+        GamePanel gp = new GamePanel(pp, ip);
 
+        pp.addGamePanel(gp);
+
+        window.add(ip, BorderLayout.PAGE_START);
         window.add(gp,BorderLayout.LINE_END);
         window.add(pp, BorderLayout.LINE_START);
 
