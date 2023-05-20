@@ -9,7 +9,7 @@ public class Walnut extends Plant{
     private static final int DAMAGE = 0;
     private static final int HITBOX = 0;
 
-    public static final int COST = 0;
+    public static final int COST = 10;
 
     public Walnut(int gridX, int gridY, int screenX, int screenY){
         super(gridX, gridY, screenX, screenY, FULL_HEALTH);

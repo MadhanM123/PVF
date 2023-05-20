@@ -50,12 +50,10 @@ public class GamePanel extends JPanel implements Runnable{
     public void setupGrid(){
         for(int r = 0; r < grid.length; r++){
             for(int c = 0; c < grid[0].length; c++){
-                grid[r][c] = new Tile(r, c);
+                grid[r][c] = new Tile(r, c, plantPanel.getPlantSelector());
                 this.add(grid[r][c]);
             }
         }
-
-
     }
 
     @Override

@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -13,12 +15,14 @@ import javax.swing.JComponent;
 import sprites.plants.*;
 import sprites.zombies.*;
 
-public class Tile extends JComponent{
+public class Tile extends JComponent implements MouseListener{
     private Queue<Zombie> zombies;
     private Plant plant;
 
     private int row;
     private int col;
+
+    private PlantPanel.PlantSelector plantSelector;
 
     public static Image TILE_IMAGE;
     public static int TILE_SIZE;
@@ -36,15 +40,17 @@ public class Tile extends JComponent{
     }
 
     /**
-     * initilizes a tile with no sprites and default background
+     * initializes a tile with no sprites and default background
      */
-    public Tile(int r, int c){
+    public Tile(int r, int c, PlantPanel.PlantSelector ps){
         plant = null;
         zombies = new LinkedList<Zombie>();
         this.row = r;
         this.col = c;
         this.setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
         this.setBorder(BorderFactory.createLineBorder(Color.CYAN));
+        this.addMouseListener(this);
+        this.plantSelector = ps;
     }
 
     /**
@@ -125,5 +131,35 @@ public class Tile extends JComponent{
     public Dimension getMinimumSize()
     {
         return new Dimension(TILE_SIZE, TILE_SIZE);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e)
+    {
+        plantSelector.attemptAddPlant(this);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e)
+    {
+        return;
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e)
+    {
+        return;
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e)
+    {
+        return;
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e)
+    {
+        return;
     }
 }

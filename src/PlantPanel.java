@@ -20,10 +20,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PlantPanel extends JPanel{
-    private JButton sunflowerButton;
-    private JButton peashooterButton;
-    private JButton walnutButton;
-    private JButton repeaterButton;
+    private static JButton sunflowerButton;
+    private static JButton peashooterButton;
+    private static JButton walnutButton;
+    private static JButton repeaterButton;
 
     private JLabel sunflowerCostLabel;
     private JLabel peashooterCostLabel;
@@ -35,7 +35,7 @@ public class PlantPanel extends JPanel{
     private final int realScreenWidth = buttonWidth * 5;
     private final int realScreenLength = buttonHeight * 3;
 
-    private GamePanel gp;
+    private static GamePanel gamePanel;
 
     private PlantSelector plantSelector;
 
@@ -98,20 +98,24 @@ public class PlantPanel extends JPanel{
 
     }
 
-    private void clearButton(JButton button){
+    private static void clearButton(JButton button){
         button.setBackground(Color.WHITE);
         button.setForeground(Color.GREEN);
     }
 
-    public void addGamePanel(GamePanel gp){
-        this.gp = gp;
+    public static void addGamePanel(GamePanel gp){
+        gamePanel = gp;
+    }
+
+    public PlantSelector getPlantSelector(){
+        return plantSelector;
     }
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
     }
 
-    private class PlantSelector implements ActionListener{
+    public static class PlantSelector implements ActionListener{
         private JButton prevPlantClicked;
         private int prevCost;
 
@@ -122,6 +126,31 @@ public class PlantPanel extends JPanel{
 
         public boolean checkTile(){
             return false;
+        }
+
+        public void attemptAddPlant(Tile tile){
+            if(tile.isEmpty() && prevPlantClicked != null && prevCost > 0){
+                if(prevPlantClicked == sunflowerButton){
+                    tile.addPlant(new SunFlower(tile.getGridX(), tile.getGridY(), tile.getX(), tile.getY()));
+                }
+                else if(prevPlantClicked == walnutButton){
+                    tile.addPlant(new Walnut(tile.getGridX(), tile.getGridY(), tile.getX(), tile.getY()));
+                }
+                else if(prevPlantClicked == peashooterButton){
+                    tile.addPlant(new PeaShooter(tile.getGridX(), tile.getGridY(), tile.getX(), tile.getY()));
+                }
+                else if(prevPlantClicked == repeaterButton){
+                    tile.addPlant(new Repeater(tile.getGridX(), tile.getGridY(), tile.getX(), tile.getY()));
+                }
+                clearButton(prevPlantClicked);
+                prevPlantClicked = null;
+                prevCost = 0;
+            }
+            else if(tile.isEmpty() && prevPlantClicked != null){
+                clearButton(prevPlantClicked);
+                prevPlantClicked = null;
+                prevCost = 0;
+            }
         }
 
         @Override
@@ -135,12 +164,13 @@ public class PlantPanel extends JPanel{
                 }
                 else{
                     prevPlantClicked = sunflowerButton;
-                    if(gp.getSun() >= SunFlower.COST){
+                    if(gamePanel.getSun() >= SunFlower.COST){  
+                        prevCost = SunFlower.COST;
                         sunflowerButton.setBackground(Color.BLUE);
                         sunflowerButton.setForeground(Color.BLACK);
-                        prevCost = SunFlower.COST;
                     }
                     else{
+                        prevCost = 0;
                         sunflowerButton.setBackground(Color.RED);
                         sunflowerButton.setForeground(Color.BLACK);
                     }
@@ -154,12 +184,13 @@ public class PlantPanel extends JPanel{
                 }
                 else{
                     prevPlantClicked = walnutButton;
-                    if(gp.getSun() >= Walnut.COST){
+                    if(gamePanel.getSun() >= Walnut.COST){
+                        prevCost = Walnut.COST;
                         walnutButton.setBackground(Color.BLUE);
                         walnutButton.setForeground(Color.BLACK);
-                        prevCost = Walnut.COST;
                     }
                     else{
+                        prevCost = 0;
                         walnutButton.setBackground(Color.RED);
                         walnutButton.setForeground(Color.BLACK);
                     }
@@ -173,12 +204,13 @@ public class PlantPanel extends JPanel{
                 }
                 else{
                     prevPlantClicked = peashooterButton;
-                    if(gp.getSun() >= PeaShooter.COST){
+                    if(gamePanel.getSun() >= PeaShooter.COST){
+                        prevCost = PeaShooter.COST;
                         peashooterButton.setBackground(Color.BLUE);
                         peashooterButton.setForeground(Color.BLACK);
-                        prevCost = PeaShooter.COST;
                     }
                     else{
+                        prevCost = 0;
                         peashooterButton.setBackground(Color.RED);
                         peashooterButton.setForeground(Color.BLACK);
                     }
@@ -192,36 +224,15 @@ public class PlantPanel extends JPanel{
                 }
                 else{
                     prevPlantClicked = repeaterButton;
-                    if(gp.getSun() >= Repeater.COST){
+                    if(gamePanel.getSun() >= Repeater.COST){
+                        prevCost = Repeater.COST;
                         repeaterButton.setBackground(Color.BLUE);
                         repeaterButton.setForeground(Color.BLACK);
-                        prevCost = Repeater.COST;
                     }
                     else{
+                        prevCost = 0;
                         repeaterButton.setBackground(Color.RED);
                         repeaterButton.setForeground(Color.BLACK);
-                    }
-                }
-            }
-            else if(e.getSource() instanceof Tile){
-                if(prevPlantClicked != null){
-                    Tile tile = (Tile) e.getSource();
-                    if(tile.isEmpty() && prevCost > 0){
-                        if(prevPlantClicked == sunflowerButton){
-                            tile.addPlant(new SunFlower(tile.getGridX(), tile.getGridY(), tile.getX(), tile.getY()));
-                        }
-                        else if(prevPlantClicked == walnutButton){
-                            tile.addPlant(new Walnut(tile.getGridX(), tile.getGridY(), tile.getX(), tile.getY()));
-                        }
-                        else if(prevPlantClicked == peashooterButton){
-                            tile.addPlant(new PeaShooter(tile.getGridX(), tile.getGridY(), tile.getX(), tile.getY()));
-                        }
-                        else if(prevPlantClicked == repeaterButton){
-                            tile.addPlant(new Repeater(tile.getGridX(), tile.getGridY(), tile.getX(), tile.getY()));
-                        }
-                    }
-                    else if(!tile.isEmpty()){
-                        tile.setBackground(Color.RED);
                     }
                 }
             }
