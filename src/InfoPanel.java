@@ -12,9 +12,9 @@ public class InfoPanel extends JPanel {
     private final int boardHeight = 90;
     private final int boardWidth = 350;
 
-    private int score;
-    private StringBuffer scoreStr;
-    private JLabel scoreBoard;
+    private int health;
+    private StringBuffer healthStr;
+    private JLabel healthBoard;
 
     private int wave;
     private StringBuffer waveStr;
@@ -27,10 +27,10 @@ public class InfoPanel extends JPanel {
     private FlowLayout flowLayout;
 
     public InfoPanel(){
-        this.score = 0;
-        this.scoreBoard = new JLabel();
-        this.scoreStr = new StringBuffer("SCORE: ");
-        setupScoreBoard();
+        this.health = 0;
+        this.healthBoard = new JLabel();
+        this.healthStr = new StringBuffer("HEALTH: ");
+        setupHealthBoard();
 
         this.wave = 0;
         this.waveBoard = new JLabel();
@@ -45,23 +45,23 @@ public class InfoPanel extends JPanel {
         flowLayout = new FlowLayout();
         this.setLayout(flowLayout);
         
-        this.add(scoreBoard);
+        this.add(healthBoard);
         this.add(waveBoard);
         this.add(sunBoard);
 
         this.setBackground(Color.BLACK);
     }
 
-    private void setupScoreBoard(){
-        scoreBoard.setIcon(new ImageIcon(new ImageIcon("resources/sprites/scoreboard.png").getImage().getScaledInstance(boardWidth, boardHeight, Image.SCALE_DEFAULT)));
-        scoreBoard.setVerticalAlignment(JLabel.CENTER);
-        scoreBoard.setHorizontalAlignment(JLabel.CENTER);
-        scoreBoard.setForeground(Color.RED);
+    private void setupHealthBoard(){
+        healthBoard.setIcon(new ImageIcon(new ImageIcon("resources/sprites/scoreboard.png").getImage().getScaledInstance(boardWidth, boardHeight, Image.SCALE_DEFAULT)));
+        healthBoard.setVerticalAlignment(JLabel.CENTER);
+        healthBoard.setHorizontalAlignment(JLabel.CENTER);
+        healthBoard.setForeground(Color.RED);
 
-        scoreBoard.setText(scoreStr.append(score).toString());
-        scoreBoard.setFont(new Font("DialogInput", Font.BOLD, 30));
-        scoreBoard.setVerticalTextPosition(JLabel.CENTER);
-        scoreBoard.setHorizontalTextPosition(JLabel.CENTER);
+        healthBoard.setText(healthStr.append(health).toString());
+        healthBoard.setFont(new Font("DialogInput", Font.BOLD, 30));
+        healthBoard.setVerticalTextPosition(JLabel.CENTER);
+        healthBoard.setHorizontalTextPosition(JLabel.CENTER);
     }
 
     private void setupWaveBoard(){
@@ -99,9 +99,9 @@ public class InfoPanel extends JPanel {
         waveBoard.setText(waveStr.replace(6, waveStr.length(), "" + wave).toString());
     }
 
-    public void increaseScore(int amt){
-        score += amt;
-        scoreBoard.setText(scoreStr.replace(7, scoreStr.length(), "" + score).toString());
+    public void decreaseHealth(int amt){
+        health -= amt;
+        healthBoard.setText(healthStr.replace(8, healthStr.length(), "" + health).toString());
     }
 
 }

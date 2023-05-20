@@ -99,7 +99,7 @@ public class GamePanel extends JPanel implements Runnable{
         sun++;
     }
 
-    public int getsSun(){
+    public int getSun(){
         return sun;
     }
 
