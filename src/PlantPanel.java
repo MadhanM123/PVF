@@ -74,6 +74,10 @@ public class PlantPanel extends JPanel{
         peashooterButton.add(peashooterCostLabel, BorderLayout.PAGE_END);
         walnutButton.add(walnutCostLabel, BorderLayout.PAGE_END);
 
+        sunflowerButton.setBorder(BorderFactory.createLineBorder(Color.PINK));
+        peashooterButton.setBorder(BorderFactory.createLineBorder(Color.PINK));
+        walnutButton.setBorder(BorderFactory.createLineBorder(Color.PINK));
+
         this.setLayout(new GridLayout(2, 2));
 
         this.add(sunflowerButton);

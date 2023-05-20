@@ -1,23 +1,12 @@
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
+import java.awt.GridLayout;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import sprites.plants.Plant;
-import sprites.zombies.Zombie;
 
 public class GamePanel extends JPanel implements Runnable{
-
-    private final int scale = 3;
-
     private final int screenCol = 9;
     private final int screenRow = 5;
 
@@ -29,13 +18,11 @@ public class GamePanel extends JPanel implements Runnable{
     private Tile[][] grid;
     
     private CollisionManager collManager;
-    private TileManager tileManager;
 
     private InfoPanel infoPanel;
     private PlantPanel plantPanel;
 
-
-    private int score;
+    private int health;
     private int sun;
     private int wave;
 
@@ -49,17 +36,22 @@ public class GamePanel extends JPanel implements Runnable{
         grid = new Tile[screenRow][screenCol];
         collManager = new CollisionManager();
         this.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
-        score = 0;
+        this.setLayout(new GridLayout(screenRow, screenCol, 0, 0));
+
+        setupGrid();
 
         collManager = new CollisionManager();
-        tileManager = new TileManager(grid);
+    }
 
-        scoreboard = new JLabel("60");
-        scoreboard.setIcon(new ImageIcon(new ImageIcon("resources/sprites/scoreboard.png").getImage().getScaledInstance(60, 50, Image.SCALE_FAST)));
-        scoreboard.setHorizontalTextPosition(JLabel.CENTER);
-        scoreboard.setVerticalTextPosition(JLabel.CENTER);
-        scoreboard.setForeground(Color.RED);
-        this.add(scoreboard, BorderLayout.PAGE_START);
+    public void setupGrid(){
+        for(int r = 0; r < grid.length; r++){
+            for(int c = 0; c < grid[0].length; c++){
+                grid[r][c] = new Tile(r, c);
+                this.add(grid[r][c]);
+            }
+        }
+
+
     }
 
     @Override
@@ -70,7 +62,7 @@ public class GamePanel extends JPanel implements Runnable{
 
         while(true){
 
-            System.out.println(System.currentTimeMillis());
+            // System.out.println(System.currentTimeMillis());
 
             update();
 
@@ -100,7 +92,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        tileManager.draw(g);
+        // tileManager.draw(g);
     }
 
     public Tile[][] getGrid(){

@@ -1,15 +1,13 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.util.LinkedList;
 import java.util.Queue;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
 import sprites.plants.*;
@@ -28,7 +26,7 @@ public class Tile extends JComponent{
     static{
         try
         {
-            TILE_SIZE = 100;
+            TILE_SIZE = 110;
             TILE_IMAGE = ImageIO.read(new File("resources/sprites/tile/grasstile.png")).getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_DEFAULT);
         }
         catch (IOException e)
@@ -45,7 +43,8 @@ public class Tile extends JComponent{
         zombies = new LinkedList<Zombie>();
         this.row = r;
         this.col = c;
-        // this.add
+        this.setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
+        this.setBorder(BorderFactory.createLineBorder(Color.CYAN));
     }
 
     /**
@@ -104,30 +103,27 @@ public class Tile extends JComponent{
     }
 
     @Override
+    protected void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        g.drawImage(TILE_IMAGE, 0, 0, null);
+    }
+
+    @Override
     public Dimension getPreferredSize()
     {
-        // TODO Auto-generated method stub
-        return super.getPreferredSize();
+        return new Dimension(TILE_SIZE, TILE_SIZE);
     }
 
     @Override
     public Dimension getMaximumSize()
     {
-        // TODO Auto-generated method stub
-        return super.getMaximumSize();
+        return new Dimension(TILE_SIZE, TILE_SIZE);
     }
 
     @Override
     public Dimension getMinimumSize()
     {
-        // TODO Auto-generated method stub
-        return super.getMinimumSize();
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+        return new Dimension(TILE_SIZE, TILE_SIZE);
     }
 }
