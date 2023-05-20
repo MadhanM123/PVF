@@ -32,6 +32,10 @@ public class GamePanel extends JPanel implements Runnable{
 
         this.plantPanel = pp;
         this.infoPanel = ip;
+
+        this.health = 4;
+        this.sun = 0;
+        this.wave = 0;
         
         grid = new Tile[screenRow][screenCol];
         collManager = new CollisionManager();
@@ -87,7 +91,8 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void update(){
-        infoPanel.increaseWave();
+        infoPanel.setWave(wave++);
+        infoPanel.setSun(sun++);
     }
 
     public void paintComponent(Graphics g){
@@ -106,7 +111,5 @@ public class GamePanel extends JPanel implements Runnable{
 
     public int getSun(){
         return sun;
-    }
-
-    
+    } 
 }
