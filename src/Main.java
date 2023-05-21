@@ -3,6 +3,8 @@ import java.io.IOException;
 import javax.swing.JFrame;
 
 public class Main{
+
+    
     public static void main(String[] args) throws IOException {
         
         JFrame window = new JFrame();
@@ -10,9 +12,16 @@ public class Main{
         window.setResizable(false);
         window.setTitle("PVZ");
 
+        //sound test
+        MusicPlayer mp = new MusicPlayer();
+        mp.setFile(0);
+        mp.play();
+        mp.loop();
+
         PlantPanel pp = new PlantPanel();
         InfoPanel ip = new InfoPanel();
         GamePanel gp = new GamePanel(pp, ip);
+
 
         pp.addGamePanel(gp);
 
