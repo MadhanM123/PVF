@@ -31,7 +31,7 @@ public class PeaShooter extends Plant{
     }
 
     public void draw(Graphics g){
-        g.drawImage(idleImg, -20, 30, null);
+        g.drawImage(idleImg, -15, 30, null);
     }
     
 }

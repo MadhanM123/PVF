@@ -30,8 +30,8 @@ public class PlantPanel extends JPanel{
     private JLabel walnutCostLabel;
     private JLabel repeaterCostLabel;
 
-    private final int buttonWidth = 100;
-    private final int buttonHeight = 100;
+    private final int buttonWidth = 80;
+    private final int buttonHeight = 120;
     private final int realScreenWidth = buttonWidth * 5;
     private final int realScreenLength = buttonHeight * 3;
 
@@ -50,9 +50,9 @@ public class PlantPanel extends JPanel{
         peashooterButton.setBackground(Color.WHITE);
         walnutButton.setBackground(Color.WHITE);
 
-        sunflowerButton.setIcon(new ImageIcon(new ImageIcon("resources/sprites/plants/sunflower/sf.idle2.png").getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_DEFAULT)));
-        peashooterButton.setIcon(new ImageIcon(new ImageIcon("resources/sprites/plants/peashooter/ps.idle1.png").getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_DEFAULT)));
-        walnutButton.setIcon(new ImageIcon(new ImageIcon("resources/sprites/plants/walnut/wn.idle.png").getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_DEFAULT)));
+        sunflowerButton.setIcon(new ImageIcon(new ImageIcon("resources/sprites/plants/sunflower/sf.idle2.png").getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH)));
+        peashooterButton.setIcon(new ImageIcon(new ImageIcon("resources/sprites/plants/peashooter/ps.idle1.png").getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH)));
+        walnutButton.setIcon(new ImageIcon(new ImageIcon("resources/sprites/plants/walnut/wn.idle.png").getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH)));
 
         sunflowerCostLabel = new JLabel("" + SunFlower.COST, SwingConstants.CENTER);
         peashooterCostLabel = new JLabel("" + PeaShooter.COST, SwingConstants.CENTER);
@@ -129,7 +129,7 @@ public class PlantPanel extends JPanel{
         }
 
         public void attemptAddPlant(Tile tile){
-            if(tile.isEmpty() && prevPlantClicked != null && prevCost > 0){
+            if(tile.hasNoPlant() && prevPlantClicked != null && prevCost > 0){
                 if(prevPlantClicked == sunflowerButton){
                     tile.addPlant(new SunFlower(tile.getGridX(), tile.getGridY(), tile.getX(), tile.getY()));
                 }
@@ -146,7 +146,7 @@ public class PlantPanel extends JPanel{
                 prevPlantClicked = null;
                 prevCost = 0;
             }
-            else if(tile.isEmpty() && prevPlantClicked != null){
+            else if(tile.hasNoPlant() && prevPlantClicked != null){
                 clearButton(prevPlantClicked);
                 prevPlantClicked = null;
                 prevCost = 0;

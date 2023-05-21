@@ -55,6 +55,10 @@ public class Tile extends JComponent implements MouseListener{
         return (zombies.isEmpty() && plant == null);
     }
 
+    public boolean hasNoPlant(){
+        return plant == null;
+    }
+
     /**
      * gets the first zombie in the tile
      * @return the first zombie in the tile
@@ -110,6 +114,11 @@ public class Tile extends JComponent implements MouseListener{
         if(plant != null){
             plant.draw(g);
         }
+        if(!zombies.isEmpty()){
+            for(Zombie z : zombies){
+                z.draw(g);
+            }
+        }
     }
 
     @Override
@@ -133,6 +142,7 @@ public class Tile extends JComponent implements MouseListener{
     @Override
     public void mouseClicked(MouseEvent e)
     {
+        System.out.println("sup");
         plantSelector.attemptAddPlant(this);
     }
 

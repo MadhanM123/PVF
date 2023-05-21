@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.io.IOException;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import sprites.zombies.ConeHead;
 
 public class GamePanel extends JPanel implements Runnable{
     private final int screenCol = 9;
@@ -43,6 +44,8 @@ public class GamePanel extends JPanel implements Runnable{
         this.setLayout(new GridLayout(screenRow, screenCol, 0, 0));
 
         setupGrid();
+
+        grid[3][3].addZombie(new ConeHead(3, 3, -60, -70));
 
         collManager = new CollisionManager();
     }

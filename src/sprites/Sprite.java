@@ -23,4 +23,12 @@ public abstract class Sprite{
     public abstract void update();
     
     public abstract void draw(Graphics g);
+
+    public int getRealScreenX(){
+        return realScreenX;
+    }
+
+    public int getRealScreenY(){
+        return realScreenY;
+    }
 }
