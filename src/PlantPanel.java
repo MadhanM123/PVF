@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.io.IOException;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -38,10 +39,8 @@ public class PlantPanel extends JPanel{
 
     private PlantSelector plantSelector;
 
-    public PlantPanel(GamePanel gp) throws IOException{
+    public PlantPanel() throws IOException{
         this.setPreferredSize(new Dimension(realScreenWidth, realScreenLength));
-
-        this.gp = gp;
 
         sunflowerButton = new JButton();
         peashooterButton = new JButton();
@@ -87,6 +86,7 @@ public class PlantPanel extends JPanel{
         walnutButton.addActionListener(plantSelector);
         peashooterButton.addActionListener(plantSelector);
 
+        this.setBorder(BorderFactory.createLineBorder(Color.GREEN));
         this.setVisible(true);
     }
 
@@ -97,6 +97,10 @@ public class PlantPanel extends JPanel{
     private void clearButton(JButton button){
         button.setBackground(Color.WHITE);
         button.setForeground(Color.GREEN);
+    }
+
+    public void addGamePanel(GamePanel gp){
+        this.gp = gp;
     }
 
     public void paintComponent(Graphics g){
@@ -127,7 +131,7 @@ public class PlantPanel extends JPanel{
                 }
                 else{
                     prevPlantClicked = sunflowerButton;
-                    if(gp.getCurrentSun() >= SunFlower.COST){
+                    if(gp.getSun() >= SunFlower.COST){
                         sunflowerButton.setBackground(Color.BLUE);
                         sunflowerButton.setForeground(Color.BLACK);
                         prevCost = SunFlower.COST;
@@ -146,7 +150,7 @@ public class PlantPanel extends JPanel{
                 }
                 else{
                     prevPlantClicked = walnutButton;
-                    if(gp.getCurrentSun() >= Walnut.COST){
+                    if(gp.getSun() >= Walnut.COST){
                         walnutButton.setBackground(Color.BLUE);
                         walnutButton.setForeground(Color.BLACK);
                         prevCost = Walnut.COST;
@@ -165,7 +169,7 @@ public class PlantPanel extends JPanel{
                 }
                 else{
                     prevPlantClicked = peashooterButton;
-                    if(gp.getCurrentSun() >= PeaShooter.COST){
+                    if(gp.getSun() >= PeaShooter.COST){
                         peashooterButton.setBackground(Color.BLUE);
                         peashooterButton.setForeground(Color.BLACK);
                         prevCost = PeaShooter.COST;
@@ -184,7 +188,7 @@ public class PlantPanel extends JPanel{
                 }
                 else{
                     prevPlantClicked = repeaterButton;
-                    if(gp.getCurrentSun() >= Repeater.COST){
+                    if(gp.getSun() >= Repeater.COST){
                         repeaterButton.setBackground(Color.BLUE);
                         repeaterButton.setForeground(Color.BLACK);
                         prevCost = Repeater.COST;

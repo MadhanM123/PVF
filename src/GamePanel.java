@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,30 +25,29 @@ public class GamePanel extends JPanel implements Runnable{
     private final int realScreenWidth = tileSize * screenCol;
     private final int realScreenLength = tileSize * screenRow;
 
-    private final int FPS = 60;
+    private final int FPS = 10;
 
     private Tile[][] grid;
     
     private CollisionManager collManager;
+    private InfoPanel infoPanel;
     private PlantPanel plantPanel;
+
     private int score;
-    private JLabel scoreboard;
+    private int sun;
+    private int wave;
 
-    private int currentSun;
-
-    public GamePanel() throws IOException{
+    public GamePanel(PlantPanel pp, InfoPanel ip) throws IOException{
         this.setPreferredSize(new Dimension(realScreenWidth, realScreenLength));
         this.setDoubleBuffered(true);
+
+        this.plantPanel = pp;
+        this.infoPanel = ip;
+        
         grid = new Tile[screenRow][screenCol];
         collManager = new CollisionManager();
+        this.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
         score = 0;
-
-        scoreboard = new JLabel("60");
-        scoreboard.setIcon(new ImageIcon(new ImageIcon("resources/sprites/scoreboard.png").getImage().getScaledInstance(60, 50, Image.SCALE_FAST)));
-        scoreboard.setHorizontalTextPosition(JLabel.CENTER);
-        scoreboard.setVerticalTextPosition(JLabel.CENTER);
-        scoreboard.setForeground(Color.RED);
-        this.add(scoreboard, BorderLayout.PAGE_START);
     }
 
     @Override
@@ -83,7 +83,7 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void update(){
-        currentSun += 1;
+        infoPanel.increaseWave();
     }
 
     public void paintComponent(Graphics g){
@@ -96,15 +96,11 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void incrementSun(){
-        currentSun++;
+        sun++;
     }
 
-    public void addPlantPanel(PlantPanel pp){
-        this.plantPanel = pp;
-    }
-
-    public int getCurrentSun(){
-        return currentSun;
+    public int getSun(){
+        return sun;
     }
 
     
