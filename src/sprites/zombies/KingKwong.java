@@ -11,7 +11,7 @@ public class KingKwong extends Zombie{
     public static final int VELOCITY = 0;
 
     public KingKwong(int gridX, int gridY, int screenX, int screenY){
-        super(gridX, gridY, screenX, screenY, FULL_HEALTH, VELOCITY);
+        super(gridX, gridY, screenX, screenY, FULL_HEALTH);
     }
 
     private void dropImp(){

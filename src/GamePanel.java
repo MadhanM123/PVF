@@ -94,6 +94,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void update(){
         infoPanel.setWave(wave++);
         infoPanel.setSun(sun++);
+        grid[3][3].update();
     }
 
     public void paintComponent(Graphics g){

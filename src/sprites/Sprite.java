@@ -31,4 +31,12 @@ public abstract class Sprite{
     public int getRealScreenY(){
         return realScreenY;
     }
+
+    public void changeRealScreenX(int offset){
+        realScreenX += offset;
+    }
+
+    public void changeRealScreenY(int offset){
+        realScreenY += offset;
+    }
 }

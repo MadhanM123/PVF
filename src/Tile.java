@@ -106,8 +106,19 @@ public class Tile extends JComponent implements MouseListener{
         return this.col;
     }
 
+    public void update(){
+        if(plant != null){
+            plant.update();
+        }
+        if(!zombies.isEmpty()){
+            for(Zombie z : zombies){
+                z.update();
+            }
+        }
+    }
+
     @Override
-    protected void paintComponent(Graphics g)
+    public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
         g.drawImage(TILE_IMAGE, 0, 0, null);

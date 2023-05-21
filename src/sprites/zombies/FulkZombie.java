@@ -11,7 +11,7 @@ public class FulkZombie extends Zombie{
     public static final int VELOCITY = 0;
 
     public FulkZombie(int gridX, int gridY, int screenX, int screenY){
-        super(gridX, gridY, screenX, screenY, FULL_HEALTH, VELOCITY);
+        super(gridX, gridY, screenX, screenY, FULL_HEALTH);
     }
 
     public void update(){
