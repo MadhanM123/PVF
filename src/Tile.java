@@ -1,31 +1,50 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
 import sprites.plants.*;
 import sprites.zombies.*;
 
-public class Tile extends JComponent{
+public class Tile extends JComponent implements MouseListener{
     private Queue<Zombie> zombies;
     private Plant plant;
 
     private int row;
     private int col;
 
-    private BufferedImage img;
+    private PlantPanel.PlantSelector plantSelector;
+
+    public static Image TILE_IMAGE;
+    public static int TILE_SIZE;
+
+    static{
+        TILE_SIZE = 110;
+        TILE_IMAGE = new ImageIcon("resources/sprites/tile/grasstile.png").getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_DEFAULT);
+    }
 
     /**
-     * initilizes a tile with no sprites and default background
+     * initializes a tile with no sprites and default background
      */
-    public Tile(int r, int c){
-        plant = null;
-        zombies = new LinkedList<Zombie>();
+    public Tile(int r, int c, PlantPanel.PlantSelector ps){
+        this.plant = null;
+        this.zombies = new LinkedList<Zombie>();
         this.row = r;
         this.col = c;
-        img = //path of tile image
+        this.setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
+        this.setBorder(BorderFactory.createLineBorder(Color.CYAN));
+        this.addMouseListener(this);
+        this.plantSelector = ps;
     }
 
     /**
@@ -34,6 +53,10 @@ public class Tile extends JComponent{
      */
     public boolean isEmpty(){
         return (zombies.isEmpty() && plant == null);
+    }
+
+    public boolean hasNoPlant(){
+        return plant == null;
     }
 
     /**
@@ -84,30 +107,66 @@ public class Tile extends JComponent{
     }
 
     @Override
-    public void paintComponent(Graphics g)
+    protected void paintComponent(Graphics g)
     {
-        // TODO Auto-generated method stub
         super.paintComponent(g);
+        g.drawImage(TILE_IMAGE, 0, 0, null);
+        if(plant != null){
+            plant.draw(g);
+        }
+        if(!zombies.isEmpty()){
+            for(Zombie z : zombies){
+                z.draw(g);
+            }
+        }
     }
 
     @Override
     public Dimension getPreferredSize()
     {
-        // TODO Auto-generated method stub
-        return super.getPreferredSize();
+        return new Dimension(TILE_SIZE, TILE_SIZE);
     }
 
     @Override
     public Dimension getMaximumSize()
     {
-        // TODO Auto-generated method stub
-        return super.getMaximumSize();
+        return new Dimension(TILE_SIZE, TILE_SIZE);
     }
 
     @Override
     public Dimension getMinimumSize()
     {
-        // TODO Auto-generated method stub
-        return super.getMinimumSize();
+        return new Dimension(TILE_SIZE, TILE_SIZE);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e)
+    {
+        System.out.println("sup");
+        plantSelector.attemptAddPlant(this);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e)
+    {
+        return;
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e)
+    {
+        return;
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e)
+    {
+        return;
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e)
+    {
+        return;
     }
 }

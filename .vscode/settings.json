@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\marag\\OneDrive\\Documents\\javafx-sdk-20.0.1\\lib\\javafx.media.jar"
+    ]
+}
