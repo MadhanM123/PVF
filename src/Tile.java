@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
@@ -28,23 +29,16 @@ public class Tile extends JComponent implements MouseListener{
     public static int TILE_SIZE;
 
     static{
-        try
-        {
-            TILE_SIZE = 110;
-            TILE_IMAGE = ImageIO.read(new File("resources/sprites/tile/grasstile.png")).getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_DEFAULT);
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        TILE_SIZE = 110;
+        TILE_IMAGE = new ImageIcon("resources/sprites/tile/grasstile.png").getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_DEFAULT);
     }
 
     /**
      * initializes a tile with no sprites and default background
      */
     public Tile(int r, int c, PlantPanel.PlantSelector ps){
-        plant = null;
-        zombies = new LinkedList<Zombie>();
+        this.plant = null;
+        this.zombies = new LinkedList<Zombie>();
         this.row = r;
         this.col = c;
         this.setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
@@ -113,6 +107,9 @@ public class Tile extends JComponent implements MouseListener{
     {
         super.paintComponent(g);
         g.drawImage(TILE_IMAGE, 0, 0, null);
+        if(plant != null){
+            plant.draw(g);
+        }
     }
 
     @Override

@@ -33,7 +33,7 @@ public class GamePanel extends JPanel implements Runnable{
         this.plantPanel = pp;
         this.infoPanel = ip;
 
-        this.health = 4;
+        this.health = 5;
         this.sun = 0;
         this.wave = 0;
         
