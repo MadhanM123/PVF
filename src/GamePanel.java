@@ -14,7 +14,7 @@ public class GamePanel extends JPanel implements Runnable{
     private final int realScreenWidth = Tile.TILE_SIZE * screenCol;
     private final int realScreenLength = Tile.TILE_SIZE * screenRow;
 
-    private final int FPS = 10;
+    private final int FPS = 20;
 
     private Tile[][] grid;
     
@@ -94,7 +94,12 @@ public class GamePanel extends JPanel implements Runnable{
     public void update(){
         infoPanel.setWave(wave++);
         infoPanel.setSun(sun++);
-        grid[3][3].update();
+        for(int r = 0; r < screenRow; r++){
+            for(int c = 0; c < screenCol; c++){
+                grid[r][c].update();
+            }
+        }
+        
     }
 
     public void paintComponent(Graphics g){

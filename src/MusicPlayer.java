@@ -16,7 +16,6 @@ public class MusicPlayer {
 
     public void setFile(int i){
         try{
-            System.out.println(musicPaths[i]);
             AudioInputStream ais = AudioSystem.getAudioInputStream(musicPaths[i]);
             clip = AudioSystem.getClip();
             clip.open(ais);
@@ -27,7 +26,6 @@ public class MusicPlayer {
     }
 
     public void play(){
-        System.out.println(clip);
         clip.start();
     }
 
@@ -37,13 +35,5 @@ public class MusicPlayer {
 
     public void stop(){
         clip.stop();
-    }
-
-
-    public static void main(String[] args) {
-        MusicPlayer mp = new MusicPlayer();
-        mp.setFile(0);
-        mp.play();
-        mp.loop();
     }
 }
