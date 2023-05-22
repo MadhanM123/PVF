@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.io.IOException;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import sprites.plants.Walnut;
 import sprites.zombies.ConeHead;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -14,7 +15,7 @@ public class GamePanel extends JPanel implements Runnable{
     private final int realScreenWidth = Tile.TILE_SIZE * screenCol;
     private final int realScreenLength = Tile.TILE_SIZE * screenRow;
 
-    private final int FPS = 10;
+    private final int FPS = 40;
 
     private Tile[][] grid;
     
@@ -45,7 +46,8 @@ public class GamePanel extends JPanel implements Runnable{
 
         setupGrid();
 
-        grid[3][3].addZombie(new ConeHead(3, 3, -60, -70));
+        grid[3][7].addPlant(new Walnut(3, 7, -20, 0));
+        grid[3][8].addZombie(new ConeHead(3, 8, -100, -70));
 
         collManager = new CollisionManager();
     }
@@ -94,7 +96,14 @@ public class GamePanel extends JPanel implements Runnable{
     public void update(){
         infoPanel.setWave(wave++);
         infoPanel.setSun(sun++);
-        grid[3][3].update();
+        for(int r = 0; r < grid.length; r++){
+            for(int c = 0; c < grid[r].length; c++){
+                grid[r][c].update();
+                if(grid[r][c].zombieMoved()){
+                    grid[r][c - 1].addZombie(grid[r][c].removeZombie());
+                }
+            }
+        }
     }
 
     public void paintComponent(Graphics g){

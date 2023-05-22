@@ -38,12 +38,4 @@ public class MusicPlayer {
     public void stop(){
         clip.stop();
     }
-
-
-    public static void main(String[] args) {
-        MusicPlayer mp = new MusicPlayer();
-        mp.setFile(0);
-        mp.play();
-        mp.loop();
-    }
 }

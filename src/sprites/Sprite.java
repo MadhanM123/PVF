@@ -32,11 +32,27 @@ public abstract class Sprite{
         return realScreenY;
     }
 
-    public void changeRealScreenX(int offset){
-        realScreenX += offset;
+    public int getGridX(){
+        return gridX;
     }
 
-    public void changeRealScreenY(int offset){
-        realScreenY += offset;
+    public int getGridY(){
+        return gridY;
+    }
+
+    public void setRealScreenX(int newX){
+        realScreenX = newX;
+    }
+
+    public void setRealScreenY(int newY){
+        realScreenY = newY;
+    }
+
+    public void setGridX(int newX){
+        gridX = newX;
+    }
+
+    public void setGridY(int newY){
+        gridY = newY;
     }
 }
