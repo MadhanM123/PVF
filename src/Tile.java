@@ -112,7 +112,7 @@ public class Tile extends JComponent implements MouseListener{
 
     public void update(){
         if(plant != null){
-            plant.update(State.IDLE);
+            plant.update(State.ACTION);
         }
         if(!zombies.isEmpty()){
             for(Zombie z : zombies){
