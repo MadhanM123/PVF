@@ -18,7 +18,7 @@ public class KingKwong extends Zombie{
 
     }
 
-    public void update(){
+    public void update(State state){
 
     }
 

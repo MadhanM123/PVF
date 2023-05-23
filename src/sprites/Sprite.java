@@ -12,6 +12,12 @@ public abstract class Sprite{
 
     private int health;
 
+    public enum State{
+        IDLE,
+        ACTION,
+        DEATH
+    };
+
     public Sprite(int gridX, int gridY, int screenX, int screenY, int health){
         this.gridX = gridX;
         this.gridY = gridY;
@@ -20,7 +26,7 @@ public abstract class Sprite{
         this.health = health;
     }
 
-    public abstract void update();
+    public abstract void update(State state);
     
     public abstract void draw(Graphics g);
 
@@ -32,11 +38,27 @@ public abstract class Sprite{
         return realScreenY;
     }
 
-    public void changeRealScreenX(int offset){
-        realScreenX += offset;
+    public int getGridX(){
+        return gridX;
     }
 
-    public void changeRealScreenY(int offset){
-        realScreenY += offset;
+    public int getGridY(){
+        return gridY;
+    }
+
+    public void setRealScreenX(int newX){
+        realScreenX = newX;
+    }
+
+    public void setRealScreenY(int newY){
+        realScreenY = newY;
+    }
+
+    public void setGridX(int newX){
+        gridX = newX;
+    }
+
+    public void setGridY(int newY){
+        gridY = newY;
     }
 }

@@ -32,7 +32,7 @@ public class PeaShooter extends Plant{
 
     }
 
-    public void update(){ //for idle only rn
+    public void update(State state){
         tickIdleCounter();
         if(getIdleCounter() > IDLE_RATE){
             if(currentImg == idle1Img){
@@ -48,6 +48,12 @@ public class PeaShooter extends Plant{
 
     public void draw(Graphics g){
         g.drawImage(currentImg, -15, 30, null);
+    }
+
+    @Override
+    public boolean canDefend()
+    {
+        return true;
     }
     
 }

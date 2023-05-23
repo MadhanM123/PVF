@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-
+import sprites.Sprite.State;
 import sprites.plants.*;
 import sprites.zombies.*;
 
@@ -22,6 +22,8 @@ public class Tile extends JComponent implements MouseListener{
 
     private int row;
     private int col;
+
+    private boolean moved;
 
     private PlantPanel.PlantSelector plantSelector;
 
@@ -45,6 +47,7 @@ public class Tile extends JComponent implements MouseListener{
         this.setBorder(BorderFactory.createLineBorder(Color.CYAN));
         this.addMouseListener(this);
         this.plantSelector = ps;
+        this.moved = false;
     }
 
     /**
@@ -94,8 +97,9 @@ public class Tile extends JComponent implements MouseListener{
     /**
      * removes the first zombie in the tile
      */
-    public void removeZombie(){
-        zombies.remove();
+    public Zombie removeZombie(){
+        moved = false;
+        return zombies.remove();
     }
 
     public int getGridY(){
@@ -108,12 +112,18 @@ public class Tile extends JComponent implements MouseListener{
 
     public void update(){
         if(plant != null){
-            plant.update();
+            plant.update(State.IDLE);
         }
         if(!zombies.isEmpty()){
             for(Zombie z : zombies){
-                z.update();
+                z.update(State.IDLE);
+                setZombieMoved(z.hasMovedNextTile());
+                z.movedNextTile(false);
+
             }
+        }
+        if(plant != null && !zombies.isEmpty()){
+            
         }
     }
 
@@ -179,5 +189,17 @@ public class Tile extends JComponent implements MouseListener{
     public void mouseExited(MouseEvent e)
     {
         return;
+    }
+
+    public void setZombieMoved(boolean moved){
+        this.moved = moved;
+    }
+
+    public boolean zombieMoved(){
+        return moved;
+    }
+
+    public boolean colliding(){
+        return plant != null && zombies.peek() != null;
     }
 }

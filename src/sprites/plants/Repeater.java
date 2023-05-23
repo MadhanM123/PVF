@@ -19,12 +19,18 @@ public class Repeater extends Plant{
 
     }
 
-    public void update(){
+    public void update(State state){
 
     }
 
     public void draw(Graphics g){
         
+    }
+
+    @Override
+    public boolean canDefend()
+    {
+        return true;
     }
     
 }

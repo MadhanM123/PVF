@@ -48,7 +48,7 @@ public class SunFlower extends Plant {
         //add suns and add a sun image
     }
 
-    public void update(){ 
+    public void update(State state){ 
         tickIdleCounter();
         tickActionCounter();
 
@@ -77,4 +77,12 @@ public class SunFlower extends Plant {
     public void draw(Graphics g){
         g.drawImage(currentImg, -10, 0, null);
     }
+
+    @Override
+    public boolean canDefend()
+    {
+        return false;
+    }
+
+    
 }
