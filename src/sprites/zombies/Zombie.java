@@ -58,4 +58,28 @@ public abstract class Zombie extends Sprite{
     public boolean hasMovedNextTile(){
         return nextTile;
     }
+
+    public void tickActionCounter(){
+        actionCounter++;
+    }
+
+    public int getActionCounter(){
+        return actionCounter;
+    }
+
+    public void zeroActionCounter(){
+        actionCounter = 0;
+    }
+
+    public void tickDeathCounter(){
+        deathCounter++;
+    }
+
+    public int getDeathCounter(){
+        return deathCounter;
+    }
+
+    public void zeroDeathCounter(){
+        deathCounter = 0;
+    }
 }

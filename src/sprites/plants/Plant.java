@@ -60,8 +60,6 @@ public abstract class Plant extends Sprite{
     public void zeroDeathCounter(){
         deathCounter = 0;
     }
-
-
-
+    
     public abstract boolean canDefend();
 }

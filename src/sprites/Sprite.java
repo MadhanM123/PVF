@@ -18,6 +18,8 @@ public abstract class Sprite{
         DEATH
     };
 
+    private State prev;
+
     public Sprite(int gridX, int gridY, int screenX, int screenY, int health){
         this.gridX = gridX;
         this.gridY = gridY;
@@ -60,5 +62,15 @@ public abstract class Sprite{
 
     public void setGridY(int newY){
         gridY = newY;
+    }
+
+    public boolean comparePrevState(State s){
+        if(s == prev){
+            return false;
+        }
+        else{
+            prev = s;
+            return true;
+        }
     }
 }
