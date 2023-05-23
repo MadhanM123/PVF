@@ -10,12 +10,19 @@ public class ConeHead extends Zombie{
     public static final int FULL_HEALTH = 0;
     public static final int DAMAGE = 0;
     public static final int HITBOX = 0;
-    public static final int WALK_RATE = 3;
-    public static final int TILE_RATE = 40;
+
+    public static final int START_X = 80;
+    public static final int START_Y = 0;
+
+    public static final int WALK_RATE = 4;
+    public static final int TILE_RATE = 30;
+    public static final int TILE_THRESHOLD = -40;
     public static final int OFFSET = -10;
 
-    private static final int HEIGHT = 280;
-    private static final int WIDTH = 350;
+    //61, 142, 247, 90
+
+    private static final int HEIGHT = 110;
+    private static final int WIDTH = 60;
 
     private static final Image walk1Img = new ImageIcon("resources/sprites/zombies/conehead/walk1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image walk2Img = new ImageIcon("resources/sprites/zombies/conehead/walk3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
@@ -24,8 +31,8 @@ public class ConeHead extends Zombie{
     private Image currentImg;
 
     public static final int IDLE_STATE = 0;
-    public static final int ATTACK_STATE = 0;
-    public static final int DEATH_STATE = 0;
+    public static final int ATTACK_STATE = 1;
+    public static final int DEATH_STATE = 2;
 
     public ConeHead(int gridX, int gridY, int screenX, int screenY){
         super(gridX, gridY, screenX, screenY, FULL_HEALTH);
@@ -49,14 +56,15 @@ public class ConeHead extends Zombie{
                 zeroWalkCounter();
             }
 
-            tickTileCounter();
-            if(getTileCounter() > TILE_RATE){
+            if(getRealScreenX() < TILE_THRESHOLD){
                 setGridX(getGridX() - 1);
                 movedNextTile(true);
-                setRealScreenX(-70);
+                setRealScreenX(START_X);
                 zeroWalkCounter();
-                zeroTileCounter();
             }
+        }
+        else if(state == State.ACTION){
+            tickActionCounter();
         }
     }
 

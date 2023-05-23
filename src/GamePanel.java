@@ -47,7 +47,7 @@ public class GamePanel extends JPanel implements Runnable{
         setupGrid();
 
         grid[3][7].addPlant(new Walnut(3, 7, -20, 0));
-        grid[3][8].addZombie(new ConeHead(3, 8, -70, -70));
+        grid[3][8].addZombie(new ConeHead(3, 8, ConeHead.START_X, ConeHead.START_Y));
 
         collManager = new CollisionManager();
     }
