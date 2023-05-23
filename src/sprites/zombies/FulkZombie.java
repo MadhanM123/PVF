@@ -14,7 +14,7 @@ public class FulkZombie extends Zombie{
         super(gridX, gridY, screenX, screenY, FULL_HEALTH);
     }
 
-    public void update(){
+    public void update(State state){
 
     }
 

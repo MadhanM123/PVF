@@ -23,7 +23,7 @@ public abstract class Zombie extends Sprite{
         this.nextTile = false;
     }
 
-    public abstract void update();
+    public abstract void update(State state);
 
     public abstract void draw(Graphics g);
 

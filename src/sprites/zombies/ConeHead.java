@@ -23,34 +23,40 @@ public class ConeHead extends Zombie{
 
     private Image currentImg;
 
+    public static final int IDLE_STATE = 0;
+    public static final int ATTACK_STATE = 0;
+    public static final int DEATH_STATE = 0;
+
     public ConeHead(int gridX, int gridY, int screenX, int screenY){
         super(gridX, gridY, screenX, screenY, FULL_HEALTH);
         this.currentImg = walk1Img;
     }
     
-    public void update(){
-        tickWalkCounter();
-        if(getWalkCounter() > WALK_RATE){
-            if(currentImg == walk1Img){
-                currentImg = walk2Img;
+    public void update(State state){
+        if(state == State.IDLE){
+            tickWalkCounter();
+            if(getWalkCounter() > WALK_RATE){
+                if(currentImg == walk1Img){
+                    currentImg = walk2Img;
+                }
+                else if(currentImg == walk2Img){
+                    currentImg = walk3Img;
+                }
+                else if(currentImg == walk3Img){
+                    currentImg = walk1Img;
+                }
+                setRealScreenX(getRealScreenX() + OFFSET);
+                zeroWalkCounter();
             }
-            else if(currentImg == walk2Img){
-                currentImg = walk3Img;
-            }
-            else if(currentImg == walk3Img){
-                currentImg = walk1Img;
-            }
-            setRealScreenX(getRealScreenX() + OFFSET);
-            zeroWalkCounter();
-        }
 
-        tickTileCounter();
-        if(getTileCounter() > TILE_RATE){
-            setGridX(getGridX() - 1);
-            movedNextTile(true);
-            setRealScreenX(-70);
-            zeroWalkCounter();
-            zeroTileCounter();
+            tickTileCounter();
+            if(getTileCounter() > TILE_RATE){
+                setGridX(getGridX() - 1);
+                movedNextTile(true);
+                setRealScreenX(-70);
+                zeroWalkCounter();
+                zeroTileCounter();
+            }
         }
     }
 

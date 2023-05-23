@@ -12,6 +12,12 @@ public abstract class Sprite{
 
     private int health;
 
+    public enum State{
+        IDLE,
+        ACTION,
+        DEATH
+    };
+
     public Sprite(int gridX, int gridY, int screenX, int screenY, int health){
         this.gridX = gridX;
         this.gridY = gridY;
@@ -20,7 +26,7 @@ public abstract class Sprite{
         this.health = health;
     }
 
-    public abstract void update();
+    public abstract void update(State state);
     
     public abstract void draw(Graphics g);
 

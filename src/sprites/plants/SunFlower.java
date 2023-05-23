@@ -27,11 +27,19 @@ public class SunFlower extends Plant {
 
     }
 
-    public void update(){
+    public void update(State state){
 
     }
 
     public void draw(Graphics g){
         g.drawImage(idleImg, -10, 0, null);
     }
+
+    @Override
+    public boolean canDefend()
+    {
+        return false;
+    }
+
+    
 }

@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-
+import sprites.Sprite.State;
 import sprites.plants.*;
 import sprites.zombies.*;
 
@@ -112,14 +112,18 @@ public class Tile extends JComponent implements MouseListener{
 
     public void update(){
         if(plant != null){
-            plant.update();
+            plant.update(State.IDLE);
         }
         if(!zombies.isEmpty()){
             for(Zombie z : zombies){
-                z.update();
+                z.update(State.IDLE);
                 setZombieMoved(z.hasMovedNextTile());
                 z.movedNextTile(false);
+
             }
+        }
+        if(plant != null && !zombies.isEmpty()){
+            
         }
     }
 
@@ -193,5 +197,9 @@ public class Tile extends JComponent implements MouseListener{
 
     public boolean zombieMoved(){
         return moved;
+    }
+
+    public boolean colliding(){
+        return plant != null && zombies.peek() != null;
     }
 }

@@ -24,11 +24,17 @@ public class Walnut extends Plant{
         super(gridX, gridY, screenX, screenY, FULL_HEALTH);
     }
 
-    public void update(){
+    public void update(State state){
 
     }
 
     public void draw(Graphics g){
         g.drawImage(idleImg, -20, 0, null);
+    }
+
+    @Override
+    public boolean canDefend()
+    {
+        return false;
     }
 }
