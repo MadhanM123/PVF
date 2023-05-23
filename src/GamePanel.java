@@ -96,14 +96,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void update(){
         infoPanel.setWave(wave++);
         infoPanel.setSun(sun++);
-        for(int r = 0; r < grid.length; r++){
-            for(int c = 0; c < grid[r].length; c++){
-                grid[r][c].update();
-                if(grid[r][c].zombieMoved()){
-                    grid[r][c - 1].addZombie(grid[r][c].removeZombie());
-                }
-            }
-        }
+        grid[3][3].update();
     }
 
     public void paintComponent(Graphics g){
