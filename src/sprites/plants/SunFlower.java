@@ -6,11 +6,11 @@ import javax.swing.ImageIcon;
 
 public class SunFlower extends Plant {
 
-    public static final int ACTION_RATE = 5;
+    public static final int ACTION_RATE = 7;
     public static final int FULL_HEALTH = 0;
     public static final int DAMAGE = 0;
     public static final int HITBOX = 0;
-    public static final int IDLE_RATE = 5;
+    public static final int IDLE_RATE = 10;
 
 
     public static final int COST = 10;
@@ -71,7 +71,6 @@ public class SunFlower extends Plant {
                 else{
                     currentImg = idle1Img;
                 }
-
                 zeroActionCounter();
             }
         }

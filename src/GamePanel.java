@@ -15,7 +15,7 @@ public class GamePanel extends JPanel implements Runnable{
     private final int realScreenWidth = Tile.TILE_SIZE * screenCol;
     private final int realScreenLength = Tile.TILE_SIZE * screenRow;
 
-    private final int FPS = 20;
+    private final int FPS = 30;
 
     private Tile[][] grid;
     
