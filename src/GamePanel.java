@@ -47,8 +47,8 @@ public class GamePanel extends JPanel implements Runnable{
 
         setupGrid();
 
-        grid[3][7].addPlant(new Walnut(3, 7, -20, 0));
-        grid[3][8].addZombie(new ConeHead(3, 8, ConeHead.START_X, ConeHead.START_Y));
+        grid[3][7].addPlant(new Walnut(7, 3, -20, 0));
+        grid[3][8].addZombie(new ConeHead(8, 3, 8 * Tile.TILE_SIZE, 3 * Tile.TILE_SIZE));
 
         collManager = new CollisionManager();
     }
@@ -56,7 +56,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void setupGrid(){
         for(int r = 0; r < grid.length; r++){
             for(int c = 0; c < grid[0].length; c++){
-                grid[r][c] = new Tile(r, c, c * Tile.TILE_SIZE, r * Tile.TILE_SIZE, plantPanel.getPlantSelector());
+                grid[r][c] = new Tile(c, r, plantPanel.getPlantSelector());
                 this.add(grid[r][c]);
             }
         }
@@ -101,6 +101,7 @@ public class GamePanel extends JPanel implements Runnable{
             for(int c = 0; c < grid[r].length; c++){
                 grid[r][c].update();
                 if(grid[r][c].zombieMoved()){
+                    System.out.println("hot");
                     grid[r][c - 1].addZombie(grid[r][c].removeZombie());
                 }
             }

@@ -43,12 +43,6 @@ public class ConeHead extends Zombie{
     
     public void update(State state){
         if(state == State.IDLE){
-            if(comparePrevState(state)){
-                zeroWalkCounter();
-                setRealScreenX(START_X);
-                setRealScreenY(START_Y);
-            }
-
             tickWalkCounter();
             if(getWalkCounter() > WALK_RATE){
                 if(currentImg == walk1Img){
@@ -63,12 +57,11 @@ public class ConeHead extends Zombie{
                 setRealScreenX(getRealScreenX() + OFFSET);
                 zeroWalkCounter();
             }
-            
-            if(getRealScreenX() < TILE_THRESHOLD){
+
+            if(getRealScreenX() < getGridX() * 110){
+                System.out.println(getRealScreenX() + ",," + getRealScreenY());
                 setGridX(getGridX() - 1);
                 movedNextTile(true);
-                setRealScreenX(START_X);
-                setRealScreenY(START_Y);
                 zeroWalkCounter();
             }
         }

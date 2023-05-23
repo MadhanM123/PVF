@@ -20,8 +20,8 @@ public class Tile extends JComponent implements MouseListener{
     private Queue<Zombie> zombies;
     private Plant plant;
 
-    private int row;
-    private int col;
+    private int gridX;
+    private int gridY;
 
     private int screenX;
     private int screenY;
@@ -41,18 +41,18 @@ public class Tile extends JComponent implements MouseListener{
     /**
      * initializes a tile with no sprites and default background
      */
-    public Tile(int r, int c, int screenX, int screenY, PlantPanel.PlantSelector ps){
+    public Tile(int gridX, int gridY, PlantPanel.PlantSelector ps){
         this.plant = null;
         this.zombies = new LinkedList<Zombie>();
-        this.row = r;
-        this.col = c;
+        this.gridX = gridX;
+        this.gridY = gridY;
         this.setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
         this.setBorder(BorderFactory.createLineBorder(Color.CYAN));
         this.addMouseListener(this);
         this.plantSelector = ps;
         this.moved = false;
-        this.screenX = screenX;
-        this.screenY = screenY;
+        this.screenX = gridX * TILE_SIZE;
+        this.screenY = gridY * TILE_SIZE;
     }
 
     /**
@@ -92,6 +92,7 @@ public class Tile extends JComponent implements MouseListener{
      * @param z the zombie to be added into the tile
      */
     public void addZombie(Zombie z){
+        System.out.println(gridX + ",,," + gridY);
         zombies.add(z);
     }
 
@@ -112,24 +113,24 @@ public class Tile extends JComponent implements MouseListener{
     }
 
     public int getGridY(){
-        return this.row;
+        return this.gridY;
     }
 
     public int getGridX(){
-        return this.col;
+        return this.gridX;
     }
 
     public void update(){
-        if(plant != null && !zombies.isEmpty()){
-            plant.update(State.ACTION);
-            for(Zombie z : zombies){
-                z.update(State.ACTION);
-            }
-        }
-        else if(plant != null){
+        // if(plant != null && !zombies.isEmpty()){
+        //     plant.update(State.ACTION);
+        //     for(Zombie z : zombies){
+        //         z.update(State.ACTION);
+        //     }
+        // }
+        if(plant != null){
             plant.update(State.IDLE);
         }
-        else if(!zombies.isEmpty()){
+        if(!zombies.isEmpty()){
             for(Zombie z : zombies){
                 z.update(State.IDLE);
                 setZombieMoved(z.hasMovedNextTile());
@@ -147,7 +148,6 @@ public class Tile extends JComponent implements MouseListener{
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        System.out.println("here");
         if(plant != null){
             plant.draw(g);
         }
