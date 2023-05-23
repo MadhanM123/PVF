@@ -14,10 +14,10 @@ public class ConeHead extends Zombie{
     public static final int START_Y = 0;
 
     private static final int WALK_RATE = 4;
-    private static final int TILE_THRESHOLD = -40;
+    private static final int TILE_THRESHOLD = 60;
     private static final int OFFSET = -10;
 
-    private static final int ACTION_RATE = 0;
+    private static final int ACTION_RATE = 10;
     private static final int ACTION_X = 50;
     private static final int ACTION_Y = 0;
 
@@ -30,11 +30,11 @@ public class ConeHead extends Zombie{
     private static final Image walk2Img = new ImageIcon("resources/sprites/zombies/conehead/walk3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image walk3Img = new ImageIcon("resources/sprites/zombies/conehead/walk2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 
-    private Image currentImg;
+    private static final Image action1Img = new ImageIcon("resources/sprites/zombies/conehead/eat1.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
+    private static final Image action2Img = new ImageIcon("resources/sprites/zombies/conehead/eat2.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
+    private static final Image action3Img = new ImageIcon("resources/sprites/zombies/conehead/eat3.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
 
-    public static final int IDLE_STATE = 0;
-    public static final int ATTACK_STATE = 1;
-    public static final int DEATH_STATE = 2;
+    private Image currentImg;
 
     public ConeHead(int gridX, int gridY, int screenX, int screenY){
         super(gridX, gridY, screenX, screenY, FULL_HEALTH);
@@ -43,6 +43,10 @@ public class ConeHead extends Zombie{
     
     public void update(State state){
         if(state == State.IDLE){
+            if(comparePrevState(state)){
+                zeroWalkCounter();
+            }
+            
             tickWalkCounter();
             if(getWalkCounter() > WALK_RATE){
                 if(currentImg == walk1Img){
@@ -58,7 +62,7 @@ public class ConeHead extends Zombie{
                 zeroWalkCounter();
             }
 
-            if(getRealScreenX() < getGridX() * 110){
+            if(getRealScreenX() < getGridX() * TILE_SIZE - TILE_THRESHOLD){
                 System.out.println(getRealScreenX() + ",," + getRealScreenY());
                 setGridX(getGridX() - 1);
                 movedNextTile(true);
@@ -68,10 +72,23 @@ public class ConeHead extends Zombie{
         else if(state == State.ACTION){
             if(comparePrevState(state)){
                 zeroActionCounter();
-                setRealScreenX(ACTION_X);
-                setRealScreenY(ACTION_Y);
+                this.currentImg = action1Img;
             }
+
             tickActionCounter();
+            if(getActionCounter() > ACTION_RATE){
+                System.out.println("yo");
+                if(currentImg == action1Img){
+                    currentImg = action2Img;
+                }
+                else if(currentImg == action2Img){
+                    currentImg = action3Img;
+                }
+                else if(currentImg == action3Img){
+                    currentImg = action1Img;
+                }
+                zeroActionCounter();
+            }
         }
     }
 

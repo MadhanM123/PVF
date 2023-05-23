@@ -14,6 +14,8 @@ public abstract class Zombie extends Sprite{
 
     private boolean nextTile;
 
+    public static final int TILE_SIZE = 110;
+
     public Zombie(int gridX, int gridY, int screenX, int screenY, int health){
         super(gridX, gridY, screenX, screenY, health);
         this.walkCounter = 0;
