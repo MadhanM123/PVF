@@ -23,6 +23,9 @@ public class Tile extends JComponent implements MouseListener{
     private int row;
     private int col;
 
+    private int screenX;
+    private int screenY;
+
     private boolean moved;
 
     private PlantPanel.PlantSelector plantSelector;
@@ -38,7 +41,7 @@ public class Tile extends JComponent implements MouseListener{
     /**
      * initializes a tile with no sprites and default background
      */
-    public Tile(int r, int c, PlantPanel.PlantSelector ps){
+    public Tile(int r, int c, int screenX, int screenY, PlantPanel.PlantSelector ps){
         this.plant = null;
         this.zombies = new LinkedList<Zombie>();
         this.row = r;
@@ -48,6 +51,8 @@ public class Tile extends JComponent implements MouseListener{
         this.addMouseListener(this);
         this.plantSelector = ps;
         this.moved = false;
+        this.screenX = screenX;
+        this.screenY = screenY;
     }
 
     /**
@@ -62,12 +67,16 @@ public class Tile extends JComponent implements MouseListener{
         return plant == null;
     }
 
+    public boolean hasZombie(){
+        return !zombies.isEmpty();
+    }
+
     /**
      * gets the first zombie in the tile
      * @return the first zombie in the tile
      */
-    public Zombie getZombie(){
-        return zombies.peek();
+    public Queue<Zombie> getZombies(){
+        return zombies;
     }
 
     /**
@@ -130,18 +139,17 @@ public class Tile extends JComponent implements MouseListener{
         }
     }
 
+    public void draw(Graphics g){
+        g.drawImage(TILE_IMAGE, screenX, screenY, null);
+    }
+
     @Override
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        g.drawImage(TILE_IMAGE, 0, 0, null);
+        System.out.println("here");
         if(plant != null){
             plant.draw(g);
-        }
-        if(!zombies.isEmpty()){
-            for(Zombie z : zombies){
-                z.draw(g);
-            }
         }
     }
 

@@ -7,6 +7,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import sprites.plants.Walnut;
 import sprites.zombies.ConeHead;
+import sprites.zombies.Zombie;
 
 public class GamePanel extends JPanel implements Runnable{
     private final int screenCol = 9;
@@ -55,7 +56,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void setupGrid(){
         for(int r = 0; r < grid.length; r++){
             for(int c = 0; c < grid[0].length; c++){
-                grid[r][c] = new Tile(r, c, plantPanel.getPlantSelector());
+                grid[r][c] = new Tile(r, c, c * Tile.TILE_SIZE, r * Tile.TILE_SIZE, plantPanel.getPlantSelector());
                 this.add(grid[r][c]);
             }
         }
@@ -108,7 +109,20 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        // tileManager.draw(g);
+        for(int r = 0; r < grid.length; r++){
+            for(int c = 0; c < grid[r].length; c++){
+                grid[r][c].draw(g);
+            }
+        }
+        for(int r = 0; r < grid.length; r++){
+            for(int c = 0; c < grid[r].length; c++){
+                if(grid[r][c].hasZombie()){
+                    for(Zombie z : grid[r][c].getZombies()){
+                        z.draw(g);
+                    }
+                }
+            }
+        }
     }
 
     public Tile[][] getGrid(){

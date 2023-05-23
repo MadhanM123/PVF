@@ -6,18 +6,20 @@ import javax.swing.ImageIcon;
 
 public class ConeHead extends Zombie{
 
-    public static final int ACTION_RATE = 0;
     public static final int FULL_HEALTH = 0;
     public static final int DAMAGE = 0;
     public static final int HITBOX = 0;
 
-    public static final int START_X = 80;
+    public static final int START_X = 900;
     public static final int START_Y = 0;
 
-    public static final int WALK_RATE = 4;
-    public static final int TILE_RATE = 30;
-    public static final int TILE_THRESHOLD = -40;
-    public static final int OFFSET = -10;
+    private static final int WALK_RATE = 4;
+    private static final int TILE_THRESHOLD = -40;
+    private static final int OFFSET = -10;
+
+    private static final int ACTION_RATE = 0;
+    private static final int ACTION_X = 50;
+    private static final int ACTION_Y = 0;
 
     //61, 142, 247, 90
 
@@ -41,6 +43,12 @@ public class ConeHead extends Zombie{
     
     public void update(State state){
         if(state == State.IDLE){
+            if(comparePrevState(state)){
+                zeroWalkCounter();
+                setRealScreenX(START_X);
+                setRealScreenY(START_Y);
+            }
+
             tickWalkCounter();
             if(getWalkCounter() > WALK_RATE){
                 if(currentImg == walk1Img){
@@ -55,15 +63,21 @@ public class ConeHead extends Zombie{
                 setRealScreenX(getRealScreenX() + OFFSET);
                 zeroWalkCounter();
             }
-
+            
             if(getRealScreenX() < TILE_THRESHOLD){
                 setGridX(getGridX() - 1);
                 movedNextTile(true);
                 setRealScreenX(START_X);
+                setRealScreenY(START_Y);
                 zeroWalkCounter();
             }
         }
         else if(state == State.ACTION){
+            if(comparePrevState(state)){
+                zeroActionCounter();
+                setRealScreenX(ACTION_X);
+                setRealScreenY(ACTION_Y);
+            }
             tickActionCounter();
         }
     }
