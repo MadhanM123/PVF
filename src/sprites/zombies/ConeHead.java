@@ -10,9 +10,9 @@ public class ConeHead extends Zombie{
     public static final int FULL_HEALTH = 0;
     public static final int DAMAGE = 0;
     public static final int HITBOX = 0;
-    public static final int WALK_RATE = 5;
-    public static final int TILE_RATE = 25;
-    public static final int OFFSET = -25;
+    public static final int WALK_RATE = 3;
+    public static final int TILE_RATE = 40;
+    public static final int OFFSET = -10;
 
     private static final int HEIGHT = 280;
     private static final int WIDTH = 350;
