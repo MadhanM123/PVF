@@ -13,8 +13,8 @@ public abstract class Plant extends Sprite{
 
     boolean canDefend;
     
-    public Plant(int gridX, int gridY, int screenX, int screenY, int health){
-        super(gridX, gridY, screenX, screenY, health);
+    public Plant(int gridX, int gridY, int screenX, int screenY, int health, int damage){
+        super(gridX, gridY, screenX, screenY, health, damage);
         this.idleCounter = 0;
         this.actionCounter = 0;
         this.deathCounter = 0;

@@ -1,8 +1,6 @@
 package sprites.zombies;
-import sprites.*;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import sprites.Sprite;
 
 public abstract class Zombie extends Sprite{
@@ -14,13 +12,16 @@ public abstract class Zombie extends Sprite{
 
     private boolean nextTile;
 
-    public Zombie(int gridX, int gridY, int screenX, int screenY, int health){
-        super(gridX, gridY, screenX, screenY, health);
+    private int intersect;
+
+    public Zombie(int gridX, int gridY, int screenX, int screenY, int health, int damage){
+        super(gridX, gridY, screenX, screenY, health, damage);
         this.walkCounter = 0;
         this.actionCounter = 0;
         this.deathCounter = 0;
         this.tileCounter = 0;
         this.nextTile = false;
+        this.intersect = 0;
     }
 
     public abstract void update(State state);
@@ -81,5 +82,13 @@ public abstract class Zombie extends Sprite{
 
     public void zeroDeathCounter(){
         deathCounter = 0;
+    }
+
+    public int getIntersect(){
+        return intersect;
+    }
+
+    public void setIntersect(int intersect){
+        this.intersect = intersect;
     }
 }
