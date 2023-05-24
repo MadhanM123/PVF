@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 public class PeaShooter extends Plant{
 
-    public static final int ACTION_RATE = 0;
+    public static final int ACTION_RATE = 5;
     public static final int FULL_HEALTH = 0;
     public static final int DAMAGE = 0;
     public static final int HITBOX = 0;
@@ -33,16 +33,31 @@ public class PeaShooter extends Plant{
     }
 
     public void update(State state){
-        tickIdleCounter();
-        if(getIdleCounter() > IDLE_RATE){
-            if(currentImg == idle1Img){
-                currentImg = idle2Img;
-            }
-            else{
-                currentImg = idle1Img;
-            }
+        if(state == State.IDLE){
+            tickIdleCounter();
+            if(getIdleCounter() > IDLE_RATE){
+                if(currentImg == idle1Img){
+                    currentImg = idle2Img;
+                }
+                else{
+                    currentImg = idle1Img;
+                }
 
-            zeroIdleCounter();
+                zeroIdleCounter();
+            }
+        }
+
+        if(state == State.ACTION){
+            tickActionCounter();
+            if(getActionCounter() > ACTION_RATE){
+                if(currentImg == idle1Img || currentImg == shootImg){
+                        currentImg = idle2Img;
+                }
+                else{
+                    currentImg = shootImg;
+                }
+                zeroActionCounter();
+            }
         }
     }
 
