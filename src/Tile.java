@@ -4,14 +4,14 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.IOException;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
-import javax.imageio.ImageIO;
+import java.util.Set;
 import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import sprites.Sprite;
 import sprites.Sprite.State;
 import sprites.plants.*;
 import sprites.zombies.*;
@@ -19,6 +19,7 @@ import sprites.zombies.*;
 public class Tile extends JComponent implements MouseListener{
     private Queue<Zombie> zombies;
     private Plant plant;
+    private Set<Sprite> deadSet;
 
     private int gridX;
     private int gridY;
@@ -44,10 +45,11 @@ public class Tile extends JComponent implements MouseListener{
     public Tile(int gridX, int gridY, PlantPanel.PlantSelector ps){
         this.plant = null;
         this.zombies = new LinkedList<Zombie>();
+        this.deadSet = new HashSet<>();
         this.gridX = gridX;
         this.gridY = gridY;
         this.setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
-        this.setBorder(BorderFactory.createLineBorder(Color.CYAN));
+        this.setBorder(BorderFactory.createLineBorder(Color.BLUE));
         this.addMouseListener(this);
         this.plantSelector = ps;
         this.moved = false;
@@ -92,7 +94,6 @@ public class Tile extends JComponent implements MouseListener{
      * @param z the zombie to be added into the tile
      */
     public void addZombie(Zombie z){
-        System.out.println(gridX + ",,," + gridY);
         zombies.add(z);
     }
 
@@ -108,7 +109,6 @@ public class Tile extends JComponent implements MouseListener{
      * removes the first zombie in the tile
      */
     public Zombie removeZombie(){
-        moved = false;
         return zombies.remove();
     }
 
@@ -121,10 +121,37 @@ public class Tile extends JComponent implements MouseListener{
     }
 
     public void update(){
-        if(plant != null && !zombies.isEmpty()){
-            plant.update(State.ACTION);
+        if(plant != null && !zombies.isEmpty() && !plant.isDead()){
+            for(Zombie z: zombies){
+                if(!z.isDead()){
+                    plant.update(State.ACTION);
+                    plant.reduceHealth(z.getDamage());
+
+                    z.update(State.ACTION);
+                    z.reduceHealth(plant.getDamage());
+                }
+                else{
+                    z.update(State.DEATH);
+                    deadSet.add(z);
+                    zombies.poll();
+                }
+            }
+        }
+        else if(plant != null && !zombies.isEmpty()){
+            plant.update(State.DEATH);
+            deadSet.add(plant);
+            plant = null;
+            
+            int intersect = 0;
             for(Zombie z : zombies){
-                z.update(State.ACTION);
+                if(z.isDead()){
+                    z.update(State.DEATH);
+                    deadSet.add(z);
+                    zombies.poll();
+                }
+                z.setIntersect(intersect);
+                z.update(State.IDLE);
+                intersect += 20;
             }
         }
         else if(plant != null){
@@ -134,22 +161,17 @@ public class Tile extends JComponent implements MouseListener{
             for(Zombie z : zombies){
                 z.update(State.IDLE);
                 setZombieMoved(z.hasMovedNextTile());
-                z.movedNextTile(false);
-
             }
         }
     }
 
     public void draw(Graphics g){
         g.drawImage(TILE_IMAGE, screenX, screenY, null);
-    }
-
-    @Override
-    public void paintComponent(Graphics g)
-    {
-        super.paintComponent(g);
-        if(plant != null){
-            plant.draw(g);
+        if(plant != null) plant.draw(g);
+        if(!zombies.isEmpty()){
+            for(Zombie z : zombies){
+                z.draw(g);
+            }
         }
     }
 
@@ -174,7 +196,6 @@ public class Tile extends JComponent implements MouseListener{
     @Override
     public void mouseClicked(MouseEvent e)
     {
-        System.out.println("sup");
         plantSelector.attemptAddPlant(this);
     }
 

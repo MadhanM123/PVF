@@ -3,6 +3,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.io.IOException;
+import java.util.Iterator;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import sprites.plants.Walnut;
@@ -47,8 +48,10 @@ public class GamePanel extends JPanel implements Runnable{
 
         setupGrid();
 
-        grid[3][6].addPlant(new Walnut(6, 3, -20, 0));
-        grid[3][8].addZombie(new ConeHead(8, 3, 8 * Tile.TILE_SIZE, 3 * Tile.TILE_SIZE));
+        grid[3][6].addPlant(new Walnut(6, 3));
+        grid[3][8].addZombie(new ConeHead(8, 3));
+        grid[3][8].addZombie(new ConeHead(8, 3));
+        grid[3][8].addZombie(new ConeHead(8, 3));
 
         collManager = new CollisionManager();
     }
@@ -101,8 +104,17 @@ public class GamePanel extends JPanel implements Runnable{
             for(int c = 0; c < grid[r].length; c++){
                 grid[r][c].update();
                 if(grid[r][c].zombieMoved()){
-                    System.out.println("hot");
-                    grid[r][c - 1].addZombie(grid[r][c].removeZombie());
+                    Iterator<Zombie> iter = grid[r][c].getZombies().iterator();
+
+                    while(iter.hasNext()){
+                        Zombie z = iter.next();
+
+                        if(z.hasMovedNextTile()){
+                            grid[r][c - 1].addZombie(z);
+                            iter.remove();
+                            z.movedNextTile(false);
+                        }
+                    }
                 }
             }
         }
@@ -113,15 +125,6 @@ public class GamePanel extends JPanel implements Runnable{
         for(int r = 0; r < grid.length; r++){
             for(int c = 0; c < grid[r].length; c++){
                 grid[r][c].draw(g);
-            }
-        }
-        for(int r = 0; r < grid.length; r++){
-            for(int c = 0; c < grid[r].length; c++){
-                if(grid[r][c].hasZombie()){
-                    for(Zombie z : grid[r][c].getZombies()){
-                        z.draw(g);
-                    }
-                }
             }
         }
     }
