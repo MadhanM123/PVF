@@ -29,7 +29,7 @@ public class Repeater extends Plant{
     }
 
     private void shoot(){
-
+        
     }
 
     public void update(State state){

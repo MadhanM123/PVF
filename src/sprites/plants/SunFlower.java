@@ -15,8 +15,8 @@ public class SunFlower extends Plant {
 
     public static final int COST = 10;
 
-    private static final int HEIGHT = 140;
-    private static final int WIDTH = 105;
+    private static final int HEIGHT = 70;
+    private static final int WIDTH = 70;
 
     private static final Image idle1Img =  new ImageIcon("resources/sprites/plants/sunflower/sf.idle1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image idle2Img =  new ImageIcon("resources/sprites/plants/sunflower/sf.idle2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
@@ -77,7 +77,7 @@ public class SunFlower extends Plant {
     }
 
     public void draw(Graphics g){
-        g.drawImage(currentImg, -10, 0, null);
+        g.drawImage(currentImg, 10, 10, null);
     }
 
     @Override
