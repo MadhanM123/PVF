@@ -8,6 +8,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import sprites.plants.Walnut;
 import sprites.zombies.ConeHead;
+import sprites.zombies.FulkZombie;
+import sprites.zombies.KingKwong;
 import sprites.zombies.Zombie;
 
 public class GamePanel extends JPanel implements Runnable{
@@ -49,9 +51,9 @@ public class GamePanel extends JPanel implements Runnable{
         setupGrid();
 
         grid[3][6].addPlant(new Walnut(6, 3));
-        grid[3][8].addZombie(new ConeHead(8, 3));
-        grid[3][8].addZombie(new ConeHead(8, 3));
-        grid[3][8].addZombie(new ConeHead(8, 3));
+        grid[3][7].addZombie(new ConeHead(7, 3));
+        grid[3][6].addZombie(new FulkZombie(6, 3));
+        grid[3][8].addZombie(new KingKwong(8, 3));
 
         collManager = new CollisionManager();
     }
