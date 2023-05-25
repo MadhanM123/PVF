@@ -23,6 +23,7 @@ public class FulkZombie extends Zombie{
     private static final int OFFSET = -10;
 
     private static final int ACTION_RATE = 5;
+    private static final int DEATH_RATE = 10;
 
     private static final Image walk1Img = new ImageIcon("resources/sprites/zombies/zombie/walk1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image walk2Img = new ImageIcon("resources/sprites/zombies/zombie/walk3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
@@ -31,6 +32,9 @@ public class FulkZombie extends Zombie{
     private static final Image action1Img = new ImageIcon("resources/sprites/zombies/zombie/eat1.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image action2Img = new ImageIcon("resources/sprites/zombies/zombie/eat2.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image action3Img = new ImageIcon("resources/sprites/zombies/zombie/eat3.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
+
+    private static final Image death1Img = new ImageIcon("resources/sprites/zombies/zombie/die1.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
+    private static final Image death2Img = new ImageIcon("resources/sprites/zombies/zombie/die2.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
 
 
     public FulkZombie(int gridX, int gridY){
@@ -85,6 +89,24 @@ public class FulkZombie extends Zombie{
                     setCurrentImg(action1Img);
                 }
                 zeroActionCounter();
+            }
+        }
+        else if(state == State.DEATH){
+            if(comparePrevState(state)){
+                zeroDeathCounter();
+                setCurrentImg(death1Img);
+            }
+
+            tickDeathCounter();
+            if(getDeathCounter() > DEATH_RATE){
+                if(getCurrentImg() == death1Img){
+                    setCurrentImg(death2Img);
+                }
+                else if(getCurrentImg() == death2Img){
+                    setCurrentImg(null);
+                    setDoneDeath(false);
+                }
+                zeroDeathCounter();
             }
         }
     }

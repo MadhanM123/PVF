@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
+import java.util.Iterator;
 import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -121,46 +122,90 @@ public class Tile extends JComponent implements MouseListener{
     }
 
     public void update(){
-        if(plant != null && !zombies.isEmpty() && !plant.isDead()){
-            for(Zombie z: zombies){
-                if(!z.isDead()){
-                    plant.update(State.ACTION);
-                    plant.reduceHealth(z.getDamage());
+        if(plant != null && !zombies.isEmpty()){
+            if(plant.isDead()){
+                plant.update(State.DEATH);
+                deadSet.add(plant);
+                plant = null;
 
-                    z.update(State.ACTION);
-                    z.reduceHealth(plant.getDamage());
-                }
-                else{
-                    z.update(State.DEATH);
-                    deadSet.add(z);
-                    zombies.poll();
+                int i = 0;
+                int prevX = zombies.peek().getRealScreenX();
+                boolean first = true;
+                Iterator<Zombie> iter = zombies.iterator();
+
+                while(iter.hasNext()){
+                    Zombie z = iter.next();
+                    if(!z.isDead()){
+                        if(z.getRealScreenX() - prevX < GamePanel.ZOMBIE_RANGE && !first){
+                            i += 20;
+                            z.setIntersect(i);
+                            prevX = z.getRealScreenX();
+                        }
+                        z.update(State.IDLE);
+                        first = false;
+                    }
+                    else{
+                        z.update(State.DEATH);
+                        deadSet.add(z);
+                        iter.remove();
+                    }
                 }
             }
-        }
-        else if(plant != null && !zombies.isEmpty()){
-            plant.update(State.DEATH);
-            deadSet.add(plant);
-            plant = null;
-            
-            int intersect = 0;
-            for(Zombie z : zombies){
-                if(z.isDead()){
-                    z.update(State.DEATH);
-                    deadSet.add(z);
-                    zombies.poll();
+            else{
+                Iterator<Zombie> iter = zombies.iterator();
+                boolean alive = false;
+                while(iter.hasNext()){
+                    Zombie z = iter.next();
+                    if(!z.isDead()){
+                        plant.reduceHealth(z.getDamage());
+                        z.update(State.ACTION);
+                        z.reduceHealth(plant.getDamage());
+                        alive = true;
+                    }
+                    else{
+                        z.update(State.DEATH);
+                        deadSet.add(z);
+                        iter.remove();
+                    }
                 }
-                z.setIntersect(intersect);
-                z.update(State.IDLE);
-                intersect += 20;
+
+                if(alive && plant instanceof SunFlower){
+                    plant.update(State.IDLE);
+                }
+                else if(alive){
+                    plant.update(State.ACTION);
+                }
             }
         }
         else if(plant != null){
             plant.update(State.IDLE);
         }
         else if(!zombies.isEmpty()){
-            for(Zombie z : zombies){
-                z.update(State.IDLE);
-                setZombieMoved(z.hasMovedNextTile());
+            Iterator<Zombie> iter = zombies.iterator();
+            while(iter.hasNext()){
+                Zombie z = iter.next();
+                if(!z.isDead()){
+                    z.update(State.IDLE);
+                    setZombieMoved(z.hasMovedNextTile());
+                }
+                else{
+                    z.update(State.DEATH);
+                    deadSet.add(z);
+                    iter.remove();
+                }
+            }
+        }
+
+        if(!deadSet.isEmpty()){
+            Iterator<Sprite> iter = deadSet.iterator();
+            while(iter.hasNext()){
+                Sprite s = iter.next();
+                if(!s.getDoneDeath()){
+                    s.update(State.DEATH);
+                }
+                else{
+                    iter.remove();
+                }
             }
         }
     }
@@ -171,6 +216,11 @@ public class Tile extends JComponent implements MouseListener{
         if(!zombies.isEmpty()){
             for(Zombie z : zombies){
                 z.draw(g);
+            }
+        }
+        if(!deadSet.isEmpty()){
+            for(Sprite s: deadSet){
+                s.draw(g);
             }
         }
     }

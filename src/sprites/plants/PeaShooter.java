@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 public class PeaShooter extends Plant{
     
     public static final int FULL_HEALTH = 2000;
-    public static final int DAMAGE = 0;
+    public static final int DAMAGE = 2000;
 
     public static final int COST = 10;
 
@@ -19,12 +19,15 @@ public class PeaShooter extends Plant{
 
     public static final int IDLE_RATE = 5;
 
-    private static final int ACTION_RATE = 0;
+    private static final int ACTION_RATE = 10;
+    private static final int DEATH_RATE = 10;
 
     private static final Image idle1Img = new ImageIcon("resources/sprites/plants/peashooter/ps.idle1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image idle2Img = new ImageIcon("resources/sprites/plants/peashooter/ps.idle2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 
     private static final Image shootImg = new ImageIcon("resources/sprites/plants/peashooter/ps.shoot.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+
+    private static final Image deathImg = idle1Img;
 
     public PeaShooter(int gridX, int gridY){
         super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE);
@@ -68,6 +71,21 @@ public class PeaShooter extends Plant{
                     setCurrentImg(shootImg);
                 }
                 zeroActionCounter();
+            }
+        }
+        else if(state == State.DEATH){
+            if(comparePrevState(state)){
+                zeroDeathCounter();
+                setCurrentImg(deathImg);
+            }
+
+            tickDeathCounter();
+            if(getDeathCounter() > DEATH_RATE){
+                if(getCurrentImg() == deathImg){
+                    setCurrentImg(null);
+                    setDoneDeath(true);
+                }
+                zeroDeathCounter();
             }
         }
     }

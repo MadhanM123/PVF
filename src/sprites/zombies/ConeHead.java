@@ -23,6 +23,7 @@ public class ConeHead extends Zombie{
     private static final int OFFSET = -10;
 
     private static final int ACTION_RATE = 5;
+    private static final int DEATH_RATE = 10;
 
     private static final Image walk1Img = new ImageIcon("resources/sprites/zombies/conehead/walk1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image walk2Img = new ImageIcon("resources/sprites/zombies/conehead/walk3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
@@ -31,6 +32,9 @@ public class ConeHead extends Zombie{
     private static final Image action1Img = new ImageIcon("resources/sprites/zombies/conehead/eat1.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image action2Img = new ImageIcon("resources/sprites/zombies/conehead/eat2.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image action3Img = new ImageIcon("resources/sprites/zombies/conehead/eat3.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
+
+    private static final Image death1Img = new ImageIcon("resources/sprites/zombies/conehead/die1.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
+    private static final Image death2Img = new ImageIcon("resources/sprites/zombies/conehead/die2.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
 
     public ConeHead(int gridX, int gridY){
         super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE);
@@ -84,6 +88,24 @@ public class ConeHead extends Zombie{
                     setCurrentImg(action1Img);
                 }
                 zeroActionCounter();
+            }
+        }
+        else if(state == State.DEATH){
+            if(comparePrevState(state)){
+                zeroDeathCounter();
+                setCurrentImg(death1Img);
+            }
+
+            tickDeathCounter();
+            if(getDeathCounter() > DEATH_RATE){
+                if(getCurrentImg() == death1Img){
+                    setCurrentImg(death2Img);
+                }
+                else if(getCurrentImg() == death2Img){
+                    setCurrentImg(null);
+                    setDoneDeath(true);
+                }
+                zeroDeathCounter();
             }
         }
     }
