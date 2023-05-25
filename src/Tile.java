@@ -274,7 +274,7 @@ public class Tile extends JComponent implements MouseListener{
     }
 
     public void setZombieMoved(boolean moved){
-        this.moved = moved;
+        if(this.moved == false) this.moved = moved;
     }
 
     public boolean zombieMoved(){

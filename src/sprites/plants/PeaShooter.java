@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 public class PeaShooter extends Plant{
     
     public static final int FULL_HEALTH = 2000;
-    public static final int DAMAGE = 2000;
+    public static final int DAMAGE = 10;
 
     public static final int COST = 10;
 
@@ -19,7 +19,7 @@ public class PeaShooter extends Plant{
 
     public static final int IDLE_RATE = 5;
 
-    private static final int ACTION_RATE = 10;
+    private static final int ACTION_RATE = 5;
     private static final int DEATH_RATE = 10;
 
     private static final Image idle1Img = new ImageIcon("resources/sprites/plants/peashooter/ps.idle1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);

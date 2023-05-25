@@ -52,7 +52,7 @@ public class GamePanel extends JPanel implements Runnable{
 
         grid[3][6].addPlant(new Walnut(6, 3));
         grid[3][8].addZombie(new FulkZombie(8, 3));
-        // grid[3][8].addZombie(new KingKwong(8, 3));
+        grid[3][8].addZombie(new KingKwong(8, 3));
     }
 
     public void setupGrid(){

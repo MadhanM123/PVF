@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 
 public class KingKwong extends Zombie{
 
-    public static final int FULL_HEALTH = 100;
+    public static final int FULL_HEALTH = 2000;
     public static final int DAMAGE = 50;
 
     private static final int HEIGHT = 110;
@@ -19,7 +19,7 @@ public class KingKwong extends Zombie{
     public static final int START_X = 900;
     public static final int START_Y = 0;
 
-    private static final int WALK_RATE = 4;
+    private static final int WALK_RATE = 10;
     private static final int TILE_THRESHOLD = 60;
     private static final int OFFSET = -10;  
 

@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 public class FulkZombie extends Zombie{
 
-    public static final int FULL_HEALTH = 10;
+    public static final int FULL_HEALTH = 1000;
     public static final int DAMAGE = 10;
 
     private static final int HEIGHT = 110;
@@ -22,7 +22,7 @@ public class FulkZombie extends Zombie{
     private static final int TILE_THRESHOLD = 60;
     private static final int OFFSET = -10;
 
-    private static final int ACTION_RATE = 5;
+    private static final int ACTION_RATE = 10;
     private static final int DEATH_RATE = 10;
 
     private static final Image walk1Img = new ImageIcon("resources/sprites/zombies/zombie/walk1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
