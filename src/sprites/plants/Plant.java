@@ -1,8 +1,6 @@
 package sprites.plants;
-import sprites.*;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import sprites.Sprite;
 
 public abstract class Plant extends Sprite{

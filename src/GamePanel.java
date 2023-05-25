@@ -8,9 +8,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import sprites.plants.Walnut;
 import sprites.zombies.ConeHead;
+import sprites.zombies.FulkZombie;
+import sprites.zombies.KingKwong;
 import sprites.zombies.Zombie;
 
 public class GamePanel extends JPanel implements Runnable{
+
     private final int screenCol = 9;
     private final int screenRow = 5;
 
@@ -20,8 +23,6 @@ public class GamePanel extends JPanel implements Runnable{
     private final int FPS = 30;
 
     private Tile[][] grid;
-    
-    private CollisionManager collManager;
 
     private InfoPanel infoPanel;
     private PlantPanel plantPanel;
@@ -29,6 +30,8 @@ public class GamePanel extends JPanel implements Runnable{
     private int health;
     private int sun;
     private int wave;
+
+    public static final int ZOMBIE_RANGE = 10;
 
     public GamePanel(PlantPanel pp, InfoPanel ip) throws IOException{
         this.setPreferredSize(new Dimension(realScreenWidth, realScreenLength));
@@ -42,18 +45,14 @@ public class GamePanel extends JPanel implements Runnable{
         this.wave = 0;
         
         grid = new Tile[screenRow][screenCol];
-        collManager = new CollisionManager();
         this.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
         this.setLayout(new GridLayout(screenRow, screenCol, 0, 0));
 
         setupGrid();
 
         grid[3][6].addPlant(new Walnut(6, 3));
-        grid[3][8].addZombie(new ConeHead(8, 3));
-        grid[3][8].addZombie(new ConeHead(8, 3));
-        grid[3][8].addZombie(new ConeHead(8, 3));
-
-        collManager = new CollisionManager();
+        grid[3][8].addZombie(new FulkZombie(8, 3));
+        // grid[3][8].addZombie(new KingKwong(8, 3));
     }
 
     public void setupGrid(){

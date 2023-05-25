@@ -5,20 +5,21 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class SunFlower extends Plant {
-    public static final int FULL_HEALTH = 0;
+    public static final int FULL_HEALTH = 1000;
     public static final int DAMAGE = 0;
 
     public static final int COST = 10;
 
-    private static final int HEIGHT = 130;
-    private static final int WIDTH = 95;
+    private static final int HEIGHT = 90;
+    private static final int WIDTH = 60;
 
-    private static final int VERT_OFFSET = 0;
-    private static final int HORIZ_OFFSET = -10;
+    private static final int VERT_OFFSET = 20;
+    private static final int HORIZ_OFFSET = -2;
 
-    public static final int IDLE_RATE = 5;
+    private static final int IDLE_RATE = 5;
 
-    public static final int ACTION_RATE = 7;
+    private static final int ACTION_RATE = 7;
+    private static final int DEATH_RATE = 10;
 
     private static final Image idle1Img =  new ImageIcon("resources/sprites/plants/sunflower/sf.idle1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image idle2Img =  new ImageIcon("resources/sprites/plants/sunflower/sf.idle2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
@@ -28,6 +29,8 @@ public class SunFlower extends Plant {
     private static final Image sunProduce1Img =  new ImageIcon("resources/sprites/plants/sunflower/sf.produce1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image sunProduce2Img =  new ImageIcon("resources/sprites/plants/sunflower/sf.produce2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image sunProduce3Img = idle1Img;
+
+    private static final Image deathImg = idle3Img;
 
     private static final Image sunImg =  new ImageIcon("resources/sprites/plants/sunflower/sf.sun.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 
@@ -83,6 +86,21 @@ public class SunFlower extends Plant {
                     setCurrentImg(sunProduce1Img);
                 }
                 zeroActionCounter();
+            }
+        }
+        else if(state == State.DEATH){
+            if(comparePrevState(state)){
+                zeroDeathCounter();
+                setCurrentImg(deathImg);
+            }
+
+            tickDeathCounter();
+            if(getDeathCounter() > DEATH_RATE){
+                if(getCurrentImg() == deathImg){
+                    setCurrentImg(null);
+                    setDoneDeath(true);
+                }
+                zeroDeathCounter();
             }
         }
     }

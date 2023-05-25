@@ -12,6 +12,8 @@ public class MusicPlayer {
    
     public MusicPlayer(){
         musicPaths[0] = new File("resources/sound/zombie.wav");
+        musicPaths[1] = new File("resources/sound/pvz.wav");
+        musicPaths[2] = new File("resources/sound/bite.wav");
     }
 
     public void setFile(int i){

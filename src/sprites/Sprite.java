@@ -19,6 +19,8 @@ public abstract class Sprite{
         DEATH
     };
 
+    private boolean doneDeath;
+
     private State prev;
 
     private Image currentImg;
@@ -32,6 +34,7 @@ public abstract class Sprite{
         this.realScreenY = screenY;
         this.health = health;
         this.damage = damage;
+        this.doneDeath = false;
     }
 
     public abstract void update(State state);
@@ -102,5 +105,13 @@ public abstract class Sprite{
 
     public boolean isDead(){
         return health <= 0;
+    }
+
+    public boolean getDoneDeath(){
+        return doneDeath;
+    }
+
+    public void setDoneDeath(boolean d){
+        doneDeath = d;
     }
 }
