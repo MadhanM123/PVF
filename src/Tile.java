@@ -181,22 +181,35 @@ public class Tile extends JComponent implements MouseListener{
                     }
                 }
 
-                if(alive && plant instanceof SunFlower){
-                    plant.update(State.IDLE);
-                }
                 if(alive){
-                    plant.update(State.ACTION);
+                    if(plant instanceof SunFlower){
+                        SunFlower sf = (SunFlower) plant;
+                        if(sf.produceReady()){
+                            sf.update(State.ACTION);
+                        }
+                        else{
+                            sf.update(State.IDLE);
+                        }
+                    }
+                    else{
+                        plant.update(State.ACTION);
+                    }
                 }
             }
         }
         else if(plant != null){
-            if(plant instanceof PeaShooter || plant instanceof Repeater){
-                plant.update(State.ACTION);
+            if(plant instanceof SunFlower){
+                SunFlower sf = (SunFlower) plant;
+                if(sf.produceReady()){
+                    sf.update(State.ACTION);
+                }
+                else{
+                    sf.update(State.IDLE);
+                }
             }
             else{
-                plant.update(State.IDLE);
+                plant.update(State.IDLE); 
             }
-            
         }
         else if(!zombies.isEmpty()){
             Iterator<Zombie> iter = zombies.iterator();

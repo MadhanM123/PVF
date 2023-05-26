@@ -36,19 +36,19 @@ public class Walnut extends Plant{
         }
         else if(state == State.ACTION){
             if(comparePrevState(state)){
-                zeroActionCounter();
+                zeroActionAniCounter();
                 setCurrentImg(hurt1Img);
             }
 
-            tickActionCounter();
-            if(getActionCounter() > ACTION_RATE){
+            tickActionAniCounter();
+            if(getActionAniCounter() > ACTION_RATE){
                 if(getCurrentImg() == hurt1Img){
                     setCurrentImg(hurt2Img);
                 }
                 else{
                     setCurrentImg(hurt1Img);
                 }
-                zeroActionCounter();
+                zeroActionAniCounter();
             }
         }
         else if(state == State.DEATH){

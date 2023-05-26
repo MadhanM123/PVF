@@ -73,12 +73,12 @@ public class FulkZombie extends Zombie{
         }
         else if(state == State.ACTION){
             if(comparePrevState(state)){
-                zeroActionCounter();
+                zeroActionAniCounter();
                 setCurrentImg(action1Img);
             }
 
-            tickActionCounter();
-            if(getActionCounter() > ACTION_RATE){
+            tickActionAniCounter();
+            if(getActionAniCounter() > ACTION_RATE){
                 if(getCurrentImg() == action1Img){
                     setCurrentImg(action2Img);
                 }
@@ -88,7 +88,7 @@ public class FulkZombie extends Zombie{
                 else if(getCurrentImg() == action3Img){
                     setCurrentImg(action1Img);
                 }
-                zeroActionCounter();
+                zeroActionAniCounter();
             }
         }
         else if(state == State.DEATH){

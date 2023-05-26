@@ -19,7 +19,7 @@ public class Projectile extends Sprite {
     private static final int VERT_OFFSET = 40;
     private static final int HORIZ_OFFSET = 60;
 
-    private static final int OFFSET = 1;
+    private static final int OFFSET = 10;
 
     private static final int MOVE_RATE = 1;
     private static final int ACTION_RATE = 5;

@@ -19,7 +19,7 @@ public class PeaShooter extends Plant{
 
     public static final int IDLE_RATE = 5;
 
-    private static final int ACTION_RATE = 5;
+    private static final int ACTION_RATE = 9;
     private static final int DEATH_RATE = 10;
 
     private static final Image idle1Img = new ImageIcon("resources/sprites/plants/peashooter/ps.idle1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
@@ -58,19 +58,19 @@ public class PeaShooter extends Plant{
         }
         else if(state == State.ACTION){
             if(comparePrevState(state)){
-                zeroActionCounter();
+                zeroActionAniCounter();
                 setCurrentImg(shootImg);
             }
 
-            tickActionCounter();
-            if(getActionCounter() > ACTION_RATE){
+            tickActionAniCounter();
+            if(getActionAniCounter() > ACTION_RATE){
                 if(getCurrentImg() == shootImg){
                     setCurrentImg(idle2Img);
                 }
                 else{
                     setCurrentImg(shootImg);
                 }
-                zeroActionCounter();
+                zeroActionAniCounter();
             }
         }
         else if(state == State.DEATH){

@@ -14,8 +14,9 @@ public abstract class Sprite{
     private int damage;
 
     private int idleCounter;
-    private int actionCounter;
     private int deathCounter;
+
+    private int actionAniCounter;
     private int walkCounter;
 
     public enum State{
@@ -40,7 +41,7 @@ public abstract class Sprite{
         this.health = health;
         this.damage = damage;
         this.doneDeath = false;
-        this.actionCounter = 0;
+        this.actionAniCounter = 0;
         this.idleCounter = 0;
         this.deathCounter = 0;
         this.walkCounter = 0;
@@ -148,16 +149,16 @@ public abstract class Sprite{
         walkCounter = 0;
     }
 
-    public void tickActionCounter(){
-        actionCounter++;
+    public void tickActionAniCounter(){
+        actionAniCounter++;
     }
 
-    public int getActionCounter(){
-        return actionCounter;
+    public int getActionAniCounter(){
+        return actionAniCounter;
     }
 
-    public void zeroActionCounter(){
-        actionCounter = 0;
+    public void zeroActionAniCounter(){
+        actionAniCounter = 0;
     }
 
     public void tickDeathCounter(){

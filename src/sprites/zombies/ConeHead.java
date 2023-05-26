@@ -18,7 +18,7 @@ public class ConeHead extends Zombie{
     public static final int START_X = 900;
     public static final int START_Y = 0;
 
-    private static final int WALK_RATE = 4;
+    private static final int WALK_RATE = 3;
     private static final int TILE_THRESHOLD = 60;
     private static final int OFFSET = -10;
 
@@ -72,12 +72,12 @@ public class ConeHead extends Zombie{
         }
         else if(state == State.ACTION){
             if(comparePrevState(state)){
-                zeroActionCounter();
+                zeroActionAniCounter();
                 setCurrentImg(action1Img);
             }
 
-            tickActionCounter();
-            if(getActionCounter() > ACTION_RATE){
+            tickActionAniCounter();
+            if(getActionAniCounter() > ACTION_RATE){
                 if(getCurrentImg() == action1Img){
                     setCurrentImg(action2Img);
                 }
@@ -87,7 +87,7 @@ public class ConeHead extends Zombie{
                 else if(getCurrentImg() == action3Img){
                     setCurrentImg(action1Img);
                 }
-                zeroActionCounter();
+                zeroActionAniCounter();
             }
         }
         else if(state == State.DEATH){

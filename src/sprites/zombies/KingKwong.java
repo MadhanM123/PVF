@@ -19,11 +19,11 @@ public class KingKwong extends Zombie{
     public static final int START_X = 900;
     public static final int START_Y = 0;
 
-    private static final int WALK_RATE = 15;
+    private static final int WALK_RATE = 5;
     private static final int TILE_THRESHOLD = 60;
-    private static final int OFFSET = -20;  
+    private static final int OFFSET = -13;  
 
-    private static final int ACTION_RATE = 5;
+    private static final int ACTION_RATE = 8;
     private static final int DEATH_RATE = 10;
     
     private static final Image walk1Img = new ImageIcon("resources/sprites/zombies/kingKwong/walk1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
@@ -78,12 +78,12 @@ public class KingKwong extends Zombie{
         }
         else if(state == State.ACTION){
             if(comparePrevState(state)){
-                zeroActionCounter();
+                zeroActionAniCounter();
                 setCurrentImg(action1Img);
             }
 
-            tickActionCounter();
-            if(getActionCounter() > ACTION_RATE){
+            tickActionAniCounter();
+            if(getActionAniCounter() > ACTION_RATE){
                 if(getCurrentImg() == action1Img){
                     setCurrentImg(action2Img);
                 }
@@ -96,7 +96,7 @@ public class KingKwong extends Zombie{
                 else if(getCurrentImg() == action4Img){
                     setCurrentImg(action1Img);
                 }
-                zeroActionCounter();
+                zeroActionAniCounter();
             }
         }
         else if(state == State.DEATH){
