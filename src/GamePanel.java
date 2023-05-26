@@ -7,6 +7,7 @@ import java.util.Iterator;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import sprites.plants.Walnut;
+import sprites.projectile.Projectile;
 import sprites.zombies.ConeHead;
 import sprites.zombies.FulkZombie;
 import sprites.zombies.KingKwong;
@@ -51,7 +52,9 @@ public class GamePanel extends JPanel implements Runnable{
         setupGrid();
 
         grid[3][6].addPlant(new Walnut(6, 3));
-        grid[3][8].addZombie(new FulkZombie(8, 3));
+        grid[3][1].addProjectile(new Projectile(1, 3));
+        grid[2][8].addZombie(new ConeHead(8, 2));
+        // grid[3][8].addZombie(new FulkZombie(8, 3));
         grid[3][8].addZombie(new KingKwong(8, 3));
     }
 
@@ -72,7 +75,7 @@ public class GamePanel extends JPanel implements Runnable{
 
         while(true){
 
-            // System.out.println(System.currentTimeMillis());
+            //System.out.println(System.currentTimeMillis());
 
             update();
 
@@ -112,6 +115,19 @@ public class GamePanel extends JPanel implements Runnable{
                             grid[r][c - 1].addZombie(z);
                             iter.remove();
                             z.movedNextTile(false);
+                        }
+                    }
+                }
+                if(grid[r][c].projectileMoved()){
+                    Iterator<Projectile> iter = grid[r][c].getProjectiles().iterator();
+
+                    while(iter.hasNext()){
+                        Projectile p = iter.next();
+
+                        if(p.hasMovedNextTile()){
+                            grid[r][c + 1].addProjectile(p);
+                            iter.remove();
+                            p.movedNextTile(false);
                         }
                     }
                 }

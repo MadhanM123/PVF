@@ -15,11 +15,13 @@ import javax.swing.JComponent;
 import sprites.Sprite;
 import sprites.Sprite.State;
 import sprites.plants.*;
+import sprites.projectile.Projectile;
 import sprites.zombies.*;
 
 public class Tile extends JComponent implements MouseListener{
     private Queue<Zombie> zombies;
     private Plant plant;
+    private Queue<Projectile> projectiles;
     private Set<Sprite> deadSet;
 
     private int gridX;
@@ -28,7 +30,8 @@ public class Tile extends JComponent implements MouseListener{
     private int screenX;
     private int screenY;
 
-    private boolean moved;
+    private boolean zombieMoved;
+    private boolean projectileMoved;
 
     private PlantPanel.PlantSelector plantSelector;
 
@@ -50,12 +53,13 @@ public class Tile extends JComponent implements MouseListener{
         this.gridX = gridX;
         this.gridY = gridY;
         this.setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
-        this.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+        this.setBorder(BorderFactory.createLineBorder(Color.GREEN));
         this.addMouseListener(this);
         this.plantSelector = ps;
-        this.moved = false;
+        this.zombieMoved = false;
         this.screenX = gridX * TILE_SIZE;
         this.screenY = gridY * TILE_SIZE;
+        this.projectiles = new LinkedList<>();
     }
 
     /**
@@ -82,6 +86,10 @@ public class Tile extends JComponent implements MouseListener{
         return zombies;
     }
 
+    public Queue<Projectile> getProjectiles(){
+        return projectiles;
+    }
+
     /**
      * gets the plant on the tile
      * @return the plant on the tile
@@ -104,6 +112,10 @@ public class Tile extends JComponent implements MouseListener{
      */
     public void addPlant(Plant p){
         plant = p;
+    }
+
+    public void addProjectile(Projectile p){
+        projectiles.add(p);
     }
 
     /**
@@ -172,13 +184,19 @@ public class Tile extends JComponent implements MouseListener{
                 if(alive && plant instanceof SunFlower){
                     plant.update(State.IDLE);
                 }
-                else if(alive){
+                if(alive){
                     plant.update(State.ACTION);
                 }
             }
         }
         else if(plant != null){
-            plant.update(State.IDLE);
+            if(plant instanceof PeaShooter || plant instanceof Repeater){
+                plant.update(State.ACTION);
+            }
+            else{
+                plant.update(State.IDLE);
+            }
+            
         }
         else if(!zombies.isEmpty()){
             Iterator<Zombie> iter = zombies.iterator();
@@ -208,6 +226,15 @@ public class Tile extends JComponent implements MouseListener{
                 }
             }
         }
+
+        if(!projectiles.isEmpty()){
+            for(Projectile p : projectiles){
+                if(!p.isDead()){
+                    p.update(State.IDLE);
+                    setProjectileMoved(p.hasMovedNextTile());
+                }
+            }
+        }
     }
 
     public void draw(Graphics g){
@@ -221,6 +248,11 @@ public class Tile extends JComponent implements MouseListener{
         if(!deadSet.isEmpty()){
             for(Sprite s: deadSet){
                 s.draw(g);
+            }
+        }
+        if(!projectiles.isEmpty()){
+            for(Projectile p : projectiles){
+                p.draw(g);
             }
         }
     }
@@ -274,14 +306,22 @@ public class Tile extends JComponent implements MouseListener{
     }
 
     public void setZombieMoved(boolean moved){
-        if(this.moved == false) this.moved = moved;
+        if(this.zombieMoved == false) this.zombieMoved = moved;
     }
 
     public boolean zombieMoved(){
-        return moved;
+        return zombieMoved;
     }
 
     public boolean colliding(){
         return plant != null && zombies.peek() != null;
+    }
+
+    public boolean projectileMoved(){
+        return projectileMoved;
+    }
+
+    public void setProjectileMoved(boolean moved){
+        if(this.projectileMoved == false) this.projectileMoved = moved;
     }
 }

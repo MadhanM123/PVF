@@ -22,42 +22,6 @@ public abstract class Plant extends Sprite{
     public abstract void update(State state);
 
     public abstract void draw(Graphics g);
-
-    public void tickIdleCounter(){
-        idleCounter++;
-    }
-
-    public int getIdleCounter(){
-        return idleCounter;
-    }
-
-    public void zeroIdleCounter(){
-        idleCounter = 0;
-    }
-
-    public void tickActionCounter(){
-        actionCounter++;
-    }
-
-    public int getActionCounter(){
-        return actionCounter;
-    }
-
-    public void zeroActionCounter(){
-        actionCounter = 0;
-    }
-
-    public void tickDeathCounter(){
-        deathCounter++;
-    }
-
-    public int getDeathCounter(){
-        return deathCounter;
-    }
-
-    public void zeroDeathCounter(){
-        deathCounter = 0;
-    }
     
     public abstract boolean canDefend();
 }

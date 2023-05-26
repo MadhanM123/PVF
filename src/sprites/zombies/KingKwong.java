@@ -13,15 +13,15 @@ public class KingKwong extends Zombie{
     private static final int HEIGHT = 110;
     private static final int WIDTH = 60;
 
-    private static final int VERT_OFFSET = 3;
-    private static final int HORIZ_OFFSET = 4;
+    private static final int VERT_OFFSET = 0;
+    private static final int HORIZ_OFFSET = 10;
 
     public static final int START_X = 900;
     public static final int START_Y = 0;
 
-    private static final int WALK_RATE = 10;
+    private static final int WALK_RATE = 15;
     private static final int TILE_THRESHOLD = 60;
-    private static final int OFFSET = -10;  
+    private static final int OFFSET = -20;  
 
     private static final int ACTION_RATE = 5;
     private static final int DEATH_RATE = 10;
@@ -30,10 +30,10 @@ public class KingKwong extends Zombie{
     private static final Image walk2Img = new ImageIcon("resources/sprites/zombies/kingKwong/walk3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image walk3Img = new ImageIcon("resources/sprites/zombies/kingKwong/walk2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 
-    private static final Image action1Img = new ImageIcon("resources/sprites/zombies/kingKwong/attack1.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
-    private static final Image action2Img = new ImageIcon("resources/sprites/zombies/kingKwong/attack2.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
-    private static final Image action3Img = new ImageIcon("resources/sprites/zombies/kingKwong/attack3.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
-    private static final Image action4Img = new ImageIcon("resources/sprites/zombies/kingKwong/attack4.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
+    private static final Image action1Img = new ImageIcon("resources/sprites/zombies/kingKwong/attack1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+    private static final Image action2Img = new ImageIcon("resources/sprites/zombies/kingKwong/attack2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+    private static final Image action3Img = new ImageIcon("resources/sprites/zombies/kingKwong/attack3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+    private static final Image action4Img = new ImageIcon("resources/sprites/zombies/kingKwong/attack4.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
 
     private static final Image death1Img = walk1Img;
     private static final Image death2Img = walk2Img;
