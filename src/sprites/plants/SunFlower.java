@@ -10,11 +10,11 @@ public class SunFlower extends Plant {
 
     public static final int COST = 10;
 
-    private static final int HEIGHT = 90;
-    private static final int WIDTH = 60;
+    private static final int HEIGHT = 130;
+    private static final int WIDTH = 85;
 
-    private static final int VERT_OFFSET = 20;
-    private static final int HORIZ_OFFSET = -2;
+    private static final int VERT_OFFSET = -15;
+    private static final int HORIZ_OFFSET = 0;
 
     private static final int IDLE_RATE = 5;
 
@@ -94,19 +94,19 @@ public class SunFlower extends Plant {
         else if(state == State.ACTION){
             if(comparePrevState(state)){
                 zeroActionAniCounter();
-                setCurrentImg(sunProduce1Img);
+                setCurrentImg(sunProduce2Img);
             }
             
             tickActionAniCounter();
             if(getActionAniCounter() > ACTION_RATE){
-                if(getCurrentImg() == sunProduce1Img){
-                    setCurrentImg(sunProduce2Img);
+                if(getCurrentImg() == sunProduce2Img){
+                    setCurrentImg(sunProduce1Img);
                 }
-                else if(getCurrentImg() == sunProduce2Img){
+                else if(getCurrentImg() == sunProduce1Img){
                     setCurrentImg(sunProduce3Img);
                 }
                 else{
-                    setCurrentImg(sunProduce1Img);
+                    setCurrentImg(sunProduce2Img);
                     zeroProduceCounter();
                     holdingTime++;
                 }
