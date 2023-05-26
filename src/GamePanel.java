@@ -1,11 +1,14 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.io.IOException;
 import java.util.Iterator;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.plaf.TextUI;
+
 import sprites.plants.Walnut;
 import sprites.zombies.ConeHead;
 import sprites.zombies.FulkZombie;
@@ -50,9 +53,6 @@ public class GamePanel extends JPanel implements Runnable{
 
         setupGrid();
 
-        grid[3][6].addPlant(new Walnut(6, 3));
-        grid[3][8].addZombie(new FulkZombie(8, 3));
-        // grid[3][8].addZombie(new KingKwong(8, 3));
     }
 
     public void setupGrid(){
@@ -69,23 +69,27 @@ public class GamePanel extends JPanel implements Runnable{
     {
         double drawInterval = 1000000000 / FPS;
         double nextDrawTime = System.nanoTime() + drawInterval;
+        //double gameStartTime = System.currentTimeMillis()/1000;
+        int frames = 0;
 
         while(true){
 
-            // System.out.println(System.currentTimeMillis());
+            //double timePast = (System.currentTimeMillis()/1000) - gameStartTime;
+            //System.out.println(timePast);
+            //System.out.println("frames : " + frames);
+            update(frames);
 
-            update();
 
             repaint();
 
             try{
                 double remainTime = nextDrawTime - System.nanoTime();
                 remainTime /= 1000000;
+                frames++;
 
                 if(remainTime < 0){
                     remainTime = 0;
                 }
-
                 Thread.sleep((long) remainTime);
                 nextDrawTime += drawInterval;
             }
@@ -96,8 +100,8 @@ public class GamePanel extends JPanel implements Runnable{
 
     }
 
-    public void update(){
-        infoPanel.setWave(wave++);
+    public void update(int frame){
+        addZombieWave(frame);
         infoPanel.setSun(sun++);
         for(int r = 0; r < grid.length; r++){
             for(int c = 0; c < grid[r].length; c++){
@@ -118,6 +122,41 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
     }
+
+    void addZombieWave(int frame){
+        int col = 8, row = 0;   
+        if(frame % 300 == 0 ){
+            infoPanel.setWave(wave++);
+            for(int i = 0; i < frame/200; i++){
+                row = (int) (Math.random()*5);
+                if(wave <= 3){
+                    grid[row][col].addZombie(new FulkZombie(col, row));
+                }
+                else if(wave > 3 && wave <= 6){
+                    int prob = (int) (Math.random() * 3);
+                    System.out.println("prob = " + prob);
+                    if(prob < 2){
+                        grid[row][col].addZombie(new FulkZombie(col, row));
+                    }
+                    else{
+                        grid[row][col].addZombie(new ConeHead(col, row));
+                    }
+                }
+                else{
+                    int prob = (int) (Math.random() * 6);
+                    if(prob < 2){
+                        grid[row][col].addZombie(new FulkZombie(col, row));
+                    }
+                    else if(prob < 5){
+                        grid[row][col].addZombie(new ConeHead(col, row));
+                    }
+                    else{
+                        grid[row][col].addZombie(new KingKwong(col, row));
+                    }
+                }
+            }
+        }
+    }   
 
     public void paintComponent(Graphics g){
         super.paintComponent(g);

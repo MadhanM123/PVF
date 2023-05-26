@@ -18,7 +18,7 @@ public class SunFlower extends Plant {
 
     private static final int IDLE_RATE = 5;
 
-    private static final int ACTION_RATE = 7;
+    private static final int ACTION_RATE = 3;
     private static final int DEATH_RATE = 10;
 
     private static final Image idle1Img =  new ImageIcon("resources/sprites/plants/sunflower/sf.idle1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
