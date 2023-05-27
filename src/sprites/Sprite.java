@@ -12,12 +12,15 @@ public abstract class Sprite{
 
     private int health;
     private int damage;
+    private int attackRate;
 
     private int idleCounter;
     private int deathCounter;
 
     private int actionAniCounter;
     private int walkCounter;
+
+    private int attackCounter;
 
     public enum State{
         IDLE,
@@ -27,24 +30,29 @@ public abstract class Sprite{
 
     private boolean doneDeath;
 
+    private boolean doneAtk;
+
     private State prev;
 
     private Image currentImg;
 
     public static final int TILE_SIZE = 110;
 
-    public Sprite(int gridX, int gridY, int screenX, int screenY, int health, int damage){
+    public Sprite(int gridX, int gridY, int screenX, int screenY, int health, int damage, int attackRate){
         this.gridX = gridX;
         this.gridY = gridY;
         this.realScreenX = screenX;
         this.realScreenY = screenY;
         this.health = health;
         this.damage = damage;
+        this.attackRate = attackRate;
         this.doneDeath = false;
         this.actionAniCounter = 0;
         this.idleCounter = 0;
         this.deathCounter = 0;
         this.walkCounter = 0;
+        this.attackCounter = 0;
+        this.doneAtk = false;
     }
 
     public abstract void update(State state);
@@ -149,6 +157,18 @@ public abstract class Sprite{
         walkCounter = 0;
     }
 
+    public void tickAttackCounter(){
+        attackCounter++;
+    }
+
+    public int getAttackCounter(){
+        return attackCounter;
+    }
+
+    public void zeroAttackCounter(){
+        attackCounter = 0;
+    }
+
     public void tickActionAniCounter(){
         actionAniCounter++;
     }
@@ -171,5 +191,14 @@ public abstract class Sprite{
 
     public void zeroDeathCounter(){
         deathCounter = 0;
+    }
+
+    public boolean attackReady(){
+        attackCounter++;
+        return attackCounter > attackRate && !doneAtk;
+    }
+
+    public void setDoneAtk(boolean a){
+        this.doneAtk = a;
     }
 }

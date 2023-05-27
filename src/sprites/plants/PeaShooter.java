@@ -19,8 +19,10 @@ public class PeaShooter extends Plant{
 
     public static final int IDLE_RATE = 5;
 
-    private static final int ACTION_RATE = 9;
+    private static final int ACTION_RATE = 10;
     private static final int DEATH_RATE = 10;
+
+    private static final int ATTACK_RATE = 150;
 
     private static final Image idle1Img = new ImageIcon("resources/sprites/plants/peashooter/ps.idle1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image idle2Img = new ImageIcon("resources/sprites/plants/peashooter/ps.idle2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
@@ -30,12 +32,13 @@ public class PeaShooter extends Plant{
     private static final Image deathImg = idle1Img;
 
     public PeaShooter(int gridX, int gridY){
-        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE);
+        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE);
         setCurrentImg(idle1Img);
     }
 
-    private void shoot(){
-
+    public boolean shootReady(){
+        tickAttackCounter();
+        return getAttackCounter() > ATTACK_RATE;
     }
 
     public void update(State state){
@@ -69,6 +72,8 @@ public class PeaShooter extends Plant{
                 }
                 else{
                     setCurrentImg(shootImg);
+                    zeroAttackCounter();
+                    setShot(false);
                 }
                 zeroActionAniCounter();
             }
@@ -93,10 +98,4 @@ public class PeaShooter extends Plant{
     public void draw(Graphics g){
         g.drawImage(getCurrentImg(), getRealScreenX(), getRealScreenY(), null);
     }
-
-    @Override
-    public boolean canDefend()
-    {
-        return true;
-    } 
 }

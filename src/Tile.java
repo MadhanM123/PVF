@@ -32,6 +32,7 @@ public class Tile extends JComponent implements MouseListener{
 
     private boolean zombieMoved;
     private boolean projectileMoved;
+    private boolean shouldShoot;
 
     private PlantPanel.PlantSelector plantSelector;
 
@@ -57,6 +58,8 @@ public class Tile extends JComponent implements MouseListener{
         this.addMouseListener(this);
         this.plantSelector = ps;
         this.zombieMoved = false;
+        this.projectileMoved = false;
+        this.shouldShoot = false;
         this.screenX = gridX * TILE_SIZE;
         this.screenY = gridY * TILE_SIZE;
         this.projectiles = new LinkedList<>();
@@ -135,6 +138,7 @@ public class Tile extends JComponent implements MouseListener{
 
     public void update(){
         if(plant != null && !zombies.isEmpty()){
+            //System.out.println(projectiles.toString());
             if(plant.isDead()){
                 plant.update(State.DEATH);
                 deadSet.add(plant);
@@ -143,87 +147,131 @@ public class Tile extends JComponent implements MouseListener{
                 int i = 0;
                 int prevX = zombies.peek().getRealScreenX();
                 boolean first = true;
-                Iterator<Zombie> iter = zombies.iterator();
+                Iterator<Zombie> zombieIter = zombies.iterator();
 
-                while(iter.hasNext()){
-                    Zombie z = iter.next();
+                while(zombieIter.hasNext()){
+                    Zombie z = zombieIter.next();
                     if(!z.isDead()){
                         if(z.getRealScreenX() - prevX < GamePanel.ZOMBIE_RANGE && !first){
                             i += 20;
                             z.setIntersect(i);
                             prevX = z.getRealScreenX();
                         }
+
+                        if(!projectiles.isEmpty() && z.getRealScreenX() - projectiles.peek().getRealScreenX() < GamePanel.PROJECTILE_HITBOX){
+                            Projectile p = projectiles.poll();
+                            z.reduceHealth(p.getDamage());
+                            p.update(State.DEATH);
+                            deadSet.add(p);
+                        }
+
+                        z.setBattling(false);
                         z.update(State.IDLE);
                         first = false;
                     }
                     else{
                         z.update(State.DEATH);
                         deadSet.add(z);
-                        iter.remove();
+                        zombieIter.remove();
                     }
                 }
             }
             else{
-                Iterator<Zombie> iter = zombies.iterator();
-                boolean alive = false;
-                while(iter.hasNext()){
-                    Zombie z = iter.next();
+                Iterator<Zombie> zombieIter = zombies.iterator();
+                boolean zombieAttacking = false;
+
+                while(zombieIter.hasNext()){
+                    Zombie z = zombieIter.next();
                     if(!z.isDead()){
-                        plant.reduceHealth(z.getDamage());
-                        z.update(State.ACTION);
-                        z.reduceHealth(plant.getDamage());
-                        alive = true;
+                        if(z.attackReady()){
+                            plant.reduceHealth(z.getDamage());
+                            z.update(State.ACTION);
+                            zombieAttacking = true;
+                        }
+                        else{
+                            z.setBattling(true);
+                            z.update(State.IDLE);
+                        }
+
+                        if(!projectiles.isEmpty() && z.getRealScreenX() - projectiles.peek().getRealScreenX() < GamePanel.PROJECTILE_HITBOX){
+                            Projectile p = projectiles.poll();
+                            z.reduceHealth(p.getDamage());
+                            p.update(State.DEATH);
+                            deadSet.add(p);
+                        }                     
                     }
                     else{
                         z.update(State.DEATH);
                         deadSet.add(z);
-                        iter.remove();
+                        zombieIter.remove();
                     }
                 }
-
-                if(alive){
-                    if(plant instanceof SunFlower){
-                        SunFlower sf = (SunFlower) plant;
-                        if(sf.produceReady()){
-                            sf.update(State.ACTION);
-                        }
-                        else{
-                            sf.update(State.IDLE);
+                //Plant logic
+                if(zombieAttacking){
+                    if(plant.attackReady() || plant instanceof Walnut){
+                        plant.update(State.ACTION);
+                        if(shouldShoot){
+                            this.addProjectile(new Projectile(gridX, gridY));
                         }
                     }
                     else{
+                        plant.update(State.IDLE);
+                    }
+                }
+                else{
+                    boolean atkReady = plant.attackReady();
+                    if(atkReady && (shouldShoot || plant instanceof SunFlower)){
                         plant.update(State.ACTION);
+                    }
+                    else{
+                        plant.update(State.IDLE);
                     }
                 }
             }
         }
         else if(plant != null){
-            if(plant instanceof SunFlower){
-                SunFlower sf = (SunFlower) plant;
-                if(sf.produceReady()){
-                    sf.update(State.ACTION);
-                }
-                else{
-                    sf.update(State.IDLE);
+            boolean atkReady = plant.attackReady();
+            if(atkReady && shouldShoot){
+                plant.update(State.ACTION);
+                if(!plant.getShot()){ 
+                    this.addProjectile(new Projectile(gridX, gridY)); 
+                    plant.setShot(true);
                 }
             }
+            else if(atkReady && plant instanceof SunFlower){
+                plant.update(State.ACTION);
+            }
             else{
-                plant.update(State.IDLE); 
+                plant.update(State.IDLE);
             }
         }
         else if(!zombies.isEmpty()){
-            Iterator<Zombie> iter = zombies.iterator();
-            while(iter.hasNext()){
-                Zombie z = iter.next();
+            Iterator<Zombie> zombieIter = zombies.iterator();
+            while(zombieIter.hasNext()){
+                Zombie z = zombieIter.next();
                 if(!z.isDead()){
                     z.update(State.IDLE);
                     setZombieMoved(z.hasMovedNextTile());
+
+                    if(!projectiles.isEmpty() && z.getRealScreenX() - projectiles.peek().getRealScreenX() < GamePanel.PROJECTILE_HITBOX){
+                        Projectile p = projectiles.poll();
+                        z.reduceHealth(p.getDamage());
+                        p.update(State.DEATH);
+                        deadSet.add(p);
+                    }
                 }
                 else{
                     z.update(State.DEATH);
                     deadSet.add(z);
-                    iter.remove();
+                    zombieIter.remove();
                 }
+            }
+        }
+
+        if(!projectiles.isEmpty()){
+            for(Projectile p: projectiles){
+                p.update(State.IDLE);
+                setProjectileMoved(p.hasMovedNextTile());
             }
         }
 
@@ -239,16 +287,128 @@ public class Tile extends JComponent implements MouseListener{
                 }
             }
         }
-
-        if(!projectiles.isEmpty()){
-            for(Projectile p : projectiles){
-                if(!p.isDead()){
-                    p.update(State.IDLE);
-                    setProjectileMoved(p.hasMovedNextTile());
-                }
-            }
-        }
     }
+
+    // public void update(){
+    //     if(plant != null && !zombies.isEmpty()){
+    //         if(plant.isDead()){
+    //             plant.update(State.DEATH);
+    //             deadSet.add(plant);
+    //             plant = null;
+
+    //             int i = 0;
+    //             int prevX = zombies.peek().getRealScreenX();
+    //             boolean first = true;
+    //             Iterator<Zombie> iter = zombies.iterator();
+
+    //             while(iter.hasNext()){
+    //                 Zombie z = iter.next();
+    //                 if(!z.isDead()){
+    //                     if(z.getRealScreenX() - prevX < GamePanel.ZOMBIE_RANGE && !first){
+    //                         i += 20;
+    //                         z.setIntersect(i);
+    //                         prevX = z.getRealScreenX();
+    //                     }
+    //                     System.out.println("zeroed");
+    //                     z.setBattling(false);
+    //                     z.update(State.IDLE);
+    //                     first = false;
+    //                 }
+    //                 else{
+    //                     z.update(State.DEATH);
+    //                     deadSet.add(z);
+    //                     iter.remove();
+    //                 }
+    //             }
+    //         }
+    //         else{
+    //             plant.tickAttackCounter();
+
+    //             Iterator<Zombie> iter = zombies.iterator();
+    //             boolean alive = false;
+    //             while(iter.hasNext()){
+    //                 Zombie z = iter.next();
+    //                 if(!z.isDead()){
+    //                     if(plant.attackReady()){
+    //                         z.reduceHealth(plant.getDamage());
+    //                         plant.update(State.ACTION);
+    //                     }
+    //                     else{
+    //                         plant.update(State.IDLE);
+    //                     }
+
+    //                     if(z.attackReady()){
+    //                         plant.reduceHealth(z.getDamage());
+    //                         z.update(State.ACTION);
+    //                     }
+    //                     else{
+    //                         z.setBattling(true);
+    //                         z.update(State.ACTION);
+    //                     }
+    //                 }
+    //                 else{
+    //                     z.update(State.DEATH);
+    //                     deadSet.add(z);
+    //                     iter.remove();
+
+    //                     if(plant.attackReady()){
+    //                         plant.update(State.ACTION);
+    //                     }
+    //                     else{
+    //                         plant.update(State.IDLE);
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     else if(plant != null){
+    //         plant.tickAttackCounter();
+
+    //         if(plant.attackReady()){
+    //             plant.update(State.ACTION);
+    //         }
+    //         else{
+    //             plant.update(State.IDLE);
+    //         }
+    //     }
+    //     else if(!zombies.isEmpty()){
+    //         Iterator<Zombie> iter = zombies.iterator();
+    //         while(iter.hasNext()){
+    //             Zombie z = iter.next();
+    //             if(!z.isDead()){
+    //                 z.update(State.IDLE);
+    //                 setZombieMoved(z.hasMovedNextTile());
+    //             }
+    //             else{
+    //                 z.update(State.DEATH);
+    //                 deadSet.add(z);
+    //                 iter.remove();
+    //             }
+    //         }
+    //     }
+
+    //     if(!deadSet.isEmpty()){
+    //         Iterator<Sprite> iter = deadSet.iterator();
+    //         while(iter.hasNext()){
+    //             Sprite s = iter.next();
+    //             if(!s.getDoneDeath()){
+    //                 s.update(State.DEATH);
+    //             }
+    //             else{
+    //                 iter.remove();
+    //             }
+    //         }
+    //     }
+
+    //     if(!projectiles.isEmpty()){
+    //         for(Projectile p : projectiles){
+    //             if(!p.isDead()){
+    //                 p.update(State.IDLE);
+    //                 setProjectileMoved(p.hasMovedNextTile());
+    //             }
+    //         }
+    //     }
+    // }
 
     public void draw(Graphics g){
         g.drawImage(TILE_IMAGE, screenX, screenY, null);
@@ -336,5 +496,13 @@ public class Tile extends JComponent implements MouseListener{
 
     public void setProjectileMoved(boolean moved){
         if(this.projectileMoved == false) this.projectileMoved = moved;
+    }
+
+    public boolean shouldShoot(){
+        return shouldShoot;
+    }
+
+    public void setShouldShoot(boolean s){
+        shouldShoot = s;
     }
 }

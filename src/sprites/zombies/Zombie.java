@@ -9,10 +9,13 @@ public abstract class Zombie extends Sprite{
 
     private int intersect;
 
-    public Zombie(int gridX, int gridY, int screenX, int screenY, int health, int damage){
-        super(gridX, gridY, screenX, screenY, health, damage);
+    private boolean battling;
+
+    public Zombie(int gridX, int gridY, int screenX, int screenY, int health, int damage, int attackRate){
+        super(gridX, gridY, screenX, screenY, health, damage, attackRate);
         this.nextTile = false;
         this.intersect = 0;
+        this.battling = false;
     }
 
     public abstract void update(State state);
@@ -33,5 +36,13 @@ public abstract class Zombie extends Sprite{
 
     public void setIntersect(int intersect){
         this.intersect = intersect;
+    }
+
+    public boolean getBattling(){
+        return battling;
+    }
+
+    public void setBattling(boolean b){
+        this.battling = b;
     }
 }

@@ -19,7 +19,9 @@ public class Projectile extends Sprite {
     private static final int VERT_OFFSET = 40;
     private static final int HORIZ_OFFSET = 60;
 
-    private static final int OFFSET = 10;
+    private static final int OFFSET = 5;
+
+    private static final int TILE_THRESHOLD = 6;
 
     private static final int MOVE_RATE = 1;
     private static final int ACTION_RATE = 5;
@@ -27,11 +29,13 @@ public class Projectile extends Sprite {
 
     private static final Image idleImg = new ImageIcon("resources/sprites/projectile/projectile.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
 
+    private static final Image deathImg = new ImageIcon("resources/sprites/projectile/impact.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
+
     private boolean nextTile;
 
     public Projectile(int gridX, int gridY)
     {
-        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE);
+        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, 0);
         setCurrentImg(idleImg);
     }
 
@@ -51,7 +55,7 @@ public class Projectile extends Sprite {
                 zeroWalkCounter();
             }
 
-            if(getRealScreenX() > getGridX() * TILE_SIZE){
+            if(getRealScreenX() > (getGridX() + 1) * TILE_SIZE - WIDTH - TILE_THRESHOLD){
                 setGridX(getGridX() + 1);
                 System.out.println(getGridX());
                 movedNextTile(true);
@@ -59,8 +63,21 @@ public class Projectile extends Sprite {
             }
         }
         else if(state == State.DEATH){
-            setCurrentImg(null);
-            setDoneDeath(true);
+            if(comparePrevState(state)){
+                zeroDeathCounter();
+                setCurrentImg(deathImg);
+            }
+
+            tickDeathCounter();
+            if(getDeathCounter() > DEATH_RATE){
+                if(getCurrentImg() == deathImg){
+                    setCurrentImg(null);
+                }
+                else{
+                    setDoneDeath(true);
+                }
+                zeroDeathCounter();
+            }
         }
     }
 

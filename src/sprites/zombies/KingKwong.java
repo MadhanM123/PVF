@@ -23,6 +23,7 @@ public class KingKwong extends Zombie{
     private static final int TILE_THRESHOLD = 60;
     private static final int OFFSET = -13;  
 
+    private static final int ATTACK_RATE = 90;
     private static final int ACTION_RATE = 8;
     private static final int DEATH_RATE = 10;
     
@@ -39,7 +40,7 @@ public class KingKwong extends Zombie{
     private static final Image death2Img = walk2Img;
 
     public KingKwong(int gridX, int gridY){
-        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE);
+        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE);
         setCurrentImg(walk1Img);
     }
 
@@ -65,8 +66,11 @@ public class KingKwong extends Zombie{
                 else if(getCurrentImg() == walk3Img){
                     setCurrentImg(walk1Img);
                 }
-                setRealScreenX(getRealScreenX() + OFFSET + getIntersect());
-                setIntersect(0);
+
+                if(!getBattling()){
+                    setRealScreenX(getRealScreenX() + OFFSET + getIntersect());
+                    setIntersect(0);
+                }
                 zeroWalkCounter();
             }
 
@@ -81,7 +85,7 @@ public class KingKwong extends Zombie{
                 zeroActionAniCounter();
                 setCurrentImg(action1Img);
             }
-
+            
             tickActionAniCounter();
             if(getActionAniCounter() > ACTION_RATE){
                 if(getCurrentImg() == action1Img){
@@ -95,6 +99,7 @@ public class KingKwong extends Zombie{
                 }
                 else if(getCurrentImg() == action4Img){
                     setCurrentImg(action1Img);
+                    zeroAttackCounter();
                 }
                 zeroActionAniCounter();
             }

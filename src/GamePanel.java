@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import sprites.plants.PeaShooter;
+import sprites.plants.Repeater;
 import sprites.plants.Walnut;
 import sprites.projectile.Projectile;
 import sprites.zombies.ConeHead;
@@ -33,6 +35,7 @@ public class GamePanel extends JPanel implements Runnable{
     private int wave;
 
     public static final int ZOMBIE_RANGE = 10;
+    public static final int PROJECTILE_HITBOX = 3;
 
     public GamePanel(PlantPanel pp, InfoPanel ip) throws IOException{
         this.setPreferredSize(new Dimension(realScreenWidth, realScreenLength));
@@ -52,10 +55,10 @@ public class GamePanel extends JPanel implements Runnable{
         setupGrid();
 
         grid[3][6].addPlant(new Walnut(6, 3));
-        // grid[3][1].addProjectile(new Projectile(1, 3));
-        // grid[2][8].addZombie(new ConeHead(8, 2));
-        // // grid[3][8].addZombie(new FulkZombie(8, 3));
-        // grid[3][8].addZombie(new KingKwong(8, 3));
+        //grid[3][1].addProjectile(new Projectile(1, 3));
+        //grid[2][8].addZombie(new ConeHead(8, 2));
+        // grid[3][8].addZombie(new FulkZombie(8, 3));
+        grid[3][8].addZombie(new KingKwong(8, 3));
     }
 
     public void setupGrid(){
@@ -104,7 +107,12 @@ public class GamePanel extends JPanel implements Runnable{
         infoPanel.setSun(sun++);
         for(int r = 0; r < grid.length; r++){
             for(int c = 0; c < grid[r].length; c++){
+                if(grid[r][c].getPlant() instanceof PeaShooter || grid[r][c].getPlant() instanceof Repeater){
+                    grid[r][c].setShouldShoot(checkRow(r, c));
+                }
+
                 grid[r][c].update();
+                
                 if(grid[r][c].zombieMoved()){
                     Iterator<Zombie> iter = grid[r][c].getZombies().iterator();
 
@@ -142,6 +150,15 @@ public class GamePanel extends JPanel implements Runnable{
                 grid[r][c].draw(g);
             }
         }
+    }
+
+    public boolean checkRow(int startRow, int startCol){
+        for(int c = startCol; c < screenCol; c++){
+            if(grid[startRow][c].hasZombie()){
+                return true;
+            }
+        }
+        return false;
     }
 
     public Tile[][] getGrid(){
