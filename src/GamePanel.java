@@ -132,7 +132,10 @@ public class GamePanel extends JPanel implements Runnable{
 
                         if(p.hasMovedNextTile()){
                             if(c + 1 == SCREEN_COL){
-                                grid[r][c].removeProjectile();
+                                System.out.println("here");
+                                if(grid[r][c].checkProjectile(p)){
+                                    iter.remove();
+                                }
                             }
                             else{
                                 grid[r][c + 1].addProjectile(p);

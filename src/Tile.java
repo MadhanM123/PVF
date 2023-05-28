@@ -161,14 +161,11 @@ public class Tile extends JComponent implements MouseListener{
         }
     }
 
-    public void removeProjectile(){
-        Iterator<Projectile> iter = projectiles.iterator();
-        while(iter.hasNext()){
-            Projectile p = iter.next();
-            if(checkProjectileDistance(p) && (zombies.isEmpty() || (!zombies.isEmpty() && p.getRealScreenX() > zombies.peek().getRealScreenX()))){
-                iter.remove();
-            }
+    public boolean checkProjectile(Projectile p){
+        if(checkProjectileDistance(p) && (zombies.isEmpty() || (!zombies.isEmpty() && p.getRealScreenX() > zombies.peek().getRealScreenX()))){
+            return true;
         }
+        return false;
     }
 
     public boolean checkZombieDistance(){
