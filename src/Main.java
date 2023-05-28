@@ -21,7 +21,7 @@ public class Main{
         InfoPanel ip = new InfoPanel();
         GamePanel gp = new GamePanel(pp, ip);
 
-        PlantPanel.addGamePanel(gp);
+        pp.addGamePanel(gp);
 
         window.add(ip, BorderLayout.PAGE_START);
         window.add(gp,BorderLayout.LINE_END);

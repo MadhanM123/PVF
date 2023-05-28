@@ -125,13 +125,13 @@ public class SunFlower extends Plant {
     }
 
     public void draw(Graphics g){
-        g.drawImage(getCurrentImg(), getRealScreenX(), getRealScreenY(), null);
+        g.drawImage(getCurrentImg(), getScreenX(), getScreenY(), null);
         
         if(holdingTime == 0){
             return;
         }
         else if(holdingTime < HOLD_TIME){
-            g.drawImage(sunImg, getRealScreenX() + 30, getRealScreenY() + 30, null);
+            g.drawImage(sunImg, getScreenX() + 30, getScreenY() + 30, null);
             holdingTime++;
         }
         else{

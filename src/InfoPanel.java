@@ -7,6 +7,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * Represents the panel that holds current health, sun, and wave.
+ * @author Madhan M.
+ * @version 2023-05-31
+ */
 public class InfoPanel extends JPanel {
     private final int boardHeight = 90;
     private final int boardWidth = 350;
@@ -22,6 +27,9 @@ public class InfoPanel extends JPanel {
 
     private FlowLayout flowLayout;
 
+    /**
+     * Initializes health, sun, and wave data onto panel
+     */
     public InfoPanel(){
         this.healthBoard = new JLabel();
         this.healthStr = new StringBuffer("HEALTH: ");
@@ -82,14 +90,26 @@ public class InfoPanel extends JPanel {
         sunBoard.setHorizontalTextPosition(JLabel.CENTER);
     }
 
+    /**
+     * Sets the current amount of sun
+     * @param sun New amount of sun
+     */
     public void setSun(int sun){
         sunBoard.setText(sunStr.replace(5, sunStr.length(), "" + sun).toString());
     }
 
+    /**
+     * Sets the current wave
+     * @param wave New wave
+     */
     public void setWave(int wave){
         waveBoard.setText(waveStr.replace(6, waveStr.length(), "" + wave).toString());
     }
 
+    /**
+     * Sets the current health
+     * @param health New health
+     */
     public void setHealth(int health){
         healthBoard.setText(healthStr.replace(8, healthStr.length(), "" + health).toString());
     }

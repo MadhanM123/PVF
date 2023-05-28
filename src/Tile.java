@@ -18,6 +18,11 @@ import sprites.plants.*;
 import sprites.projectile.Projectile;
 import sprites.zombies.*;
 
+/**
+ * The Tile class represents a tile on the playing grid. Holds and draws all sprites and the collision code.
+ * @author Madhan M., Andrew X.
+ * @version 2023-05-28
+ */
 public class Tile extends JComponent implements MouseListener{
     private Queue<Zombie> zombies;
     private Plant plant;
@@ -34,21 +39,24 @@ public class Tile extends JComponent implements MouseListener{
     private boolean projectileMoved;
     private boolean shouldShoot;
 
-    private PlantPanel.PlantSelector plantSelector;
-
-    public static int TILE_SIZE = 110;
-    public static Image TILE_IMAGE = new ImageIcon("resources/sprites/tile/grasstile.png").getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_DEFAULT);
-
+    private PlantPanel plantPanel;
 
     /**
-     * initializes a tile with no sprites and default background
+     * {@value #TILE_SIZE} Length of Tile
      */
-    public Tile(int gridX, int gridY, PlantPanel.PlantSelector ps){
+    public static int TILE_SIZE = 110;
+
+    private static Image TILE_IMAGE = new ImageIcon("resources/sprites/tile/grasstile.png").getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_DEFAULT);
+
+    /**
+     * Initializes a tile with no sprites, default background, and a mouse listener
+     */
+    public Tile(int gridX, int gridY, PlantPanel pp){
         this.gridX = gridX;
         this.gridY = gridY;
         this.screenX = gridX * TILE_SIZE;
         this.screenY = gridY * TILE_SIZE;
-        this.plantSelector = ps;
+        this.plantPanel = pp;
 
         this.zombieMoved = false;
         this.projectileMoved = false;
@@ -64,62 +72,75 @@ public class Tile extends JComponent implements MouseListener{
         this.addMouseListener(this);
     }
 
-    public boolean hasPlant(){
-        return plant != null;
-    }
-
-    public boolean hasZombie(){
-        return !zombies.isEmpty();
-    }
-
     /**
-     * gets the first zombie in the tile
-     * @return the first zombie in the tile
+     * Gets the zombies on the tile
+     * @return Queue of current zombies
      */
     public Queue<Zombie> getZombies(){
         return zombies;
     }
 
+    /**
+     * Gets the projectiles on the tile
+     * @return Queue of current projectiles
+     */
     public Queue<Projectile> getProjectiles(){
         return projectiles;
     }
 
     /**
-     * gets the plant on the tile
-     * @return the plant on the tile
+     * Gets the plant on the tile
+     * @return Current plant
      */
     public Plant getPlant(){
         return plant;
     }
 
     /**
-     * adds a new zombie into the tile
-     * @param z the zombie to be added into the tile
+     * Adds a new zombie onto tile
+     * @param z Zombie to be added 
      */
     public void addZombie(Zombie z){
         zombies.add(z);
     }
 
     /**
-     * adds a new plant onto the tile
-     * @param p the plants to be added into the tile
+     * Adds a new plant onto tile
+     * @param p Plant to be added
      */
     public void addPlant(Plant p){
         plant = p;
     }
 
+    /**
+     * Adds a new projectile onto tile
+     * @param p Projectile to be added
+     */
     public void addProjectile(Projectile p){
         projectiles.add(p);
     }
 
+    /**
+     * Gets the grid-relative y-coordinate
+     * @return y-coordinate
+     */
     public int getGridY(){
         return this.gridY;
     }
 
+    /**
+     * Gets the grid-relative x-coordinate
+     * @return x-coordinate
+     */
     public int getGridX(){
         return this.gridX;
     }
 
+    /**
+     * Counts the number of a specific zombie on tile
+     * @param className Name of zombie to count
+     * @return Amount of specific zombie on tile
+     */
     public int countZombie(String className){
         int count = 0;
         for(Zombie zomb: zombies){
@@ -127,17 +148,25 @@ public class Tile extends JComponent implements MouseListener{
                 count++;
             }
         }
-        return Math.max(count, 3);
+        return count;
     }
 
+    /**
+     * Kills current zombies and disables any KingKwong's death spawn
+     */
     public void clearZombies(){
         while(!zombies.isEmpty()){
             Zombie z = zombies.poll();
-            if(gridY == 0) System.out.println(z.getName());
+            if(z instanceof KingKwong){
+                ((KingKwong) z).setShouldSpawn(false);
+            }
             deadSet.add(z);
         }
     }
 
+    /**
+     * Kills current plant
+     */
     public void clearPlant(){
         if(plant != null){
             deadSet.add(plant);
@@ -145,6 +174,9 @@ public class Tile extends JComponent implements MouseListener{
         }
     }
 
+    /**
+     * Kills current projectiles
+     */
     public void clearProjectile(){
         while(!projectiles.isEmpty()){
             Projectile p = projectiles.poll();
@@ -152,16 +184,13 @@ public class Tile extends JComponent implements MouseListener{
         }
     }
 
-    public boolean checkProjectile(Projectile p){
-        if(GamePanel.SCREEN_WIDTH - p.getRealScreenX() <= GamePanel.LAST_TILE_RANGE && (zombies.isEmpty() || (!zombies.isEmpty() && p.getRealScreenX() > zombies.peek().getRealScreenX()))){
-            return true;
-        }
-        return false;
-    }
-
+    /**
+     * Checks if any zombie has reached player end of grid
+     * @return
+     */
     public boolean checkZombieDistance(){
         for(Zombie z: zombies){
-            if(z.getRealScreenX() <= GamePanel.LAST_TILE_RANGE){
+            if(z.getScreenX() <= GamePanel.LAST_TILE_RANGE){
                 return true;
             }
         }
@@ -186,10 +215,13 @@ public class Tile extends JComponent implements MouseListener{
         return new Dimension(TILE_SIZE, TILE_SIZE);
     }
 
+    /**
+     * Calls tileClicked from PlantPanel
+     */
     @Override
     public void mouseClicked(MouseEvent e)
     {
-        plantSelector.attemptAddPlant(this);
+        plantPanel.tileClicked(this);
     }
 
     @Override
@@ -216,48 +248,55 @@ public class Tile extends JComponent implements MouseListener{
         return;
     }
 
-    public void setZombieMoved(boolean moved){
-        if(this.zombieMoved == false) this.zombieMoved = moved;
-    }
-
+    /**
+     * Gets whether zombie moved to next tile
+     * @return True if zombie moved, else false
+     */
     public boolean getZombieMoved(){
         return zombieMoved;
     }
 
+    /**
+     * Gets whether projectile moved to next tile
+     * @return True if projectile moved, else flase
+     */
     public boolean getProjectileMoved(){
         return projectileMoved;
     }
 
-    public void setProjectileMoved(boolean moved){
-        if(this.projectileMoved == false) this.projectileMoved = moved;
-    }
-
+    /**
+     * Sets a shooter to shoot. Called when there are zombies in the same row
+     * @param s Whether to shoot or not
+     */
     public void setShouldShoot(boolean s){
         shouldShoot = s;
     }
 
+    /**
+     * Handles all collisions on a tile. Updates plants, zombies, projectiles, and dead sprites
+     */
     public void update(){
         if(plant != null && !zombies.isEmpty()){
-            if(plant.isDead()){
+            if(plant.getHealth() <= 0){
                 plant.update(State.DEATH);
                 deadSet.add(plant);
                 plant = null;
 
                 int i = 0;
-                int prevX = zombies.peek().getRealScreenX();
+                int prevX = zombies.peek().getScreenX();
                 boolean first = true;
                 Iterator<Zombie> zombieIter = zombies.iterator();
 
                 while(zombieIter.hasNext()){
                     Zombie z = zombieIter.next();
-                    if(!z.isDead()){
-                        if(z.getRealScreenX() - prevX < GamePanel.ZOMBIE_RANGE && !first){
+                    if(z.getHealth() > 0){
+                        if(z.getScreenX() - prevX < GamePanel.ZOMBIE_RANGE && !first){
                             i += 20;
                             z.setIntersect(i);
-                            prevX = z.getRealScreenX();
+                            prevX = z.getScreenX();
                         }
 
-                        if(!projectiles.isEmpty() && z.getRealScreenX() - projectiles.peek().getRealScreenX() < GamePanel.PROJECTILE_HITBOX){
+                        if(!projectiles.isEmpty() && z.getScreenX() - projectiles.peek().getScreenX() < GamePanel.PROJECTILE_HITBOX){
                             Projectile p = projectiles.poll();
                             z.reduceHealth(p.getDamage());
                             p.update(State.DEATH);
@@ -280,7 +319,7 @@ public class Tile extends JComponent implements MouseListener{
 
                 while(zombieIter.hasNext()){
                     Zombie z = zombieIter.next();
-                    if(!z.isDead()){
+                    if(z.getHealth() > 0){
                         if(z.attackReady()){
                             if(z.getDoneDamage()){
                                 plant.reduceHealth(z.getDamage());
@@ -294,7 +333,7 @@ public class Tile extends JComponent implements MouseListener{
                             z.update(State.REST);
                         }
 
-                        if(!projectiles.isEmpty() && z.getRealScreenX() - projectiles.peek().getRealScreenX() < GamePanel.PROJECTILE_HITBOX){
+                        if(!projectiles.isEmpty() && z.getScreenX() - projectiles.peek().getScreenX() < GamePanel.PROJECTILE_HITBOX){
                             Projectile p = projectiles.poll();
                             z.reduceHealth(p.getDamage());
                             p.update(State.DEATH);
@@ -358,11 +397,14 @@ public class Tile extends JComponent implements MouseListener{
             Iterator<Zombie> zombieIter = zombies.iterator();
             while(zombieIter.hasNext()){
                 Zombie z = zombieIter.next();
-                if(!z.isDead()){
+                if(z.getHealth() > 0){
                     z.update(State.IDLE);
-                    setZombieMoved(z.hasMovedNextTile());
 
-                    if(!projectiles.isEmpty() && z.getRealScreenX() - projectiles.peek().getRealScreenX() < GamePanel.PROJECTILE_HITBOX){
+                    if(this.zombieMoved == false){
+                        this.zombieMoved = z.hasMovedNextTile();
+                    }
+
+                    if(!projectiles.isEmpty() && z.getScreenX() - projectiles.peek().getScreenX() < GamePanel.PROJECTILE_HITBOX){
                         Projectile p = projectiles.poll();
                         z.reduceHealth(p.getDamage());
                         p.update(State.DEATH);
@@ -379,7 +421,10 @@ public class Tile extends JComponent implements MouseListener{
         if(!projectiles.isEmpty()){
             for(Projectile p: projectiles){
                 p.update(State.IDLE);
-                setProjectileMoved(p.hasMovedNextTile());
+
+                if(this.projectileMoved == false){
+                    this.projectileMoved = p.hasMovedNextTile();
+                }
             }
         }
 
@@ -387,8 +432,9 @@ public class Tile extends JComponent implements MouseListener{
             Iterator<Sprite> iter = deadSet.iterator();
             while(iter.hasNext()){
                 Sprite s = iter.next();
-                if(s instanceof KingKwong && s.getPrev() != State.DEATH){
+                if(s instanceof KingKwong && ((KingKwong) s).getShouldSpawn()){
                     this.addZombie(new FulkZombie(gridX, gridY, 0));
+                    ((KingKwong) s).setShouldSpawn(false);
                 }
 
                 if(!s.getDoneDeath()){
@@ -402,6 +448,10 @@ public class Tile extends JComponent implements MouseListener{
         }
     }
 
+    /**
+     * Draws all sprites onto given graphics
+     * @param g Graphics context to draw onto
+     */
     public void draw(Graphics g){
         g.drawImage(TILE_IMAGE, screenX, screenY, null);
         if(plant != null) plant.draw(g);

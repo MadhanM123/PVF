@@ -48,16 +48,16 @@ public class Projectile extends Sprite {
 
     public void update(State state){
         if(state == State.IDLE){
-            tickWalkCounter();
-            if(getWalkCounter() > MOVE_RATE){
-                setRealScreenX(getRealScreenX() + OFFSET);
-                zeroWalkCounter();
+            tickIdleCounter();
+            if(getIdleCounter() > MOVE_RATE){
+                setScreenX(getScreenX() + OFFSET);
+                zeroIdleCounter();
             }
 
-            if(getRealScreenX() > (getGridX() + 1) * TILE_SIZE - WIDTH - TILE_THRESHOLD){
+            if(getScreenX() > (getGridX() + 1) * TILE_SIZE - WIDTH - TILE_THRESHOLD){
                 setGridX(getGridX() + 1);
                 movedNextTile(true);
-                zeroWalkCounter();
+                zeroIdleCounter();
             }
         }
         else if(state == State.DEATH){
@@ -80,7 +80,7 @@ public class Projectile extends Sprite {
     }
 
     public void draw(Graphics g){
-        g.drawImage(getCurrentImg(), getRealScreenX(), getRealScreenY(), null);
+        g.drawImage(getCurrentImg(), getScreenX(), getScreenY(), null);
     }
     
 }

@@ -2,7 +2,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.io.IOException;
 import java.util.Iterator;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -15,73 +14,95 @@ import sprites.zombies.FulkZombie;
 import sprites.zombies.KingKwong;
 import sprites.zombies.Zombie;
 
+/**
+ * The GamePanel class holds the playing grid, main game loop, and the logic to move sprites between tiles.
+ * @author Madhan M., Andrew X.
+ * @version 2023-05-28
+ */
 public class GamePanel extends JPanel implements Runnable{
 
     private static final int SCREEN_COL = 9;
     private static final int SCREEN_ROW = 5;
 
-    public static final int SCREEN_WIDTH = Tile.TILE_SIZE * SCREEN_COL;
-    public static final int SCREEN_LENGTH = Tile.TILE_SIZE * SCREEN_ROW;
-
     private static final int FPS = 30;
+
+    private static final int SCREEN_WIDTH = Tile.TILE_SIZE * SCREEN_COL;
+    private static final int SCREEN_LENGTH = Tile.TILE_SIZE * SCREEN_ROW;
+
+    private static final int SUN_INCREMENT = 10;
+
+    /**
+     * {@value #ZOMBIE_RANGE} Minimum distance between zombies
+     */
+    public static final int ZOMBIE_RANGE = 10;
+
+    /**
+     * {@value #PROJECTILE_HITBOX} Hitbox between projectiles and zombies
+     */
+    public static final int PROJECTILE_HITBOX = 3;
+
+    /**
+     * {@value #LAST_TILE_RANGE} Minimum distance from end of grid for zombies to player-side of grid and projectiles to zombie-side of grid
+     */
+    public static final int LAST_TILE_RANGE = 5;
 
     private Tile[][] grid;
 
     private InfoPanel infoPanel;
-    private PlantPanel plantPanel;
-
     private int health;
     private int sun;
     private int wave;
 
-    public static final int ZOMBIE_RANGE = 10;
-    public static final int PROJECTILE_HITBOX = 3;
-    public static final int LAST_TILE_RANGE = 5;
+    private long frame;
 
-    public GamePanel(PlantPanel pp, InfoPanel ip) throws IOException{
+    /**
+     * Initializes stats, grid, and sets panels
+     * @param plantPanel Instance of PlantPanel
+     * @param infoPanel Instance of InfoPanel
+     */
+    public GamePanel(PlantPanel plantPanel, InfoPanel infoPanel){
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_LENGTH));
         this.setDoubleBuffered(true);
 
-        this.plantPanel = pp;
-        this.infoPanel = ip;
+        this.infoPanel = infoPanel;
 
         this.health = 5;
         this.sun = 50;
         this.wave = 0;
+
+        this.frame = 0;
         
         grid = new Tile[SCREEN_ROW][SCREEN_COL];
         this.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
         this.setLayout(new GridLayout(SCREEN_ROW, SCREEN_COL, 0, 0));
 
-        setupGrid();
-    }
-
-    public void setupGrid(){
         for(int r = 0; r < grid.length; r++){
             for(int c = 0; c < grid[0].length; c++){
-                grid[r][c] = new Tile(c, r, plantPanel.getPlantSelector());
+                grid[r][c] = new Tile(c, r, plantPanel);
                 this.add(grid[r][c]);
             }
         }
     }
 
+    /**
+     * Runs the game loop of updating and repainting 30 times per second.
+     */
     @Override
     public void run()
     {
         double drawInterval = 1000000000 / FPS;
         double nextDrawTime = System.nanoTime() + drawInterval;
-        int frames = 0;
 
         while(health > 0){
             
-            update(frames);
+            update();
 
             repaint();
 
             try{
                 double remainTime = nextDrawTime - System.nanoTime();
                 remainTime /= 1000000;
-                frames++;
+                frame++;
 
                 if(remainTime < 0){
                     remainTime = 0;
@@ -93,13 +114,12 @@ public class GamePanel extends JPanel implements Runnable{
                 e.printStackTrace();
             }
         }
-        
         return;
     }
 
-    public void update(int frame){
-        addZombieWave(frame);
-        addSun(frame);
+    private void update(){
+        addZombieWave();
+        addSun();
 
         infoPanel.setHealth(health);
         infoPanel.setSun(sun);
@@ -134,7 +154,8 @@ public class GamePanel extends JPanel implements Runnable{
 
                         if(p.hasMovedNextTile()){
                             if(c + 1 == SCREEN_COL){
-                                if(grid[r][c].checkProjectile(p)){
+                                if(SCREEN_WIDTH - p.getScreenX() <= LAST_TILE_RANGE && (grid[r][c].getZombies().isEmpty() 
+                                || (!grid[r][c].getZombies().isEmpty() && p.getScreenX() > grid[r][c].getZombies().peek().getScreenX()))){
                                     iter.remove();
                                 }
                             }
@@ -150,12 +171,12 @@ public class GamePanel extends JPanel implements Runnable{
                 if(grid[r][c].getPlant() instanceof SunFlower){
                     SunFlower sf = (SunFlower) grid[r][c].getPlant();
                     if(sf.getProduced()){
-                        incrementSun();
+                        sun += SUN_INCREMENT;
                         sf.setProduced(false);
                     }
                 }
 
-                if(c == 0 && grid[r][c].hasZombie() && grid[r][c].checkZombieDistance()){
+                if(c == 0 && !grid[r][c].getZombies().isEmpty() && grid[r][c].checkZombieDistance()){
                     health--;
                     clearRow(r);
                 }
@@ -163,8 +184,8 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
-    void addZombieWave(int frame){
-        int col = 8, row = 0;
+    private void addZombieWave(){
+        int col = SCREEN_COL - 1, row = 0;
    
         if(frame % 300 == 0 ){
             infoPanel.setWave(wave++);
@@ -198,6 +219,45 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }   
 
+    private boolean checkRow(int startRow, int startCol){
+        for(int c = startCol; c < SCREEN_COL; c++){
+            if(!grid[startRow][c].getZombies().isEmpty()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void clearRow(int startRow){
+        for(int c = 0; c < SCREEN_COL; c++){
+            grid[startRow][c].clearPlant();
+            grid[startRow][c].clearProjectile();
+            grid[startRow][c].clearZombies();
+        }
+    }
+
+    private void addSun(){
+        if(frame != 0 && frame % 300 == 0){
+            sun += SUN_INCREMENT;
+        }
+    }
+
+    /**
+     * Decrements current sun
+     * @param dec Amount to decrement by
+     */
+    public void decrementSun(int dec){
+        sun -= dec;
+    }
+
+    /**
+     * Getter for current sun
+     * @return Current amount of sun
+     */
+    public int getSun(){
+        return sun;
+    } 
+
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         for(int r = 0; r < grid.length; r++){
@@ -206,44 +266,4 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
     }
-
-    public boolean checkRow(int startRow, int startCol){
-        for(int c = startCol; c < SCREEN_COL; c++){
-            if(grid[startRow][c].hasZombie()){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void clearRow(int startRow){
-        for(int c = 0; c < SCREEN_COL; c++){
-            grid[startRow][c].clearPlant();
-            grid[startRow][c].clearProjectile();
-            grid[startRow][c].clearZombies();
-        }
-    }
-
-    public Tile[][] getGrid(){
-        return grid;
-
-    }
-
-    private void addSun(int frame){
-        if(frame != 0 && frame % 300 == 0){
-            incrementSun();
-        }
-    }
-
-    public void incrementSun(){
-        sun += 10;
-    }
-
-    public void decrementSun(int dec){
-        sun -= dec;
-    }
-
-    public int getSun(){
-        return sun;
-    } 
 }

@@ -2,7 +2,6 @@ package sprites.zombies;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import javax.print.attribute.standard.MediaSize.NA;
 import javax.swing.ImageIcon;
 
 
@@ -42,9 +41,20 @@ public class KingKwong extends Zombie{
 
     public static final String NAME = "KingKwong";
 
+    private boolean shouldSpawn;
+
     public KingKwong(int gridX, int gridY, int x_offset){
         super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE, NAME);
         setCurrentImg(walk1Img);
+        this.shouldSpawn = true;
+    }
+
+    public boolean getShouldSpawn(){
+        return shouldSpawn;
+    }
+
+    public void setShouldSpawn(boolean shouldSpawn){
+        this.shouldSpawn = shouldSpawn;
     }
 
     public void update(State state){
@@ -55,12 +65,12 @@ public class KingKwong extends Zombie{
         }
         else if(state == State.IDLE){
             if(comparePrevState(state)){
-                zeroWalkCounter();
+                zeroIdleCounter();
                 setCurrentImg(walk1Img);
             }
             
-            tickWalkCounter();
-            if(getWalkCounter() > WALK_RATE){
+            tickIdleCounter();
+            if(getIdleCounter() > WALK_RATE){
                 if(getCurrentImg() == walk1Img){
                     setCurrentImg(walk2Img);
                 }
@@ -71,15 +81,15 @@ public class KingKwong extends Zombie{
                     setCurrentImg(walk1Img);
                 }
 
-                setRealScreenX(getRealScreenX() + OFFSET + getIntersect());
+                setScreenX(getScreenX() + OFFSET + getIntersect());
                 setIntersect(0);
-                zeroWalkCounter();
+                zeroIdleCounter();
             }
 
-            if(getRealScreenX() < getGridX() * TILE_SIZE - TILE_THRESHOLD){
+            if(getScreenX() < getGridX() * TILE_SIZE - TILE_THRESHOLD){
                 setGridX(getGridX() - 1);
                 movedNextTile(true);
-                zeroWalkCounter();
+                zeroIdleCounter();
             }
         }
         else if(state == State.ACTION){
@@ -129,7 +139,7 @@ public class KingKwong extends Zombie{
     }
 
     public void draw(Graphics g){
-        g.drawImage(getCurrentImg(), getRealScreenX(), getRealScreenY(), null);
+        g.drawImage(getCurrentImg(), getScreenX(), getScreenY(), null);
     }
     
 }

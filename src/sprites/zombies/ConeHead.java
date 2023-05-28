@@ -2,7 +2,6 @@ package sprites.zombies;
 
 import java.awt.Graphics;
 import java.awt.Image;
-import javax.print.attribute.standard.MediaSize.NA;
 import javax.swing.ImageIcon;
 
 public class ConeHead extends Zombie{
@@ -54,12 +53,12 @@ public class ConeHead extends Zombie{
         }
         else if(state == State.IDLE){
             if(comparePrevState(state)){
-                zeroWalkCounter();
+                zeroIdleCounter();
                 setCurrentImg(walk1Img);
             }
             
-            tickWalkCounter();
-            if(getWalkCounter() > WALK_RATE){
+            tickIdleCounter();
+            if(getIdleCounter() > WALK_RATE){
                 if(getCurrentImg() == walk1Img){
                     setCurrentImg(walk2Img);
                 }
@@ -70,15 +69,15 @@ public class ConeHead extends Zombie{
                     setCurrentImg(walk1Img);
                 }
 
-                setRealScreenX(getRealScreenX() + OFFSET + getIntersect());
+                setScreenX(getScreenX() + OFFSET + getIntersect());
                 setIntersect(0);
-                zeroWalkCounter();
+                zeroIdleCounter();
             }
 
-            if(getRealScreenX() < getGridX() * TILE_SIZE - TILE_THRESHOLD){
+            if(getScreenX() < getGridX() * TILE_SIZE - TILE_THRESHOLD){
                 setGridX(getGridX() - 1);
                 movedNextTile(true);
-                zeroWalkCounter();
+                zeroIdleCounter();
             }
         }
         else if(state == State.ACTION){
@@ -124,6 +123,6 @@ public class ConeHead extends Zombie{
     }
 
     public void draw(Graphics g){
-        g.drawImage(getCurrentImg(), getRealScreenX(), getRealScreenY(), null);
+        g.drawImage(getCurrentImg(), getScreenX(), getScreenY(), null);
     }
 }

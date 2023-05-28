@@ -2,10 +2,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.io.IOException;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,27 +17,34 @@ import sprites.plants.Walnut;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The PlantPanel class holds the buttons for selecting plants and an inner class ActionListener that handles plant placement.
+ * @author Madhan M.
+ * @version 2023-05-31
+ */
 public class PlantPanel extends JPanel{
-    private static JButton sunflowerButton;
-    private static JButton peashooterButton;
-    private static JButton walnutButton;
-    private static JButton repeaterButton;
+    private final JButton sunflowerButton;
+    private final JButton peashooterButton;
+    private final JButton walnutButton;
+    private final JButton repeaterButton;
 
-    private JLabel sunflowerCostLabel;
-    private JLabel peashooterCostLabel;
-    private JLabel walnutCostLabel;
-    private JLabel repeaterCostLabel;
+    private final JLabel sunflowerCostLabel;
+    private final JLabel peashooterCostLabel;
+    private final JLabel walnutCostLabel;
+    private final JLabel repeaterCostLabel;
 
-    private final int buttonWidth = 80;
-    private final int buttonHeight = 120;
-    private final int realScreenWidth = buttonWidth * 5;
-    private final int realScreenLength = buttonHeight * 3;
+    private static final int buttonWidth = 80;
+    private static final int buttonHeight = 120;
+    private static final int realScreenWidth = buttonWidth * 5;
+    private static final int realScreenLength = buttonHeight * 3;
 
-    private static GamePanel gamePanel;
-
+    private GamePanel gamePanel;
     private PlantSelector plantSelector;
 
-    public PlantPanel() throws IOException{
+    /**
+     * Initalizes all buttons and sets up their icons and costs. Adds action listeners to them and adds them into the panel.
+     */
+    public PlantPanel(){
         this.setPreferredSize(new Dimension(realScreenWidth, realScreenLength));
 
         sunflowerButton = new JButton();
@@ -105,38 +110,42 @@ public class PlantPanel extends JPanel{
         this.setVisible(true);
     }
 
-    private static void clearButton(JButton button){
+    /**
+     * Clears the button color by making the background white and foreground green
+     * @param button Button to clear
+     */
+    private void clearButton(JButton button){
         button.setBackground(Color.WHITE);
         button.setForeground(Color.GREEN);
     }
 
-    public static void addGamePanel(GamePanel gp){
-        gamePanel = gp;
+    /**
+     * Adds the current gamepanel
+     * @param gp GamePanel to add
+     */
+    public void addGamePanel(GamePanel gp){
+        this.gamePanel = gp;
     }
 
-    public PlantSelector getPlantSelector(){
-        return plantSelector;
+    /**
+     * Calls the action listener when a tile is clicked which handles plant selection
+     * @param tile Tile that was clicked
+     */
+    public void tileClicked(Tile tile){
+        plantSelector.attemptAddPlant(tile);
     }
 
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-    }
-
-    public static class PlantSelector implements ActionListener{
+    private class PlantSelector implements ActionListener{
         private JButton prevPlantClicked;
         private int prevCost;
 
-        public PlantSelector(){
+        private PlantSelector(){
             prevPlantClicked = null;
             prevCost = 0;
         }
 
-        public boolean checkTile(){
-            return false;
-        }
-
-        public void attemptAddPlant(Tile tile){
-            if(!tile.hasPlant() && !tile.hasZombie() && prevPlantClicked != null && prevCost > 0){
+        private void attemptAddPlant(Tile tile){
+            if(tile.getPlant() == null && tile.getZombies().isEmpty() && prevPlantClicked != null && prevCost > 0){
                 if(prevPlantClicked == sunflowerButton){
                     tile.addPlant(new SunFlower(tile.getGridX(), tile.getGridY()));
                 }
@@ -155,7 +164,7 @@ public class PlantPanel extends JPanel{
                 prevPlantClicked = null;
                 prevCost = 0;
             }
-            else if(!tile.hasPlant() && prevPlantClicked != null){
+            else if(tile.getPlant() == null && prevPlantClicked != null){
                 clearButton(prevPlantClicked);
                 prevPlantClicked = null;
                 prevCost = 0;
