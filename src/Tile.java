@@ -36,41 +36,32 @@ public class Tile extends JComponent implements MouseListener{
 
     private PlantPanel.PlantSelector plantSelector;
 
-    public static Image TILE_IMAGE;
-    public static int TILE_SIZE;
+    public static int TILE_SIZE = 110;
+    public static Image TILE_IMAGE = new ImageIcon("resources/sprites/tile/grasstile.png").getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_DEFAULT);
 
-    static{
-        TILE_SIZE = 110;
-        TILE_IMAGE = new ImageIcon("resources/sprites/tile/grasstile.png").getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_DEFAULT);
-    }
 
     /**
      * initializes a tile with no sprites and default background
      */
     public Tile(int gridX, int gridY, PlantPanel.PlantSelector ps){
-        this.plant = null;
-        this.zombies = new LinkedList<Zombie>();
-        this.deadSet = new HashSet<>();
         this.gridX = gridX;
         this.gridY = gridY;
-        this.setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
-        this.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-        this.addMouseListener(this);
+        this.screenX = gridX * TILE_SIZE;
+        this.screenY = gridY * TILE_SIZE;
         this.plantSelector = ps;
+
         this.zombieMoved = false;
         this.projectileMoved = false;
         this.shouldShoot = false;
-        this.screenX = gridX * TILE_SIZE;
-        this.screenY = gridY * TILE_SIZE;
-        this.projectiles = new LinkedList<>();
-    }
 
-    /**
-     * checks if the tile has anything on it
-     * @return true if tile is empty and false if there is anything on the tile
-     */
-    public boolean isEmpty(){
-        return (zombies.isEmpty() && plant == null);
+        this.plant = null;
+        this.zombies = new LinkedList<Zombie>();
+        this.deadSet = new HashSet<>();
+        this.projectiles = new LinkedList<>();
+
+        this.setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
+        this.setBorder(BorderFactory.createLineBorder(Color.GREEN));
+        this.addMouseListener(this);
     }
 
     public boolean hasPlant(){
@@ -79,10 +70,6 @@ public class Tile extends JComponent implements MouseListener{
 
     public boolean hasZombie(){
         return !zombies.isEmpty();
-    }
-
-    public boolean hasProjectile(){
-        return !projectiles.isEmpty();
     }
 
     /**
@@ -125,13 +112,6 @@ public class Tile extends JComponent implements MouseListener{
         projectiles.add(p);
     }
 
-    /**
-     * removes the first zombie in the tile
-     */
-    public Zombie removeZombie(){
-        return zombies.remove();
-    }
-
     public int getGridY(){
         return this.gridY;
     }
@@ -140,9 +120,20 @@ public class Tile extends JComponent implements MouseListener{
         return this.gridX;
     }
 
+    public int countZombie(String className){
+        int count = 0;
+        for(Zombie zomb: zombies){
+            if(zomb.getName().equals(className)){
+                count++;
+            }
+        }
+        return Math.max(count, 3);
+    }
+
     public void clearZombies(){
         while(!zombies.isEmpty()){
             Zombie z = zombies.poll();
+            if(gridY == 0) System.out.println(z.getName());
             deadSet.add(z);
         }
     }
@@ -162,7 +153,7 @@ public class Tile extends JComponent implements MouseListener{
     }
 
     public boolean checkProjectile(Projectile p){
-        if(checkProjectileDistance(p) && (zombies.isEmpty() || (!zombies.isEmpty() && p.getRealScreenX() > zombies.peek().getRealScreenX()))){
+        if(GamePanel.SCREEN_WIDTH - p.getRealScreenX() <= GamePanel.LAST_TILE_RANGE && (zombies.isEmpty() || (!zombies.isEmpty() && p.getRealScreenX() > zombies.peek().getRealScreenX()))){
             return true;
         }
         return false;
@@ -177,11 +168,72 @@ public class Tile extends JComponent implements MouseListener{
         return false;
     }
 
-    private boolean checkProjectileDistance(Projectile p){
-        if(GamePanel.SCREEN_WIDTH - p.getRealScreenX() <= GamePanel.LAST_TILE_RANGE){
-            return true;
-        }
-        return false;
+    @Override
+    public Dimension getPreferredSize()
+    {
+        return new Dimension(TILE_SIZE, TILE_SIZE);
+    }
+
+    @Override
+    public Dimension getMaximumSize()
+    {
+        return new Dimension(TILE_SIZE, TILE_SIZE);
+    }
+
+    @Override
+    public Dimension getMinimumSize()
+    {
+        return new Dimension(TILE_SIZE, TILE_SIZE);
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e)
+    {
+        plantSelector.attemptAddPlant(this);
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e)
+    {
+        return;
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e)
+    {
+        return;
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e)
+    {
+        return;
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e)
+    {
+        return;
+    }
+
+    public void setZombieMoved(boolean moved){
+        if(this.zombieMoved == false) this.zombieMoved = moved;
+    }
+
+    public boolean getZombieMoved(){
+        return zombieMoved;
+    }
+
+    public boolean getProjectileMoved(){
+        return projectileMoved;
+    }
+
+    public void setProjectileMoved(boolean moved){
+        if(this.projectileMoved == false) this.projectileMoved = moved;
+    }
+
+    public void setShouldShoot(boolean s){
+        shouldShoot = s;
     }
 
     public void update(){
@@ -336,7 +388,7 @@ public class Tile extends JComponent implements MouseListener{
             while(iter.hasNext()){
                 Sprite s = iter.next();
                 if(s instanceof KingKwong && s.getPrev() != State.DEATH){
-                    this.addZombie(new FulkZombie(gridX, gridY));
+                    this.addZombie(new FulkZombie(gridX, gridY, 0));
                 }
 
                 if(!s.getDoneDeath()){
@@ -368,81 +420,5 @@ public class Tile extends JComponent implements MouseListener{
                 p.draw(g);
             }
         }
-    }
-
-    @Override
-    public Dimension getPreferredSize()
-    {
-        return new Dimension(TILE_SIZE, TILE_SIZE);
-    }
-
-    @Override
-    public Dimension getMaximumSize()
-    {
-        return new Dimension(TILE_SIZE, TILE_SIZE);
-    }
-
-    @Override
-    public Dimension getMinimumSize()
-    {
-        return new Dimension(TILE_SIZE, TILE_SIZE);
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e)
-    {
-        plantSelector.attemptAddPlant(this);
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e)
-    {
-        return;
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e)
-    {
-        return;
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e)
-    {
-        return;
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e)
-    {
-        return;
-    }
-
-    public void setZombieMoved(boolean moved){
-        if(this.zombieMoved == false) this.zombieMoved = moved;
-    }
-
-    public boolean zombieMoved(){
-        return zombieMoved;
-    }
-
-    public boolean colliding(){
-        return plant != null && zombies.peek() != null;
-    }
-
-    public boolean projectileMoved(){
-        return projectileMoved;
-    }
-
-    public void setProjectileMoved(boolean moved){
-        if(this.projectileMoved == false) this.projectileMoved = moved;
-    }
-
-    public boolean shouldShoot(){
-        return shouldShoot;
-    }
-
-    public void setShouldShoot(boolean s){
-        shouldShoot = s;
     }
 }

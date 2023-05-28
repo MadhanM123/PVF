@@ -93,6 +93,8 @@ public class GamePanel extends JPanel implements Runnable{
                 e.printStackTrace();
             }
         }
+        
+        return;
     }
 
     public void update(int frame){
@@ -110,7 +112,7 @@ public class GamePanel extends JPanel implements Runnable{
 
                 grid[r][c].update();
                 
-                if(grid[r][c].zombieMoved()){
+                if(grid[r][c].getZombieMoved()){
                     Iterator<Zombie> iter = grid[r][c].getZombies().iterator();
 
                     while(iter.hasNext()){
@@ -124,7 +126,7 @@ public class GamePanel extends JPanel implements Runnable{
                     }
                 }
 
-                if(grid[r][c].projectileMoved()){
+                if(grid[r][c].getProjectileMoved()){
                     Iterator<Projectile> iter = grid[r][c].getProjectiles().iterator();
 
                     while(iter.hasNext()){
@@ -132,7 +134,6 @@ public class GamePanel extends JPanel implements Runnable{
 
                         if(p.hasMovedNextTile()){
                             if(c + 1 == SCREEN_COL){
-                                System.out.println("here");
                                 if(grid[r][c].checkProjectile(p)){
                                     iter.remove();
                                 }
@@ -163,33 +164,34 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     void addZombieWave(int frame){
-        int col = 8, row = 0;   
+        int col = 8, row = 0;
+   
         if(frame % 300 == 0 ){
             infoPanel.setWave(wave++);
             for(int i = 0; i < frame/200; i++){
                 row = (int) (Math.random()*5);
                 if(wave <= 3){
-                    grid[row][col].addZombie(new FulkZombie(col, row));
+                    grid[row][col].addZombie(new FulkZombie(col, row, grid[row][col].countZombie(FulkZombie.NAME) * ZOMBIE_RANGE));
                 }
                 else if(wave > 3 && wave <= 6){
                     int prob = (int) (Math.random() * 3);
                     if(prob < 2){
-                        grid[row][col].addZombie(new FulkZombie(col, row));
+                        grid[row][col].addZombie(new FulkZombie(col, row, grid[row][col].countZombie(FulkZombie.NAME) * ZOMBIE_RANGE));
                     }
                     else{
-                        grid[row][col].addZombie(new ConeHead(col, row));
+                        grid[row][col].addZombie(new ConeHead(col, row, grid[row][col].countZombie(ConeHead.NAME) * ZOMBIE_RANGE));
                     }
                 }
                 else{
                     int prob = (int) (Math.random() * 6);
                     if(prob < 2){
-                        grid[row][col].addZombie(new FulkZombie(col, row));
+                        grid[row][col].addZombie(new FulkZombie(col, row, grid[row][col].countZombie(FulkZombie.NAME) * ZOMBIE_RANGE));
                     }
                     else if(prob < 5){
-                        grid[row][col].addZombie(new ConeHead(col, row));
+                        grid[row][col].addZombie(new ConeHead(col, row, grid[row][col].countZombie(ConeHead.NAME) * ZOMBIE_RANGE));
                     }
                     else{
-                        grid[row][col].addZombie(new KingKwong(col, row));
+                        grid[row][col].addZombie(new KingKwong(col, row, grid[row][col].countZombie(KingKwong.NAME) * ZOMBIE_RANGE));
                     }
                 }
             }

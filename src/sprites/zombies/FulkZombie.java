@@ -9,10 +9,10 @@ public class FulkZombie extends Zombie{
     public static final int FULL_HEALTH = 1000;
     public static final int DAMAGE = 200;
 
-    private static final int HEIGHT = 110;
+    private static final int HEIGHT = 100;
     private static final int WIDTH = 60;
 
-    private static final int VERT_OFFSET = 1;
+    private static final int VERT_OFFSET = 10;
     private static final int HORIZ_OFFSET = 50;
 
     public static final int START_X = 900;
@@ -24,7 +24,7 @@ public class FulkZombie extends Zombie{
 
     private static final int ATTACK_RATE = 90;
     private static final int ACTION_RATE = 10;
-    private static final int DEATH_RATE = 10;
+    private static final int DEATH_RATE = 5;
 
     private static final Image walk1Img = new ImageIcon("resources/sprites/zombies/zombie/walk1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image walk2Img = new ImageIcon("resources/sprites/zombies/zombie/walk3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
@@ -37,9 +37,10 @@ public class FulkZombie extends Zombie{
     private static final Image death1Img = new ImageIcon("resources/sprites/zombies/zombie/die1.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image death2Img = new ImageIcon("resources/sprites/zombies/zombie/die2.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
 
+    public static final String NAME = "FulkZombie";
 
-    public FulkZombie(int gridX, int gridY){
-        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE);
+    public FulkZombie(int gridX, int gridY, int x_offset){
+        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE, NAME);
         setCurrentImg(walk1Img);
     }
 
@@ -113,7 +114,7 @@ public class FulkZombie extends Zombie{
                 }
                 else if(getCurrentImg() == death2Img){
                     setCurrentImg(null);
-                    setDoneDeath(false);
+                    setDoneDeath(true);
                 }
                 zeroDeathCounter();
             }

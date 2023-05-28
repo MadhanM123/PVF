@@ -2,6 +2,7 @@ package sprites.zombies;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import javax.print.attribute.standard.MediaSize.NA;
 import javax.swing.ImageIcon;
 
 
@@ -25,7 +26,7 @@ public class KingKwong extends Zombie{
 
     private static final int ATTACK_RATE = 90;
     private static final int ACTION_RATE = 4;
-    private static final int DEATH_RATE = 10;
+    private static final int DEATH_RATE = 5;
     
     private static final Image walk1Img = new ImageIcon("resources/sprites/zombies/kingKwong/walk1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image walk2Img = new ImageIcon("resources/sprites/zombies/kingKwong/walk3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
@@ -39,8 +40,10 @@ public class KingKwong extends Zombie{
     private static final Image death1Img = walk1Img;
     private static final Image death2Img = walk2Img;
 
-    public KingKwong(int gridX, int gridY){
-        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE);
+    public static final String NAME = "KingKwong";
+
+    public KingKwong(int gridX, int gridY, int x_offset){
+        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE, NAME);
         setCurrentImg(walk1Img);
     }
 

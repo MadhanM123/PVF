@@ -12,10 +12,10 @@ public class Main{
         window.setTitle("PVZ");
 
         // sound test
-        // MusicPlayer mp = new MusicPlayer();
-        // mp.setFile(0);
-        // mp.play();
-        // mp.loop();
+        MusicPlayer mp = new MusicPlayer();
+        mp.setFile(0);
+        mp.play();
+        mp.loop();
 
         PlantPanel pp = new PlantPanel();
         InfoPanel ip = new InfoPanel();
@@ -33,5 +33,15 @@ public class Main{
         window.setVisible(true);
           
         gp.run();
+
+        try
+        {
+            Thread.sleep(2000);
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        System.exit(0);
     }
 }
