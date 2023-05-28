@@ -81,6 +81,10 @@ public class Tile extends JComponent implements MouseListener{
         return !zombies.isEmpty();
     }
 
+    public boolean hasProjectile(){
+        return !projectiles.isEmpty();
+    }
+
     /**
      * gets the first zombie in the tile
      * @return the first zombie in the tile
@@ -134,6 +138,53 @@ public class Tile extends JComponent implements MouseListener{
 
     public int getGridX(){
         return this.gridX;
+    }
+
+    public void clearZombies(){
+        while(!zombies.isEmpty()){
+            Zombie z = zombies.poll();
+            deadSet.add(z);
+        }
+    }
+
+    public void clearPlant(){
+        if(plant != null){
+            deadSet.add(plant);
+            plant = null;
+        }
+    }
+
+    public void clearProjectile(){
+        while(!projectiles.isEmpty()){
+            Projectile p = projectiles.poll();
+            deadSet.add(p);
+        }
+    }
+
+    public void removeProjectile(){
+        Iterator<Projectile> iter = projectiles.iterator();
+        while(iter.hasNext()){
+            Projectile p = iter.next();
+            if(checkProjectileDistance(p) && (zombies.isEmpty() || (!zombies.isEmpty() && p.getRealScreenX() > zombies.peek().getRealScreenX()))){
+                iter.remove();
+            }
+        }
+    }
+
+    public boolean checkZombieDistance(){
+        for(Zombie z: zombies){
+            if(z.getRealScreenX() <= GamePanel.LAST_TILE_RANGE){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean checkProjectileDistance(Projectile p){
+        if(GamePanel.SCREEN_WIDTH - p.getRealScreenX() <= GamePanel.LAST_TILE_RANGE){
+            return true;
+        }
+        return false;
     }
 
     public void update(){

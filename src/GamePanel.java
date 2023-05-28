@@ -1,6 +1,5 @@
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.io.IOException;
@@ -10,7 +9,6 @@ import javax.swing.JPanel;
 import sprites.plants.PeaShooter;
 import sprites.plants.Repeater;
 import sprites.plants.SunFlower;
-import sprites.plants.Walnut;
 import sprites.projectile.Projectile;
 import sprites.zombies.ConeHead;
 import sprites.zombies.FulkZombie;
@@ -19,13 +17,13 @@ import sprites.zombies.Zombie;
 
 public class GamePanel extends JPanel implements Runnable{
 
-    private final int screenCol = 9;
-    private final int screenRow = 5;
+    private static final int SCREEN_COL = 9;
+    private static final int SCREEN_ROW = 5;
 
-    private final int realScreenWidth = Tile.TILE_SIZE * screenCol;
-    private final int realScreenLength = Tile.TILE_SIZE * screenRow;
+    public static final int SCREEN_WIDTH = Tile.TILE_SIZE * SCREEN_COL;
+    public static final int SCREEN_LENGTH = Tile.TILE_SIZE * SCREEN_ROW;
 
-    private final int FPS = 30;
+    private static final int FPS = 30;
 
     private Tile[][] grid;
 
@@ -38,9 +36,10 @@ public class GamePanel extends JPanel implements Runnable{
 
     public static final int ZOMBIE_RANGE = 10;
     public static final int PROJECTILE_HITBOX = 3;
+    public static final int LAST_TILE_RANGE = 5;
 
     public GamePanel(PlantPanel pp, InfoPanel ip) throws IOException{
-        this.setPreferredSize(new Dimension(realScreenWidth, realScreenLength));
+        this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_LENGTH));
         this.setDoubleBuffered(true);
 
         this.plantPanel = pp;
@@ -50,17 +49,11 @@ public class GamePanel extends JPanel implements Runnable{
         this.sun = 50;
         this.wave = 0;
         
-        grid = new Tile[screenRow][screenCol];
+        grid = new Tile[SCREEN_ROW][SCREEN_COL];
         this.setBorder(BorderFactory.createLineBorder(Color.YELLOW));
-        this.setLayout(new GridLayout(screenRow, screenCol, 0, 0));
+        this.setLayout(new GridLayout(SCREEN_ROW, SCREEN_COL, 0, 0));
 
         setupGrid();
-
-        //grid[3][6].addPlant(new Walnut(6, 3));
-        //grid[3][1].addProjectile(new Projectile(1, 3));
-        //grid[2][8].addZombie(new ConeHead(8, 2));
-        //grid[3][8].addZombie(new KingKwong(8, 3));
-        // grid[3][8].addZombie(new KingKwong(8, 3));
     }
 
     public void setupGrid(){
@@ -77,16 +70,11 @@ public class GamePanel extends JPanel implements Runnable{
     {
         double drawInterval = 1000000000 / FPS;
         double nextDrawTime = System.nanoTime() + drawInterval;
-        //double gameStartTime = System.currentTimeMillis()/1000;
         int frames = 0;
 
-        while(true){
-
-            //double timePast = (System.currentTimeMillis()/1000) - gameStartTime;
-            //System.out.println(timePast);
-            //System.out.println("frames : " + frames);
+        while(health > 0){
+            
             update(frames);
-
 
             repaint();
 
@@ -105,12 +93,15 @@ public class GamePanel extends JPanel implements Runnable{
                 e.printStackTrace();
             }
         }
-
     }
 
     public void update(int frame){
         addZombieWave(frame);
+        addSun(frame);
+
+        infoPanel.setHealth(health);
         infoPanel.setSun(sun);
+
         for(int r = 0; r < grid.length; r++){
             for(int c = 0; c < grid[r].length; c++){
                 if(grid[r][c].getPlant() instanceof PeaShooter || grid[r][c].getPlant() instanceof Repeater){
@@ -140,9 +131,14 @@ public class GamePanel extends JPanel implements Runnable{
                         Projectile p = iter.next();
 
                         if(p.hasMovedNextTile()){
-                            grid[r][c + 1].addProjectile(p);
-                            iter.remove();
-                            p.movedNextTile(false);
+                            if(c + 1 == SCREEN_COL){
+                                grid[r][c].removeProjectile();
+                            }
+                            else{
+                                grid[r][c + 1].addProjectile(p);
+                                iter.remove();
+                                p.movedNextTile(false);
+                            }
                         }
                     }
                 }
@@ -155,6 +151,10 @@ public class GamePanel extends JPanel implements Runnable{
                     }
                 }
 
+                if(c == 0 && grid[r][c].hasZombie() && grid[r][c].checkZombieDistance()){
+                    health--;
+                    clearRow(r);
+                }
             }
         }
     }
@@ -170,7 +170,6 @@ public class GamePanel extends JPanel implements Runnable{
                 }
                 else if(wave > 3 && wave <= 6){
                     int prob = (int) (Math.random() * 3);
-                    System.out.println("prob = " + prob);
                     if(prob < 2){
                         grid[row][col].addZombie(new FulkZombie(col, row));
                     }
@@ -204,7 +203,7 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public boolean checkRow(int startRow, int startCol){
-        for(int c = startCol; c < screenCol; c++){
+        for(int c = startCol; c < SCREEN_COL; c++){
             if(grid[startRow][c].hasZombie()){
                 return true;
             }
@@ -212,9 +211,23 @@ public class GamePanel extends JPanel implements Runnable{
         return false;
     }
 
+    public void clearRow(int startRow){
+        for(int c = 0; c < SCREEN_COL; c++){
+            grid[startRow][c].clearPlant();
+            grid[startRow][c].clearProjectile();
+            grid[startRow][c].clearZombies();
+        }
+    }
+
     public Tile[][] getGrid(){
         return grid;
 
+    }
+
+    private void addSun(int frame){
+        if(frame != 0 && frame % 300 == 0){
+            incrementSun();
+        }
     }
 
     public void incrementSun(){
