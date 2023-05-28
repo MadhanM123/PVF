@@ -7,10 +7,10 @@ import javax.swing.ImageIcon;
 
 public class KingKwong extends Zombie{
 
-    public static final int FULL_HEALTH = 2000;
-    public static final int DAMAGE = 50;
+    public static final int FULL_HEALTH = 400;
+    public static final int DAMAGE = 200;
 
-    private static final int HEIGHT = 110;
+    private static final int HEIGHT = 120;
     private static final int WIDTH = 60;
 
     private static final int VERT_OFFSET = 0;
@@ -19,12 +19,12 @@ public class KingKwong extends Zombie{
     public static final int START_X = 900;
     public static final int START_Y = 0;
 
-    private static final int WALK_RATE = 5;
+    private static final int WALK_RATE = 10;
     private static final int TILE_THRESHOLD = 60;
     private static final int OFFSET = -13;  
 
     private static final int ATTACK_RATE = 90;
-    private static final int ACTION_RATE = 8;
+    private static final int ACTION_RATE = 4;
     private static final int DEATH_RATE = 10;
     
     private static final Image walk1Img = new ImageIcon("resources/sprites/zombies/kingKwong/walk1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
@@ -44,12 +44,13 @@ public class KingKwong extends Zombie{
         setCurrentImg(walk1Img);
     }
 
-    private void dropImp(){
-        
-    }
-
     public void update(State state){
-        if(state == State.IDLE){
+        if(state == State.REST){
+            if(comparePrevState(state)){
+                setCurrentImg(walk1Img);
+            }
+        }
+        else if(state == State.IDLE){
             if(comparePrevState(state)){
                 zeroWalkCounter();
                 setCurrentImg(walk1Img);
@@ -67,10 +68,8 @@ public class KingKwong extends Zombie{
                     setCurrentImg(walk1Img);
                 }
 
-                if(!getBattling()){
-                    setRealScreenX(getRealScreenX() + OFFSET + getIntersect());
-                    setIntersect(0);
-                }
+                setRealScreenX(getRealScreenX() + OFFSET + getIntersect());
+                setIntersect(0);
                 zeroWalkCounter();
             }
 
@@ -96,6 +95,7 @@ public class KingKwong extends Zombie{
                 }
                 else if(getCurrentImg() == action3Img){
                     setCurrentImg(action4Img);
+                    setDoneDamage(true);
                 }
                 else if(getCurrentImg() == action4Img){
                     setCurrentImg(action1Img);

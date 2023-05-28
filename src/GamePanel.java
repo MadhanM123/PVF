@@ -8,6 +8,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import sprites.plants.PeaShooter;
 import sprites.plants.Repeater;
+import sprites.plants.SunFlower;
 import sprites.plants.Walnut;
 import sprites.projectile.Projectile;
 import sprites.zombies.ConeHead;
@@ -45,7 +46,7 @@ public class GamePanel extends JPanel implements Runnable{
         this.infoPanel = ip;
 
         this.health = 5;
-        this.sun = 0;
+        this.sun = 50;
         this.wave = 0;
         
         grid = new Tile[screenRow][screenCol];
@@ -54,11 +55,11 @@ public class GamePanel extends JPanel implements Runnable{
 
         setupGrid();
 
-        grid[3][6].addPlant(new Walnut(6, 3));
+        //grid[3][6].addPlant(new Walnut(6, 3));
         //grid[3][1].addProjectile(new Projectile(1, 3));
         //grid[2][8].addZombie(new ConeHead(8, 2));
-        // grid[3][8].addZombie(new FulkZombie(8, 3));
-        grid[3][8].addZombie(new KingKwong(8, 3));
+        //grid[3][8].addZombie(new KingKwong(8, 3));
+        // grid[3][8].addZombie(new KingKwong(8, 3));
     }
 
     public void setupGrid(){
@@ -104,7 +105,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void update(){
         infoPanel.setWave(wave++);
-        infoPanel.setSun(sun++);
+        infoPanel.setSun(sun);
         for(int r = 0; r < grid.length; r++){
             for(int c = 0; c < grid[r].length; c++){
                 if(grid[r][c].getPlant() instanceof PeaShooter || grid[r][c].getPlant() instanceof Repeater){
@@ -126,6 +127,7 @@ public class GamePanel extends JPanel implements Runnable{
                         }
                     }
                 }
+
                 if(grid[r][c].projectileMoved()){
                     Iterator<Projectile> iter = grid[r][c].getProjectiles().iterator();
 
@@ -139,6 +141,15 @@ public class GamePanel extends JPanel implements Runnable{
                         }
                     }
                 }
+
+                if(grid[r][c].getPlant() instanceof SunFlower){
+                    SunFlower sf = (SunFlower) grid[r][c].getPlant();
+                    if(sf.getProduced()){
+                        incrementSun();
+                        sf.setProduced(false);
+                    }
+                }
+
             }
         }
     }
@@ -167,7 +178,11 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void incrementSun(){
-        sun++;
+        sun += 10;
+    }
+
+    public void decrementSun(int dec){
+        sun -= dec;
     }
 
     public int getSun(){

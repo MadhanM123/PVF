@@ -25,7 +25,8 @@ public abstract class Sprite{
     public enum State{
         IDLE,
         ACTION,
-        DEATH
+        DEATH,
+        REST
     };
 
     private boolean doneDeath;
@@ -89,6 +90,10 @@ public abstract class Sprite{
 
     public void setGridY(int newY){
         gridY = newY;
+    }
+
+    public State getPrev(){
+        return prev;
     }
 
     public boolean comparePrevState(State s){

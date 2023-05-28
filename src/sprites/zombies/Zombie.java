@@ -11,11 +11,14 @@ public abstract class Zombie extends Sprite{
 
     private boolean battling;
 
+    private boolean doneDamage;
+
     public Zombie(int gridX, int gridY, int screenX, int screenY, int health, int damage, int attackRate){
         super(gridX, gridY, screenX, screenY, health, damage, attackRate);
         this.nextTile = false;
         this.intersect = 0;
         this.battling = false;
+        this.doneDamage = false;
     }
 
     public abstract void update(State state);
@@ -44,5 +47,13 @@ public abstract class Zombie extends Sprite{
 
     public void setBattling(boolean b){
         this.battling = b;
+    }
+
+    public boolean getDoneDamage(){
+        return doneDamage;
+    }
+
+    public void setDoneDamage(boolean doneDamage){
+        this.doneDamage = doneDamage;
     }
 }

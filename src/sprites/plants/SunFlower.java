@@ -41,15 +41,23 @@ public class SunFlower extends Plant {
 
     private static final Image sunImg =  new ImageIcon("resources/sprites/plants/sunflower/sf.sun.png").getImage().getScaledInstance(SUN_WIDTH, SUN_HEIGHT, Image.SCALE_SMOOTH);
 
-    private int produceCounter;
+    private boolean produced;
 
     private int holdingTime;
 
     public SunFlower(int gridX, int gridY){
         super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE);
         setCurrentImg(idle1Img);
-        this.produceCounter = 0;
+        this.produced = false;
         this.holdingTime = 0;
+    }
+    
+    public boolean getProduced(){
+        return produced;
+    }
+
+    public void setProduced(boolean p){
+        this.produced = p;
     }
 
     public void update(State state){ 
@@ -94,6 +102,7 @@ public class SunFlower extends Plant {
                     setCurrentImg(sunProduce2Img);
                     zeroAttackCounter();
                     holdingTime++;
+                    produced = true;
                 }
                 zeroActionAniCounter();
             }

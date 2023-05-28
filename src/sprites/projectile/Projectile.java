@@ -8,7 +8,7 @@ import sprites.Sprite;
 public class Projectile extends Sprite {
 
     public static final int FULL_HEALTH = 1;
-    public static final int DAMAGE = 10;
+    public static final int DAMAGE = 100;
 
     private static final int HEIGHT = 20;
     private static final int WIDTH = 20;
@@ -19,17 +19,16 @@ public class Projectile extends Sprite {
     private static final int VERT_OFFSET = 40;
     private static final int HORIZ_OFFSET = 60;
 
-    private static final int OFFSET = 5;
+    private static final int OFFSET = 10;
 
     private static final int TILE_THRESHOLD = 6;
 
-    private static final int MOVE_RATE = 1;
-    private static final int ACTION_RATE = 5;
+    private static final int MOVE_RATE = 0;
     private static final int DEATH_RATE = 10;
 
     private static final Image idleImg = new ImageIcon("resources/sprites/projectile/projectile.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
 
-    private static final Image deathImg = new ImageIcon("resources/sprites/projectile/impact.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
+    private static final Image deathImg = new ImageIcon("resources/sprites/projectile/impact1.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
 
     private boolean nextTile;
 
@@ -57,7 +56,6 @@ public class Projectile extends Sprite {
 
             if(getRealScreenX() > (getGridX() + 1) * TILE_SIZE - WIDTH - TILE_THRESHOLD){
                 setGridX(getGridX() + 1);
-                System.out.println(getGridX());
                 movedNextTile(true);
                 zeroWalkCounter();
             }

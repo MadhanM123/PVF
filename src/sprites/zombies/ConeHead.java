@@ -6,14 +6,14 @@ import javax.swing.ImageIcon;
 
 public class ConeHead extends Zombie{
 
-    public static final int FULL_HEALTH = 10;
-    public static final int DAMAGE = 10;
+    public static final int FULL_HEALTH = 1000;
+    public static final int DAMAGE = 500;
 
     private static final int HEIGHT = 110;
     private static final int WIDTH = 60;
 
     private static final int VERT_OFFSET = 3;
-    private static final int HORIZ_OFFSET = 4;
+    private static final int HORIZ_OFFSET = 70;
 
     public static final int START_X = 900;
     public static final int START_Y = 0;
@@ -43,7 +43,12 @@ public class ConeHead extends Zombie{
     }
     
     public void update(State state){
-        if(state == State.IDLE){
+        if(state == State.REST){
+            if(comparePrevState(state)){
+                setCurrentImg(walk1Img);
+            }
+        }
+        else if(state == State.IDLE){
             if(comparePrevState(state)){
                 zeroWalkCounter();
                 setCurrentImg(walk1Img);
@@ -60,6 +65,7 @@ public class ConeHead extends Zombie{
                 else if(getCurrentImg() == walk3Img){
                     setCurrentImg(walk1Img);
                 }
+
                 setRealScreenX(getRealScreenX() + OFFSET + getIntersect());
                 setIntersect(0);
                 zeroWalkCounter();
@@ -84,9 +90,11 @@ public class ConeHead extends Zombie{
                 }
                 else if(getCurrentImg() == action2Img){
                     setCurrentImg(action3Img);
+                    setDoneDamage(true);
                 }
                 else if(getCurrentImg() == action3Img){
                     setCurrentImg(action1Img);
+                    zeroAttackCounter();
                 }
                 zeroActionAniCounter();
             }

@@ -136,7 +136,7 @@ public class PlantPanel extends JPanel{
         }
 
         public void attemptAddPlant(Tile tile){
-            if(tile.hasNoPlant() && prevPlantClicked != null && prevCost > 0){
+            if(!tile.hasPlant() && !tile.hasZombie() && prevPlantClicked != null && prevCost > 0){
                 if(prevPlantClicked == sunflowerButton){
                     tile.addPlant(new SunFlower(tile.getGridX(), tile.getGridY()));
                 }
@@ -149,11 +149,13 @@ public class PlantPanel extends JPanel{
                 else if(prevPlantClicked == repeaterButton){
                     tile.addPlant(new Repeater(tile.getGridX(), tile.getGridY()));
                 }
+                
+                gamePanel.decrementSun(prevCost);
                 clearButton(prevPlantClicked);
                 prevPlantClicked = null;
                 prevCost = 0;
             }
-            else if(tile.hasNoPlant() && prevPlantClicked != null){
+            else if(!tile.hasPlant() && prevPlantClicked != null){
                 clearButton(prevPlantClicked);
                 prevPlantClicked = null;
                 prevCost = 0;

@@ -5,7 +5,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class Walnut extends Plant{
-    public static final int FULL_HEALTH = 10000;
+    public static final int FULL_HEALTH = 1000;
     public static final int DAMAGE = 0;
 
     public static final int COST = 10;
