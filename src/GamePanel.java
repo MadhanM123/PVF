@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import sprites.plants.PeaShooter;
 import sprites.plants.Repeater;
 import sprites.plants.SunFlower;
+import sprites.plants.Walnut;
 import sprites.projectile.Projectile;
 import sprites.zombies.ConeHead;
 import sprites.zombies.FulkZombie;
@@ -82,6 +83,8 @@ public class GamePanel extends JPanel implements Runnable{
                 this.add(grid[r][c]);
             }
         }
+
+        grid[3][8].addZombie(new ConeHead(8, 3, 0));
     }
 
     /**
@@ -118,7 +121,7 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     private void update(){
-        addZombieWave();
+        // addZombieWave();
         addSun();
 
         infoPanel.setHealth(health);
