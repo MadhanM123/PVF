@@ -6,14 +6,14 @@ import javax.swing.ImageIcon;
 
 public class FulkZombie extends Zombie{
 
-    public static final int FULL_HEALTH = 10;
-    public static final int DAMAGE = 10;
+    public static final int FULL_HEALTH = 1000;
+    public static final int DAMAGE = 200;
 
     private static final int HEIGHT = 110;
     private static final int WIDTH = 60;
 
-    private static final int VERT_OFFSET = 3;
-    private static final int HORIZ_OFFSET = 4;
+    private static final int VERT_OFFSET = 1;
+    private static final int HORIZ_OFFSET = 50;
 
     public static final int START_X = 900;
     public static final int START_Y = 0;
@@ -22,7 +22,8 @@ public class FulkZombie extends Zombie{
     private static final int TILE_THRESHOLD = 60;
     private static final int OFFSET = -10;
 
-    private static final int ACTION_RATE = 5;
+    private static final int ATTACK_RATE = 90;
+    private static final int ACTION_RATE = 10;
     private static final int DEATH_RATE = 10;
 
     private static final Image walk1Img = new ImageIcon("resources/sprites/zombies/zombie/walk1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
@@ -38,12 +39,17 @@ public class FulkZombie extends Zombie{
 
 
     public FulkZombie(int gridX, int gridY){
-        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE);
+        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE);
         setCurrentImg(walk1Img);
     }
 
     public void update(State state){
-        if(state == State.IDLE){
+        if(state == State.REST){
+            if(comparePrevState(state)){
+                setCurrentImg(walk1Img);
+            }
+        }
+        else if(state == State.IDLE){
             if(comparePrevState(state)){
                 zeroWalkCounter();
                 setCurrentImg(walk1Img);
@@ -60,6 +66,7 @@ public class FulkZombie extends Zombie{
                 else if(getCurrentImg() == walk3Img){
                     setCurrentImg(walk1Img);
                 }
+
                 setRealScreenX(getRealScreenX() + OFFSET + getIntersect());
                 setIntersect(0);
                 zeroWalkCounter();
@@ -73,22 +80,24 @@ public class FulkZombie extends Zombie{
         }
         else if(state == State.ACTION){
             if(comparePrevState(state)){
-                zeroActionCounter();
+                zeroActionAniCounter();
                 setCurrentImg(action1Img);
             }
 
-            tickActionCounter();
-            if(getActionCounter() > ACTION_RATE){
+            tickActionAniCounter();
+            if(getActionAniCounter() > ACTION_RATE){
                 if(getCurrentImg() == action1Img){
                     setCurrentImg(action2Img);
                 }
                 else if(getCurrentImg() == action2Img){
                     setCurrentImg(action3Img);
+                    setDoneDamage(true);
                 }
                 else if(getCurrentImg() == action3Img){
                     setCurrentImg(action1Img);
+                    zeroAttackCounter();
                 }
-                zeroActionCounter();
+                zeroActionAniCounter();
             }
         }
         else if(state == State.DEATH){

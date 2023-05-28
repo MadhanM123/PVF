@@ -45,57 +45,64 @@ public class PlantPanel extends JPanel{
         sunflowerButton = new JButton();
         peashooterButton = new JButton();
         walnutButton = new JButton();
+        repeaterButton = new JButton();
 
         sunflowerButton.setBackground(Color.WHITE);
         peashooterButton.setBackground(Color.WHITE);
         walnutButton.setBackground(Color.WHITE);
+        repeaterButton.setBackground(Color.WHITE);
 
         sunflowerButton.setIcon(new ImageIcon(new ImageIcon("resources/sprites/plants/sunflower/sf.idle2.png").getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH)));
         peashooterButton.setIcon(new ImageIcon(new ImageIcon("resources/sprites/plants/peashooter/ps.idle1.png").getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH)));
         walnutButton.setIcon(new ImageIcon(new ImageIcon("resources/sprites/plants/walnut/wn.idle.png").getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH)));
+        repeaterButton.setIcon(new ImageIcon(new ImageIcon("resources/sprites/plants/repeater/rp.idle1.png").getImage().getScaledInstance(buttonWidth + 20, buttonHeight + 20, Image.SCALE_SMOOTH)));
 
         sunflowerCostLabel = new JLabel("" + SunFlower.COST, SwingConstants.CENTER);
         peashooterCostLabel = new JLabel("" + PeaShooter.COST, SwingConstants.CENTER);
         walnutCostLabel = new JLabel("" + Walnut.COST, SwingConstants.CENTER);
+        repeaterCostLabel = new JLabel("" + Repeater.COST, SwingConstants.CENTER);
 
         sunflowerCostLabel.setFont(new Font("Serif", Font.BOLD, 50));
         peashooterCostLabel.setFont(new Font("Serif", Font.BOLD, 50));
         walnutCostLabel.setFont(new Font("Serif", Font.BOLD, 50));
+        repeaterCostLabel.setFont(new Font("Serif", Font.BOLD, 50));
 
         sunflowerCostLabel.setForeground(Color.GREEN);
         peashooterCostLabel.setForeground(Color.GREEN);
         walnutCostLabel.setForeground(Color.GREEN);
+        repeaterCostLabel.setForeground(Color.GREEN);
 
         sunflowerButton.setLayout(new BorderLayout());
         peashooterButton.setLayout(new BorderLayout());
         walnutButton.setLayout(new BorderLayout());
+        repeaterButton.setLayout(new BorderLayout());
 
         sunflowerButton.add(sunflowerCostLabel, BorderLayout.PAGE_END);
         peashooterButton.add(peashooterCostLabel, BorderLayout.PAGE_END);
         walnutButton.add(walnutCostLabel, BorderLayout.PAGE_END);
+        repeaterButton.add(repeaterCostLabel, BorderLayout.PAGE_END);
 
         sunflowerButton.setBorder(BorderFactory.createLineBorder(Color.PINK));
         peashooterButton.setBorder(BorderFactory.createLineBorder(Color.PINK));
         walnutButton.setBorder(BorderFactory.createLineBorder(Color.PINK));
+        repeaterButton.setBorder(BorderFactory.createLineBorder(Color.PINK));
 
         this.setLayout(new GridLayout(2, 2));
 
         this.add(sunflowerButton);
         this.add(walnutButton);
         this.add(peashooterButton);
+        this.add(repeaterButton);
 
         plantSelector = new PlantSelector();
 
         sunflowerButton.addActionListener(plantSelector);
         walnutButton.addActionListener(plantSelector);
         peashooterButton.addActionListener(plantSelector);
+        repeaterButton.addActionListener(plantSelector);
 
         this.setBorder(BorderFactory.createLineBorder(Color.GREEN));
         this.setVisible(true);
-    }
-
-    public void update(){
-
     }
 
     private static void clearButton(JButton button){
@@ -129,7 +136,7 @@ public class PlantPanel extends JPanel{
         }
 
         public void attemptAddPlant(Tile tile){
-            if(tile.hasNoPlant() && prevPlantClicked != null && prevCost > 0){
+            if(!tile.hasPlant() && !tile.hasZombie() && prevPlantClicked != null && prevCost > 0){
                 if(prevPlantClicked == sunflowerButton){
                     tile.addPlant(new SunFlower(tile.getGridX(), tile.getGridY()));
                 }
@@ -142,11 +149,13 @@ public class PlantPanel extends JPanel{
                 else if(prevPlantClicked == repeaterButton){
                     tile.addPlant(new Repeater(tile.getGridX(), tile.getGridY()));
                 }
+                
+                gamePanel.decrementSun(prevCost);
                 clearButton(prevPlantClicked);
                 prevPlantClicked = null;
                 prevCost = 0;
             }
-            else if(tile.hasNoPlant() && prevPlantClicked != null){
+            else if(!tile.hasPlant() && prevPlantClicked != null){
                 clearButton(prevPlantClicked);
                 prevPlantClicked = null;
                 prevCost = 0;
