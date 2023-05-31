@@ -12,8 +12,8 @@ import javax.swing.ImageIcon;
  */
 public class KingKwong extends Zombie{
 
-    private static final int FULL_HEALTH = 400;
-    private static final int DAMAGE = 200;
+    private static final int FULL_HEALTH = 4000;
+    private static final int DAMAGE = 1000;
 
     private static final int HEIGHT = 180;
     private static final int WIDTH = 80;
@@ -24,7 +24,7 @@ public class KingKwong extends Zombie{
     private static final int TILE_THRESHOLD = 74;
     private static final int OFFSET = -13;  
 
-    private static final int WALK_RATE = 15;
+    private static final int WALK_RATE = 20;
     private static final int ATTACK_RATE = 90;
     private static final int ACTION_RATE = 4;
     private static final int DEATH_RATE = 5;

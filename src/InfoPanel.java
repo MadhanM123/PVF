@@ -46,7 +46,7 @@ public class InfoPanel extends JPanel {
         this.sunStr = new StringBuffer("SUN: ");
         setupSunBoard();
 
-        this.deathStr = "CS Teachers Ate Your Brain";
+        this.deathStr = "CS Teachers Ate Your Brain!";
         this.deathBoard = new JLabel(deathStr);
 
         setUpDeathBoard();

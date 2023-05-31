@@ -13,7 +13,7 @@ public class Walnut extends Plant{
     /**
      * {@value #FULL_HEALTH} Full health of Wallnut
      */
-    public static final int FULL_HEALTH = 1000;
+    public static final int FULL_HEALTH = 4000;
     private static final int DAMAGE = 0;
 
     /**

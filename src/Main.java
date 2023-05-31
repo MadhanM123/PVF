@@ -22,7 +22,7 @@ public class Main{
 
         // sound test
         MusicPlayer mp = new MusicPlayer();
-        mp.setFile(MusicPlayer.SNEK_TRACK);
+        mp.setFile(MusicPlayer.PVZ_TRACK);
         //mp.play();
         mp.loop();
 
@@ -44,7 +44,11 @@ public class Main{
         gp.run();
 
         ip.displayDeath();
-        Thread.sleep(2000);
+        mp.setFile(MusicPlayer.SCREAM);
+        mp.loop();
+        while(window.isActive()){
+            Thread.sleep(4000);
+        }
         System.exit(0);
     }
 }

@@ -24,6 +24,7 @@ public class MusicPlayer{
     public static final int POOL_TRACK = 6;
     public static final int PEA_SHOOT = 7;
     public static final int SPLAT = 8;
+    public static final int SCREAM = 9;
    
     /**
      * Initializes audio files
@@ -38,6 +39,7 @@ public class MusicPlayer{
         musicPaths[6] = new File("resources/sound/pool.wav");
         musicPaths[7] = new File("resources/sound/shoot.wav");
         musicPaths[8] = new File("resources/sound/splat.wav");
+        musicPaths[9] = new File("resources/sound/scream.wav");
 
     }
 
