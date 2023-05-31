@@ -4,10 +4,20 @@ import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-public class Repeater extends Plant{
-    public static final int FULL_HEALTH = 1000;
-    public static final int DAMAGE = 50;
+import music.MusicPlayer;
 
+/**
+ * The Reapter plant class
+ * @author Madhan M., Andrew X.
+ * @version 2023-05-28
+ */
+public class Repeater extends Plant{
+    private static final int FULL_HEALTH = 1000;
+    private static final int DAMAGE = 50;
+
+    /**
+     * {@value #COST} Cost of Reapter
+     */
     public static final int COST = 10;
 
     private static final int HEIGHT = 105;
@@ -28,12 +38,20 @@ public class Repeater extends Plant{
 
     private static final Image deathImg = idle2Img;
 
+    /**
+     * Initializes grid/screen coordinates, health, damage, and attack rate
+     * @param gridX grid x-coordinate starting from left
+     * @param gridY grid y-coordinate starting from top
+     */   
     public Repeater(int gridX, int gridY){
         super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE);
         setCurrentImg(idle1Img);
     }
 
     public void update(State state){
+        MusicPlayer mp = new MusicPlayer();
+        mp.setFile(7);
+
         if(state == State.IDLE){
             if(comparePrevState(state)){
                 zeroIdleCounter();
@@ -64,6 +82,7 @@ public class Repeater extends Plant{
                 }
                 else{
                     setCurrentImg(shootImg);
+                    mp.play();
                     zeroAttackCounter();
                     setShot(true);
                 }

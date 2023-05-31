@@ -1,9 +1,14 @@
 package sprites.zombies;
+import music.*;
 
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
-
+/**
+ * The Conehead zomibe class
+ * @author Madhan M., Andrew X., Nate M.
+ * @version 2023-05-28
+ */
 public class ConeHead extends Zombie{
 
     private static final int FULL_HEALTH = 1000;
@@ -19,7 +24,7 @@ public class ConeHead extends Zombie{
     private static final int OFFSET = -10;
 
     private static final int WALK_RATE = 3;
-    private static final int ATTACK_RATE = 15;
+    private static final int ATTACK_RATE = 25;
     private static final int ACTION_RATE = 3;
     private static final int DEATH_RATE = 3;
 
@@ -51,6 +56,8 @@ public class ConeHead extends Zombie{
     }
     
     public void update(State state){
+        MusicPlayer mp = new MusicPlayer();
+
         if(state == State.REST){
             if(comparePrevState(state)){
                 setCurrentImg(walk1Img);
@@ -81,7 +88,7 @@ public class ConeHead extends Zombie{
 
             if(getScreenX() < getGridX() * TILE_SIZE - TILE_THRESHOLD){
                 setGridX(getGridX() - 1);
-                movedNextTile(true);
+                setMovedNextTile(true);
                 zeroIdleCounter();
             }
         }
@@ -94,6 +101,8 @@ public class ConeHead extends Zombie{
             tickActionAniCounter();
             if(getActionAniCounter() > ACTION_RATE){
                 if(getCurrentImg() == action1Img){
+                    mp.setFile(2);
+                    mp.play();
                     setCurrentImg(action2Img);
                 }
                 else if(getCurrentImg() == action2Img){

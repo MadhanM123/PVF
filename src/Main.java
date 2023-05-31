@@ -2,6 +2,8 @@ import java.awt.BorderLayout;
 import java.io.IOException;
 import javax.swing.JFrame;
 
+import music.MusicPlayer;
+
 public class Main{
     
     public static void main(String[] args) throws IOException {
@@ -13,8 +15,8 @@ public class Main{
 
         // sound test
         MusicPlayer mp = new MusicPlayer();
-        mp.setFile(0);
-        mp.play();
+        mp.setFile(6);
+        //mp.play();
         mp.loop();
 
         PlantPanel pp = new PlantPanel();

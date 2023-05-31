@@ -1,23 +1,25 @@
 package sprites.zombies;
+import music.*;
 
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-
+/**
+ * The KingKwong zomibe class
+ * @author Madhan M., Andrew X., Nate M.
+ * @version 2023-05-28
+ */
 public class KingKwong extends Zombie{
 
-    public static final int FULL_HEALTH = 400;
-    public static final int DAMAGE = 200;
+    private static final int FULL_HEALTH = 400;
+    private static final int DAMAGE = 200;
 
-    private static final int HEIGHT = 120;
-    private static final int WIDTH = 60;
+    private static final int HEIGHT = 180;
+    private static final int WIDTH = 80;
 
-    private static final int VERT_OFFSET = 0;
+    private static final int VERT_OFFSET = -70;
     private static final int HORIZ_OFFSET = 10;
-
-    public static final int START_X = 900;
-    public static final int START_Y = 0;
 
     private static final int WALK_RATE = 10;
     private static final int TILE_THRESHOLD = 60;
@@ -38,26 +40,45 @@ public class KingKwong extends Zombie{
 
     private static final Image death1Img = walk1Img;
     private static final Image death2Img = walk2Img;
-
+    
+     /**
+     * {@value #NAME} Name of KingKwong
+     */
     public static final String NAME = "KingKwong";
 
     private boolean shouldSpawn;
 
+    /**
+     * Initializes grid/screen coordinates, health, damage, and attack rate
+     * @param gridX grid x-coordinate starting from left
+     * @param gridY grid y-coordinate starting from top
+     * @param x_offset amount to offset initial screen x-coordinate by
+     */
     public KingKwong(int gridX, int gridY, int x_offset){
         super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE, NAME);
         setCurrentImg(walk1Img);
         this.shouldSpawn = true;
     }
 
+    /**
+     * returns if the KingKwong should spawn
+     * @return if the KingKwong should spawn
+     */
     public boolean getShouldSpawn(){
         return shouldSpawn;
     }
 
+    /**
+     * sets if the KingKwong should spawn
+     * @param shouldSpawn spawn condition
+     */
     public void setShouldSpawn(boolean shouldSpawn){
         this.shouldSpawn = shouldSpawn;
     }
 
     public void update(State state){
+        MusicPlayer mp = new MusicPlayer();
+
         if(state == State.REST){
             if(comparePrevState(state)){
                 setCurrentImg(walk1Img);
@@ -72,6 +93,8 @@ public class KingKwong extends Zombie{
             tickIdleCounter();
             if(getIdleCounter() > WALK_RATE){
                 if(getCurrentImg() == walk1Img){
+                    mp.setFile(3);
+                    mp.play();
                     setCurrentImg(walk2Img);
                 }
                 else if(getCurrentImg() == walk2Img){
@@ -88,7 +111,7 @@ public class KingKwong extends Zombie{
 
             if(getScreenX() < getGridX() * TILE_SIZE - TILE_THRESHOLD){
                 setGridX(getGridX() - 1);
-                movedNextTile(true);
+                setMovedNextTile(true);
                 zeroIdleCounter();
             }
         }
@@ -101,6 +124,8 @@ public class KingKwong extends Zombie{
             tickActionAniCounter();
             if(getActionAniCounter() > ACTION_RATE){
                 if(getCurrentImg() == action1Img){
+                    mp.setFile(3);
+                    mp.play();
                     setCurrentImg(action2Img);
                 }
                 else if(getCurrentImg() == action2Img){
@@ -121,6 +146,8 @@ public class KingKwong extends Zombie{
             if(comparePrevState(state)){
                 zeroDeathCounter();
                 setCurrentImg(death1Img);
+                mp.setFile(4);
+                mp.play();
             }
 
             tickDeathCounter();

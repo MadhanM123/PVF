@@ -84,7 +84,7 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
 
-        grid[3][8].addZombie(new ConeHead(8, 3, 0));
+        grid[3][8].addZombie(new KingKwong(8,3,0));
     }
 
     /**
@@ -121,7 +121,7 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     private void update(){
-        // addZombieWave();
+        addZombieWave();
         addSun();
 
         infoPanel.setHealth(health);
@@ -144,7 +144,7 @@ public class GamePanel extends JPanel implements Runnable{
                         if(z.hasMovedNextTile()){
                             grid[r][c - 1].addZombie(z);
                             iter.remove();
-                            z.movedNextTile(false);
+                            z.setMovedNextTile(false);
                         }
                     }
                 }
@@ -192,7 +192,7 @@ public class GamePanel extends JPanel implements Runnable{
    
         if(frame % 300 == 0 ){
             infoPanel.setWave(wave++);
-            for(int i = 0; i < frame/200; i++){
+            for(int i = 0; i < frame/300; i++){
                 row = (int) (Math.random()*5);
                 if(wave <= 3){
                     grid[row][col].addZombie(new FulkZombie(col, row, grid[row][col].countZombie(FulkZombie.NAME) * ZOMBIE_RANGE));
