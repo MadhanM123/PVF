@@ -1,5 +1,5 @@
 package sprites.zombies;
-import music.*;
+import music.MusicPlayer;
 
 import java.awt.Graphics;
 import java.awt.Image;
@@ -53,11 +53,10 @@ public class ConeHead extends Zombie{
     public ConeHead(int gridX, int gridY, int x_offset){
         super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET + x_offset, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE, NAME);
         setCurrentImg(walk1Img);
+        setClip(MusicPlayer.ZOMBIE_BITE);
     }
     
     public void update(State state){
-        MusicPlayer mp = new MusicPlayer();
-
         if(state == State.REST){
             if(comparePrevState(state)){
                 setCurrentImg(walk1Img);
@@ -101,8 +100,7 @@ public class ConeHead extends Zombie{
             tickActionAniCounter();
             if(getActionAniCounter() > ACTION_RATE){
                 if(getCurrentImg() == action1Img){
-                    mp.setFile(2);
-                    mp.play();
+                    playClip();
                     setCurrentImg(action2Img);
                 }
                 else if(getCurrentImg() == action2Img){

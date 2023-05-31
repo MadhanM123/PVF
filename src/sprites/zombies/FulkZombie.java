@@ -1,5 +1,5 @@
 package sprites.zombies;
-import music.*;
+import music.MusicPlayer;
  
 import java.awt.Graphics;
 import java.awt.Image;
@@ -21,11 +21,14 @@ public class FulkZombie extends Zombie{
     private static final int VERT_OFFSET = 10;
     private static final int HORIZ_OFFSET = 50;
 
-    private static final int WALK_RATE = 4;
+    public static final int START_X = 900;
+    public static final int START_Y = 0;
+
     private static final int TILE_THRESHOLD = 60;
     private static final int OFFSET = -10;
 
-    private static final int ATTACK_RATE = 25;
+    private static final int WALK_RATE = 4;
+    private static final int ATTACK_RATE = 90;
     private static final int ACTION_RATE = 10;
     private static final int DEATH_RATE = 5;
 
@@ -54,11 +57,10 @@ public class FulkZombie extends Zombie{
     public FulkZombie(int gridX, int gridY, int x_offset){
         super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE, NAME);
         setCurrentImg(walk1Img);
+        setClip(MusicPlayer.ZOMBIE_BITE);
     }
 
     public void update(State state){
-        MusicPlayer mp = new MusicPlayer();
-
         if(state == State.REST){
             if(comparePrevState(state)){
                 setCurrentImg(walk1Img);
@@ -102,8 +104,7 @@ public class FulkZombie extends Zombie{
             tickActionAniCounter();
             if(getActionAniCounter() > ACTION_RATE){
                 if(getCurrentImg() == action1Img){
-                    mp.setFile(2);
-                    mp.play();
+                    playClip();
                     setCurrentImg(action2Img);
                 }
                 else if(getCurrentImg() == action2Img){

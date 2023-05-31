@@ -14,6 +14,16 @@ public class MusicPlayer{
 
     private Clip clip;
     private File[] musicPaths = new File[30];
+
+    public static final int SNEK_TRACK = 0;
+    public static final int PVZ_TRACK = 1;
+    public static final int ZOMBIE_BITE = 2;
+    public static final int ZOMBIE_SMASH = 3;
+    public static final int KWONG_DEATH = 4;
+    public static final int SUN_PROD = 5;
+    public static final int POOL_TRACK = 6;
+    public static final int PEA_SHOOT = 7;
+    public static final int SPLAT = 8;
    
     /**
      * Initializes audio files
@@ -47,9 +57,10 @@ public class MusicPlayer{
     }
 
     /**
-     * Starts Audio I/O line
+     * Restarts Audio I/O line
      */
     public void play(){
+        clip.setFramePosition(0);
         clip.start();
     }
 

@@ -4,10 +4,10 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
-import java.util.Set;
 import java.util.Iterator;
 import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
@@ -27,7 +27,7 @@ public class Tile extends JComponent implements MouseListener{
     private Queue<Zombie> zombies;
     private Plant plant;
     private Queue<Projectile> projectiles;
-    private Set<Sprite> deadSet;
+    private List<Sprite> deadSet;
 
     private int gridX;
     private int gridY;
@@ -63,12 +63,12 @@ public class Tile extends JComponent implements MouseListener{
         this.shouldShoot = false;
 
         this.plant = null;
-        this.zombies = new LinkedList<Zombie>();
-        this.deadSet = new HashSet<>();
+        this.zombies = new LinkedList<>();
+        this.deadSet = new ArrayList<>();
         this.projectiles = new LinkedList<>();
 
         this.setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
-        this.setBorder(BorderFactory.createLineBorder(Color.GREEN));
+        this.setBorder(BorderFactory.createLineBorder(new Color(0, 180, 0)));
         this.addMouseListener(this);
     }
 

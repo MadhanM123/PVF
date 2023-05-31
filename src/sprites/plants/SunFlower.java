@@ -33,7 +33,7 @@ public class SunFlower extends Plant {
 
     private static final int ACTION_RATE = 4;
     private static final int DEATH_RATE = 10;
-    private static final int ATTACK_RATE = 250;
+    private static final int ATTACK_RATE = 150;
 
     private static final int HOLD_TIME = 30;
 
@@ -65,6 +65,7 @@ public class SunFlower extends Plant {
         setCurrentImg(idle1Img);
         this.produced = false;
         this.holdingTime = 0;
+        setClip(MusicPlayer.SUN_PROD);
     }
     
     /**
@@ -84,10 +85,6 @@ public class SunFlower extends Plant {
     }
 
     public void update(State state){ 
-        MusicPlayer mp = new MusicPlayer();
-        mp.setFile(5);
-
-
         if(state == State.IDLE){
             if(comparePrevState(state)){
                 zeroIdleCounter();
@@ -129,8 +126,8 @@ public class SunFlower extends Plant {
                     setCurrentImg(sunProduce2Img);
                     zeroAttackCounter();
                     holdingTime++;
-                    mp.play();
                     produced = true;
+                    playClip();
                 }
                 zeroActionAniCounter();
             }

@@ -57,8 +57,8 @@ public class PlantPanel extends JPanel{
         walnutButton.setBackground(Color.WHITE);
         repeaterButton.setBackground(Color.WHITE);
 
-        sunflowerButton.setIcon(new ImageIcon(new ImageIcon("resources/sprites/plants/sunflower/sf.idle2.png").getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH)));
-        peashooterButton.setIcon(new ImageIcon(new ImageIcon("resources/sprites/plants/peashooter/ps.idle1.png").getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH)));
+        sunflowerButton.setIcon(new ImageIcon(new ImageIcon("resources/sprites/plants/sunflower/sf.idle2.png").getImage().getScaledInstance(buttonWidth + 20, buttonHeight + 20, Image.SCALE_SMOOTH)));
+        peashooterButton.setIcon(new ImageIcon(new ImageIcon("resources/sprites/plants/peashooter/ps.idle1.png").getImage().getScaledInstance(buttonWidth + 10, buttonHeight, Image.SCALE_SMOOTH)));
         walnutButton.setIcon(new ImageIcon(new ImageIcon("resources/sprites/plants/walnut/wn.idle.png").getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_SMOOTH)));
         repeaterButton.setIcon(new ImageIcon(new ImageIcon("resources/sprites/plants/repeater/rp.idle1.png").getImage().getScaledInstance(buttonWidth + 20, buttonHeight + 20, Image.SCALE_SMOOTH)));
 

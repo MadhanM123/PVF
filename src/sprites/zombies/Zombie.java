@@ -13,8 +13,6 @@ public abstract class Zombie extends Sprite{
 
     private int intersect;
 
-    private boolean battling;
-
     private boolean doneDamage;
 
     private final String name;
@@ -34,7 +32,6 @@ public abstract class Zombie extends Sprite{
         super(gridX, gridY, screenX, screenY, health, damage, attackRate);
         this.nextTile = false;
         this.intersect = 0;
-        this.battling = false;
         this.doneDamage = false;
         this.name = name;
     }

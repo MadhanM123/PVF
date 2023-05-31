@@ -1,12 +1,19 @@
 import java.awt.BorderLayout;
-import java.io.IOException;
 import javax.swing.JFrame;
-
 import music.MusicPlayer;
 
+/**
+ * The Main class holds a JFrame that holds the main panels, a music player, and calls the end screen.
+ * @author Madhan M., Nate M.
+ * @version 2023-30-05
+ */
 public class Main{
-    
-    public static void main(String[] args) throws IOException {
+    /**
+     * Creates window and adds panels. Plays the music and displays end screen after death.
+     * @param args No parameters
+     * @throws InterruptedException If sleep thread is interrupted
+     */
+    public static void main(String[] args) throws InterruptedException {
         
         JFrame window = new JFrame();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -15,7 +22,7 @@ public class Main{
 
         // sound test
         MusicPlayer mp = new MusicPlayer();
-        mp.setFile(6);
+        mp.setFile(MusicPlayer.SNEK_TRACK);
         //mp.play();
         mp.loop();
 
@@ -36,14 +43,8 @@ public class Main{
           
         gp.run();
 
-        try
-        {
-            Thread.sleep(2000);
-        }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
+        ip.displayDeath();
+        Thread.sleep(2000);
         System.exit(0);
     }
 }

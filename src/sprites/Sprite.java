@@ -2,6 +2,7 @@ package sprites;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import music.MusicPlayer;
 
 /**
  * Abstract base class for all sprites that holds coordinates, health, damage, attack rate, and counters
@@ -59,6 +60,8 @@ public abstract class Sprite{
 
     private Image currentImg;
 
+    private MusicPlayer mp;
+
     /**
      * {@value #TILE_SIZE} Length of Tile
      */
@@ -87,6 +90,7 @@ public abstract class Sprite{
         this.idleCounter = 0;
         this.deathCounter = 0;
         this.attackCounter = 0;
+        this.mp = new MusicPlayer();
     }
 
     /**
@@ -331,5 +335,13 @@ public abstract class Sprite{
     public boolean attackReady(){
         attackCounter++;
         return attackCounter > attackRate;
+    }
+
+    public void setClip(int ind){
+        mp.setFile(ind);
+    }
+
+    public void playClip(){
+        mp.play();
     }
 }

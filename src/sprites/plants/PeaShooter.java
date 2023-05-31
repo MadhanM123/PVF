@@ -3,7 +3,6 @@ package sprites.plants;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
-
 import music.MusicPlayer;
 
 /**
@@ -16,8 +15,8 @@ public class PeaShooter extends Plant{
     private static final int FULL_HEALTH = 2000;
     private static final int DAMAGE = 10;
 
-     /**
-     * {@value #COST} Cost of Peashooter
+    /**
+     * {@value #COST} Cost of PeaShooter
      */
     public static final int COST = 10;
 
@@ -27,7 +26,7 @@ public class PeaShooter extends Plant{
     private static final int VERT_OFFSET = 30;
     private static final int HORIZ_OFFSET = -15;
 
-    public static final int IDLE_RATE = 5;
+    private static final int IDLE_RATE = 5;
     private static final int ACTION_RATE = 10;
     private static final int DEATH_RATE = 10;
     private static final int ATTACK_RATE = 60;
@@ -47,12 +46,10 @@ public class PeaShooter extends Plant{
     public PeaShooter(int gridX, int gridY){
         super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE);
         setCurrentImg(idle1Img);
+        setClip(MusicPlayer.PEA_SHOOT);
     }
 
     public void update(State state){
-        MusicPlayer mp = new MusicPlayer();
-        mp.setFile(7);
-
         if(state == State.IDLE){
             if(comparePrevState(state)){
                 zeroIdleCounter();
@@ -83,7 +80,7 @@ public class PeaShooter extends Plant{
                 }
                 else{
                     setCurrentImg(shootImg);
-                    mp.play();
+                    playClip();
                     zeroAttackCounter();
                     setShot(true);
                 }

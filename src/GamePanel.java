@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import sprites.plants.PeaShooter;
 import sprites.plants.Repeater;
 import sprites.plants.SunFlower;
-import sprites.plants.Walnut;
 import sprites.projectile.Projectile;
 import sprites.zombies.ConeHead;
 import sprites.zombies.FulkZombie;
@@ -83,8 +82,6 @@ public class GamePanel extends JPanel implements Runnable{
                 this.add(grid[r][c]);
             }
         }
-
-        grid[3][8].addZombie(new KingKwong(8,3,0));
     }
 
     /**
@@ -165,7 +162,7 @@ public class GamePanel extends JPanel implements Runnable{
                             else{
                                 grid[r][c + 1].addProjectile(p);
                                 iter.remove();
-                                p.movedNextTile(false);
+                                p.setMovedNextTile(false);
                             }
                         }
                     }
@@ -190,7 +187,7 @@ public class GamePanel extends JPanel implements Runnable{
     private void addZombieWave(){
         int col = SCREEN_COL - 1, row = 0;
    
-        if(frame % 300 == 0 ){
+        if(frame % 30 == 0 ){
             infoPanel.setWave(wave++);
             for(int i = 0; i < frame/300; i++){
                 row = (int) (Math.random()*5);

@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 import music.MusicPlayer;
 
 /**
- * The Reapter plant class
+ * The Repeater plant class
  * @author Madhan M., Andrew X.
  * @version 2023-05-28
  */
@@ -16,7 +16,7 @@ public class Repeater extends Plant{
     private static final int DAMAGE = 50;
 
     /**
-     * {@value #COST} Cost of Reapter
+     * {@value #COST} Cost of Repeater
      */
     public static final int COST = 10;
 
@@ -46,12 +46,10 @@ public class Repeater extends Plant{
     public Repeater(int gridX, int gridY){
         super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE);
         setCurrentImg(idle1Img);
+        setClip(MusicPlayer.PEA_SHOOT);
     }
 
     public void update(State state){
-        MusicPlayer mp = new MusicPlayer();
-        mp.setFile(7);
-
         if(state == State.IDLE){
             if(comparePrevState(state)){
                 zeroIdleCounter();
@@ -82,7 +80,7 @@ public class Repeater extends Plant{
                 }
                 else{
                     setCurrentImg(shootImg);
-                    mp.play();
+                    playClip();
                     zeroAttackCounter();
                     setShot(true);
                 }

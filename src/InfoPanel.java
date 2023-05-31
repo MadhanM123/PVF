@@ -25,6 +25,9 @@ public class InfoPanel extends JPanel {
     private StringBuffer sunStr;
     private JLabel sunBoard;
 
+    private String deathStr;
+    private JLabel deathBoard;
+
     private FlowLayout flowLayout;
 
     /**
@@ -42,6 +45,11 @@ public class InfoPanel extends JPanel {
         this.sunBoard = new JLabel();
         this.sunStr = new StringBuffer("SUN: ");
         setupSunBoard();
+
+        this.deathStr = "CS Teachers Ate Your Brain";
+        this.deathBoard = new JLabel(deathStr);
+
+        setUpDeathBoard();
 
         flowLayout = new FlowLayout();
         this.setLayout(flowLayout);
@@ -90,6 +98,18 @@ public class InfoPanel extends JPanel {
         sunBoard.setHorizontalTextPosition(JLabel.CENTER);
     }
 
+    private void setUpDeathBoard(){
+        deathBoard.setIcon(new ImageIcon(new ImageIcon("resources/sprites/scoreboard.png").getImage().getScaledInstance(boardWidth, boardHeight, Image.SCALE_DEFAULT)));
+        deathBoard.setVerticalAlignment(JLabel.CENTER);
+        deathBoard.setHorizontalAlignment(JLabel.CENTER);
+        deathBoard.setForeground(Color.PINK);
+
+        deathBoard.setText(deathStr);
+        deathBoard.setFont(new Font("DialogInput", Font.BOLD, 60));
+        deathBoard.setVerticalTextPosition(JLabel.CENTER);
+        deathBoard.setHorizontalTextPosition(JLabel.CENTER);
+    }
+
     /**
      * Sets the current amount of sun
      * @param sun New amount of sun
@@ -112,5 +132,12 @@ public class InfoPanel extends JPanel {
      */
     public void setHealth(int health){
         healthBoard.setText(healthStr.replace(8, healthStr.length(), "" + health).toString());
+    }
+
+    public void displayDeath(){
+        removeAll();
+        this.add(deathBoard);
+        validate();
+        repaint();
     }
 }
