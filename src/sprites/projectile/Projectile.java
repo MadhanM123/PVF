@@ -3,18 +3,22 @@ package sprites.projectile;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+
+import music.MusicPlayer;
 import sprites.Sprite;
 
+/**
+ * The Projectile Class represents the peas that are shot from certain plants.
+ * @author Madhan M.
+ * @version 2023-05-30
+ */
 public class Projectile extends Sprite {
 
-    public static final int FULL_HEALTH = 1;
-    public static final int DAMAGE = 100;
+    private static final int FULL_HEALTH = 1;
+    private static final int DAMAGE = 100;
 
     private static final int HEIGHT = 20;
     private static final int WIDTH = 20;
-
-    public static final int START_X = 900;
-    public static final int START_Y = 0;
 
     private static final int VERT_OFFSET = 40;
     private static final int HORIZ_OFFSET = 60;
@@ -32,32 +36,46 @@ public class Projectile extends Sprite {
 
     private boolean nextTile;
 
+    /**
+     * Initializes grid/screen coordinates, health, damage, attack rate, and sets up sound
+     * @param gridX grid x-coordinate starting from left
+     * @param gridY grid y-coordinate starting from top
+     */
     public Projectile(int gridX, int gridY)
     {
         super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, 0);
         setCurrentImg(idleImg);
+        setClip(MusicPlayer.SPLAT);
     }
 
-    public void movedNextTile(boolean moved){
+    /**
+     * Sets that the projectile has moved next tile
+     * @param moved the condition if moved or not
+     */
+    public void setMovedNextTile(boolean moved){
         nextTile = moved;
     }
 
+    /**
+     * Returns if projectile has moved next tile
+     * @return moved next tile
+     */
     public boolean hasMovedNextTile(){
         return nextTile;
     }
 
     public void update(State state){
         if(state == State.IDLE){
-            tickWalkCounter();
-            if(getWalkCounter() > MOVE_RATE){
-                setRealScreenX(getRealScreenX() + OFFSET);
-                zeroWalkCounter();
+            tickIdleCounter();
+            if(getIdleCounter() > MOVE_RATE){
+                setScreenX(getScreenX() + OFFSET);
+                zeroIdleCounter();
             }
 
-            if(getRealScreenX() > (getGridX() + 1) * TILE_SIZE - WIDTH - TILE_THRESHOLD){
+            if(getScreenX() > (getGridX() + 1) * TILE_SIZE - WIDTH - TILE_THRESHOLD){
                 setGridX(getGridX() + 1);
-                movedNextTile(true);
-                zeroWalkCounter();
+                setMovedNextTile(true);
+                zeroIdleCounter();
             }
         }
         else if(state == State.DEATH){
@@ -70,6 +88,7 @@ public class Projectile extends Sprite {
             if(getDeathCounter() > DEATH_RATE){
                 if(getCurrentImg() == deathImg){
                     setCurrentImg(null);
+                    playClip();
                 }
                 else{
                     setDoneDeath(true);
@@ -80,7 +99,7 @@ public class Projectile extends Sprite {
     }
 
     public void draw(Graphics g){
-        g.drawImage(getCurrentImg(), getRealScreenX(), getRealScreenY(), null);
+        g.drawImage(getCurrentImg(), getScreenX(), getScreenY(), null);
     }
     
 }

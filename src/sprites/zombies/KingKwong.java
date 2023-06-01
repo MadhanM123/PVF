@@ -4,28 +4,31 @@ import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
+import music.MusicPlayer;
 
+/**
+ * The KingKwong zombie class
+ * @author Madhan M., Andrew X., Nate M.
+ * @version 2023-05-28
+ */
 public class KingKwong extends Zombie{
 
-    public static final int FULL_HEALTH = 400;
-    public static final int DAMAGE = 200;
+    private static final int FULL_HEALTH = 4000;
+    private static final int DAMAGE = 1000;
 
-    private static final int HEIGHT = 120;
-    private static final int WIDTH = 60;
+    private static final int HEIGHT = 180;
+    private static final int WIDTH = 80;
 
-    private static final int VERT_OFFSET = 0;
+    private static final int VERT_OFFSET = -70;
     private static final int HORIZ_OFFSET = 10;
 
-    public static final int START_X = 900;
-    public static final int START_Y = 0;
-
-    private static final int WALK_RATE = 10;
-    private static final int TILE_THRESHOLD = 60;
+    private static final int TILE_THRESHOLD = 74;
     private static final int OFFSET = -13;  
 
+    private static final int WALK_RATE = 20;
     private static final int ATTACK_RATE = 90;
     private static final int ACTION_RATE = 4;
-    private static final int DEATH_RATE = 10;
+    private static final int DEATH_RATE = 5;
     
     private static final Image walk1Img = new ImageIcon("resources/sprites/zombies/kingKwong/walk1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image walk2Img = new ImageIcon("resources/sprites/zombies/kingKwong/walk3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
@@ -38,10 +41,41 @@ public class KingKwong extends Zombie{
 
     private static final Image death1Img = walk1Img;
     private static final Image death2Img = walk2Img;
+    
+     /**
+     * {@value #NAME} - Name of KingKwong
+     */
+    public static final String NAME = "KingKwong";
 
-    public KingKwong(int gridX, int gridY){
-        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE);
+    private boolean shouldSpawn;
+
+    /**
+     * Initializes grid/screen coordinates, health, damage, attack rate, and sets up sound
+     * @param gridX grid x-coordinate starting from left
+     * @param gridY grid y-coordinate starting from top
+     * @param x_offset amount to offset initial screen x-coordinate by
+     */
+    public KingKwong(int gridX, int gridY, int x_offset){
+        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET + x_offset, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE, NAME);
         setCurrentImg(walk1Img);
+        this.shouldSpawn = true;
+        setClip(MusicPlayer.ZOMBIE_SMASH);
+    }
+
+    /**
+     * returns if the KingKwong should spawn a FulkZombie
+     * @return if the KingKwong should spawn
+     */
+    public boolean getShouldSpawn(){
+        return shouldSpawn;
+    }
+
+    /**
+     * sets if the KingKwong should spawn a FulkZombie
+     * @param shouldSpawn spawn condition
+     */
+    public void setShouldSpawn(boolean shouldSpawn){
+        this.shouldSpawn = shouldSpawn;
     }
 
     public void update(State state){
@@ -52,14 +86,16 @@ public class KingKwong extends Zombie{
         }
         else if(state == State.IDLE){
             if(comparePrevState(state)){
-                zeroWalkCounter();
+                zeroIdleCounter();
                 setCurrentImg(walk1Img);
+                setClip(MusicPlayer.ZOMBIE_SMASH);
             }
             
-            tickWalkCounter();
-            if(getWalkCounter() > WALK_RATE){
+            tickIdleCounter();
+            if(getIdleCounter() > WALK_RATE){
                 if(getCurrentImg() == walk1Img){
                     setCurrentImg(walk2Img);
+                    playClip();
                 }
                 else if(getCurrentImg() == walk2Img){
                     setCurrentImg(walk3Img);
@@ -68,26 +104,28 @@ public class KingKwong extends Zombie{
                     setCurrentImg(walk1Img);
                 }
 
-                setRealScreenX(getRealScreenX() + OFFSET + getIntersect());
+                setScreenX(getScreenX() + OFFSET + getIntersect());
                 setIntersect(0);
-                zeroWalkCounter();
+                zeroIdleCounter();
             }
 
-            if(getRealScreenX() < getGridX() * TILE_SIZE - TILE_THRESHOLD){
+            if(getScreenX() < getGridX() * TILE_SIZE - TILE_THRESHOLD){
                 setGridX(getGridX() - 1);
-                movedNextTile(true);
-                zeroWalkCounter();
+                setMovedNextTile(true);
+                zeroIdleCounter();
             }
         }
         else if(state == State.ACTION){
             if(comparePrevState(state)){
                 zeroActionAniCounter();
                 setCurrentImg(action1Img);
+                setClip(MusicPlayer.ZOMBIE_SMASH);
             }
             
             tickActionAniCounter();
             if(getActionAniCounter() > ACTION_RATE){
                 if(getCurrentImg() == action1Img){
+                    playClip();
                     setCurrentImg(action2Img);
                 }
                 else if(getCurrentImg() == action2Img){
@@ -108,6 +146,8 @@ public class KingKwong extends Zombie{
             if(comparePrevState(state)){
                 zeroDeathCounter();
                 setCurrentImg(death1Img);
+                setClip(MusicPlayer.KWONG_DEATH);
+                playClip();
             }
 
             tickDeathCounter();
@@ -126,7 +166,7 @@ public class KingKwong extends Zombie{
     }
 
     public void draw(Graphics g){
-        g.drawImage(getCurrentImg(), getRealScreenX(), getRealScreenY(), null);
+        g.drawImage(getCurrentImg(), getScreenX(), getScreenY(), null);
     }
     
 }

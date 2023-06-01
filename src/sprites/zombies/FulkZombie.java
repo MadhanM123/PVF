@@ -1,30 +1,34 @@
 package sprites.zombies;
-
+ 
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
+import music.MusicPlayer;
+
+/**
+ * The Fulk zombie class
+ * @author Madhan M., Andrew X., Nate M.
+ * @version 2023-05-28
+ */
 public class FulkZombie extends Zombie{
 
-    public static final int FULL_HEALTH = 1000;
-    public static final int DAMAGE = 200;
+    private static final int FULL_HEALTH = 1200;
+    private static final int DAMAGE = 100;
 
-    private static final int HEIGHT = 110;
+    private static final int HEIGHT = 100;
     private static final int WIDTH = 60;
 
-    private static final int VERT_OFFSET = 1;
+    private static final int VERT_OFFSET = 10;
     private static final int HORIZ_OFFSET = 50;
 
-    public static final int START_X = 900;
-    public static final int START_Y = 0;
-
-    private static final int WALK_RATE = 4;
     private static final int TILE_THRESHOLD = 60;
     private static final int OFFSET = -10;
 
-    private static final int ATTACK_RATE = 90;
+    private static final int WALK_RATE = 4;
+    private static final int ATTACK_RATE = 60;
     private static final int ACTION_RATE = 10;
-    private static final int DEATH_RATE = 10;
+    private static final int DEATH_RATE = 5;
 
     private static final Image walk1Img = new ImageIcon("resources/sprites/zombies/zombie/walk1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image walk2Img = new ImageIcon("resources/sprites/zombies/zombie/walk3.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
@@ -37,10 +41,21 @@ public class FulkZombie extends Zombie{
     private static final Image death1Img = new ImageIcon("resources/sprites/zombies/zombie/die1.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image death2Img = new ImageIcon("resources/sprites/zombies/zombie/die2.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
 
+    /**
+     * {@value #NAME} - Name of FulkZombie
+     */
+    public static final String NAME = "FulkZombie";
 
-    public FulkZombie(int gridX, int gridY){
-        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE);
+    /**
+     * Initializes grid/screen coordinates, health, damage, attack rate, and sets up sound
+     * @param gridX grid x-coordinate starting from left
+     * @param gridY grid y-coordinate starting from top
+     * @param x_offset amount to offset initial screen x-coordinate by
+     */
+    public FulkZombie(int gridX, int gridY, int x_offset){
+        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET + x_offset, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE, NAME);
         setCurrentImg(walk1Img);
+        setClip(MusicPlayer.ZOMBIE_BITE);
     }
 
     public void update(State state){
@@ -51,12 +66,12 @@ public class FulkZombie extends Zombie{
         }
         else if(state == State.IDLE){
             if(comparePrevState(state)){
-                zeroWalkCounter();
+                zeroIdleCounter();
                 setCurrentImg(walk1Img);
             }
             
-            tickWalkCounter();
-            if(getWalkCounter() > WALK_RATE){
+            tickIdleCounter();
+            if(getIdleCounter() > WALK_RATE){
                 if(getCurrentImg() == walk1Img){
                     setCurrentImg(walk2Img);
                 }
@@ -67,15 +82,15 @@ public class FulkZombie extends Zombie{
                     setCurrentImg(walk1Img);
                 }
 
-                setRealScreenX(getRealScreenX() + OFFSET + getIntersect());
+                setScreenX(getScreenX() + OFFSET + getIntersect());
                 setIntersect(0);
-                zeroWalkCounter();
+                zeroIdleCounter();
             }
 
-            if(getRealScreenX() < getGridX() * TILE_SIZE - TILE_THRESHOLD){
+            if(getScreenX() < getGridX() * TILE_SIZE - TILE_THRESHOLD){
                 setGridX(getGridX() - 1);
-                movedNextTile(true);
-                zeroWalkCounter();
+                setMovedNextTile(true);
+                zeroIdleCounter();
             }
         }
         else if(state == State.ACTION){
@@ -87,6 +102,7 @@ public class FulkZombie extends Zombie{
             tickActionAniCounter();
             if(getActionAniCounter() > ACTION_RATE){
                 if(getCurrentImg() == action1Img){
+                    playClip();
                     setCurrentImg(action2Img);
                 }
                 else if(getCurrentImg() == action2Img){
@@ -113,7 +129,7 @@ public class FulkZombie extends Zombie{
                 }
                 else if(getCurrentImg() == death2Img){
                     setCurrentImg(null);
-                    setDoneDeath(false);
+                    setDoneDeath(true);
                 }
                 zeroDeathCounter();
             }
@@ -121,7 +137,7 @@ public class FulkZombie extends Zombie{
     }
 
     public void draw(Graphics g){
-        g.drawImage(getCurrentImg(), getRealScreenX(), getRealScreenY(), null);
+        g.drawImage(getCurrentImg(), getScreenX(), getScreenY(), null);
     }
     
 }

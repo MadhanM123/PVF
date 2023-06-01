@@ -4,11 +4,20 @@ import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-public class Repeater extends Plant{
-    public static final int FULL_HEALTH = 1000;
-    public static final int DAMAGE = 50;
+import music.MusicPlayer;
 
-    public static final int COST = 10;
+/**
+ * The Repeater plant class
+ * @author Madhan M., Andrew X.
+ * @version 2023-05-28
+ */
+public class Repeater extends Plant{
+    private static final int FULL_HEALTH = 1000;
+
+    /**
+     * {@value #COST} - Cost of Repeater
+     */
+    public static final int COST = 50;
 
     private static final int HEIGHT = 105;
     private static final int WIDTH = 100;
@@ -19,7 +28,7 @@ public class Repeater extends Plant{
     private static final int IDLE_RATE = 5;
     private static final int ACTION_RATE = 4;
     private static final int DEATH_RATE = 10;
-    private static final int ATTACK_RATE = 15;
+    private static final int ATTACK_RATE = 6;
 
     private static final Image idle1Img = new ImageIcon("resources/sprites/plants/repeater/rp.idle1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     private static final Image idle2Img = new ImageIcon("resources/sprites/plants/repeater/rp.idle2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
@@ -28,9 +37,15 @@ public class Repeater extends Plant{
 
     private static final Image deathImg = idle2Img;
 
+    /**
+     * Initializes grid/screen coordinates, health, damage, attack rate, and sets up sound
+     * @param gridX grid x-coordinate starting from left
+     * @param gridY grid y-coordinate starting from top
+     */   
     public Repeater(int gridX, int gridY){
-        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE);
+        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, 0, ATTACK_RATE);
         setCurrentImg(idle1Img);
+        setClip(MusicPlayer.PEA_SHOOT);
     }
 
     public void update(State state){
@@ -64,6 +79,7 @@ public class Repeater extends Plant{
                 }
                 else{
                     setCurrentImg(shootImg);
+                    playClip();
                     zeroAttackCounter();
                     setShot(true);
                 }
@@ -88,6 +104,6 @@ public class Repeater extends Plant{
     }
 
     public void draw(Graphics g){
-        g.drawImage(getCurrentImg(), getRealScreenX(), getRealScreenY(), null);
+        g.drawImage(getCurrentImg(), getScreenX(), getScreenY(), null);
     }
 }

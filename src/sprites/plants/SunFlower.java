@@ -4,11 +4,21 @@ import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
-public class SunFlower extends Plant {
-    public static final int FULL_HEALTH = 1000;
-    public static final int DAMAGE = 0;
+import music.MusicPlayer;
 
-    public static final int COST = 10;
+/**
+ * The SunFlower plant class
+ * @author Madhan M., Andrew X.
+ * @version 2023-05-28
+ */
+public class SunFlower extends Plant {
+    private static final int FULL_HEALTH = 800;
+    private static final int DAMAGE = 0;
+
+    /**
+     * {@value #COST} - Cost of Sunflower
+     */
+    public static final int COST = 20;
 
     private static final int HEIGHT = 130;
     private static final int WIDTH = 85;
@@ -21,9 +31,9 @@ public class SunFlower extends Plant {
 
     private static final int IDLE_RATE = 5;
 
-    private static final int ACTION_RATE = 3;
+    private static final int ACTION_RATE = 4;
     private static final int DEATH_RATE = 10;
-    private static final int ATTACK_RATE = 150;
+    private static final int ATTACK_RATE = 240;
 
     private static final int HOLD_TIME = 30;
 
@@ -45,17 +55,31 @@ public class SunFlower extends Plant {
 
     private int holdingTime;
 
+    /**
+     * Initializes grid/screen coordinates, health, damage, attack rate, and sets up sound
+     * @param gridX grid x-coordinate starting from left
+     * @param gridY grid y-coordinate starting from top
+     */
     public SunFlower(int gridX, int gridY){
         super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE);
         setCurrentImg(idle1Img);
         this.produced = false;
         this.holdingTime = 0;
+        setClip(MusicPlayer.SUN_PROD);
     }
     
+    /**
+     * returns if the sunflower has produced a sun
+     * @return if the sunflower produced a sun
+     */
     public boolean getProduced(){
         return produced;
     }
 
+    /**
+     * changes the condition if the sunflowers produced a sun
+     * @param p new production condition
+     */
     public void setProduced(boolean p){
         this.produced = p;
     }
@@ -103,6 +127,7 @@ public class SunFlower extends Plant {
                     zeroAttackCounter();
                     holdingTime++;
                     produced = true;
+                    playClip();
                 }
                 zeroActionAniCounter();
             }
@@ -125,13 +150,13 @@ public class SunFlower extends Plant {
     }
 
     public void draw(Graphics g){
-        g.drawImage(getCurrentImg(), getRealScreenX(), getRealScreenY(), null);
+        g.drawImage(getCurrentImg(), getScreenX(), getScreenY(), null);
         
         if(holdingTime == 0){
             return;
         }
         else if(holdingTime < HOLD_TIME){
-            g.drawImage(sunImg, getRealScreenX() + 30, getRealScreenY() + 30, null);
+            g.drawImage(sunImg, getScreenX() + 30, getScreenY() + 30, null);
             holdingTime++;
         }
         else{
