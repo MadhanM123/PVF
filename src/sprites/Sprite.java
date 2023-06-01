@@ -2,6 +2,7 @@ package sprites;
 
 import java.awt.Graphics;
 import java.awt.Image;
+
 import music.MusicPlayer;
 
 /**
@@ -63,7 +64,7 @@ public abstract class Sprite{
     private MusicPlayer mp;
 
     /**
-     * {@value #TILE_SIZE} Length of Tile
+     * {@value #TILE_SIZE} - Length of Tile
      */
     public static final int TILE_SIZE = 110;
 
@@ -337,10 +338,17 @@ public abstract class Sprite{
         return attackCounter > attackRate;
     }
 
+    /**
+     * Sets a clip to play
+     * @param ind Index of clip to select
+     */
     public void setClip(int ind){
         mp.setFile(ind);
     }
 
+    /**
+     * Plays current clip
+     */
     public void playClip(){
         mp.play();
     }

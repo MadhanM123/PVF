@@ -1,3 +1,5 @@
+package main;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -25,7 +27,7 @@ public class InfoPanel extends JPanel {
     private StringBuffer sunStr;
     private JLabel sunBoard;
 
-    private String deathStr;
+    private final String deathStr;
     private JLabel deathBoard;
 
     private FlowLayout flowLayout;
@@ -48,7 +50,6 @@ public class InfoPanel extends JPanel {
 
         this.deathStr = "CS Teachers Ate Your Brain!";
         this.deathBoard = new JLabel(deathStr);
-
         setUpDeathBoard();
 
         flowLayout = new FlowLayout();
@@ -134,6 +135,9 @@ public class InfoPanel extends JPanel {
         healthBoard.setText(healthStr.replace(8, healthStr.length(), "" + health).toString());
     }
 
+    /**
+     * Clears data and displays death message
+     */
     public void displayDeath(){
         removeAll();
         this.add(deathBoard);

@@ -1,12 +1,13 @@
 package sprites.zombies;
-import music.MusicPlayer;
 
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
+import music.MusicPlayer;
+
 /**
- * The KingKwong zomibe class
+ * The KingKwong zombie class
  * @author Madhan M., Andrew X., Nate M.
  * @version 2023-05-28
  */
@@ -42,14 +43,14 @@ public class KingKwong extends Zombie{
     private static final Image death2Img = walk2Img;
     
      /**
-     * {@value #NAME} Name of KingKwong
+     * {@value #NAME} - Name of KingKwong
      */
     public static final String NAME = "KingKwong";
 
     private boolean shouldSpawn;
 
     /**
-     * Initializes grid/screen coordinates, health, damage, and attack rate
+     * Initializes grid/screen coordinates, health, damage, attack rate, and sets up sound
      * @param gridX grid x-coordinate starting from left
      * @param gridY grid y-coordinate starting from top
      * @param x_offset amount to offset initial screen x-coordinate by
@@ -58,6 +59,7 @@ public class KingKwong extends Zombie{
         super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE, NAME);
         setCurrentImg(walk1Img);
         this.shouldSpawn = true;
+        setClip(MusicPlayer.ZOMBIE_SMASH);
     }
 
     /**

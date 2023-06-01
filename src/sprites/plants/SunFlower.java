@@ -12,13 +12,13 @@ import music.MusicPlayer;
  * @version 2023-05-28
  */
 public class SunFlower extends Plant {
-    private static final int FULL_HEALTH = 1000;
+    private static final int FULL_HEALTH = 800;
     private static final int DAMAGE = 0;
 
     /**
-     * {@value #COST} Cost of Sunflower
+     * {@value #COST} - Cost of Sunflower
      */
-    public static final int COST = 10;
+    public static final int COST = 20;
 
     private static final int HEIGHT = 130;
     private static final int WIDTH = 85;
@@ -33,7 +33,7 @@ public class SunFlower extends Plant {
 
     private static final int ACTION_RATE = 4;
     private static final int DEATH_RATE = 10;
-    private static final int ATTACK_RATE = 150;
+    private static final int ATTACK_RATE = 240;
 
     private static final int HOLD_TIME = 30;
 
@@ -56,7 +56,7 @@ public class SunFlower extends Plant {
     private int holdingTime;
 
     /**
-     * Initializes grid/screen coordinates, health, damage, and attack rate
+     * Initializes grid/screen coordinates, health, damage, attack rate, and sets up sound
      * @param gridX grid x-coordinate starting from left
      * @param gridY grid y-coordinate starting from top
      */

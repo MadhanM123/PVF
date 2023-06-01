@@ -1,3 +1,5 @@
+package main;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -10,12 +12,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import sprites.plants.PeaShooter;
 import sprites.plants.Repeater;
 import sprites.plants.SunFlower;
 import sprites.plants.Walnut;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * The PlantPanel class holds the buttons for selecting plants and an inner class ActionListener that handles plant placement.
@@ -36,7 +39,7 @@ public class PlantPanel extends JPanel{
     private static final int buttonWidth = 80;
     private static final int buttonHeight = 120;
     private static final int realScreenWidth = buttonWidth * 5;
-    private static final int realScreenLength = buttonHeight * 3;
+    private static final int realScreenHeight = buttonHeight * 3;
 
     private GamePanel gamePanel;
     private PlantSelector plantSelector;
@@ -45,7 +48,7 @@ public class PlantPanel extends JPanel{
      * Initalizes all buttons and sets up their icons and costs. Adds action listeners to them and adds them into the panel.
      */
     public PlantPanel(){
-        this.setPreferredSize(new Dimension(realScreenWidth, realScreenLength));
+        this.setPreferredSize(new Dimension(realScreenWidth, realScreenHeight));
 
         sunflowerButton = new JButton();
         peashooterButton = new JButton();
@@ -171,6 +174,10 @@ public class PlantPanel extends JPanel{
             }
         }
 
+        /**
+         * Selects plant if player has enough sun
+         * @param e the event to process
+         */
         @Override
         public void actionPerformed(ActionEvent e)
         {

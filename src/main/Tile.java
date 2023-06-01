@@ -1,3 +1,5 @@
+package main;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,6 +14,7 @@ import java.util.Iterator;
 import javax.swing.ImageIcon;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+
 import sprites.Sprite;
 import sprites.Sprite.State;
 import sprites.plants.*;
@@ -42,14 +45,17 @@ public class Tile extends JComponent implements MouseListener{
     private PlantPanel plantPanel;
 
     /**
-     * {@value #TILE_SIZE} Length of Tile
+     * {@value #TILE_SIZE} - Length of Tile
      */
-    public static int TILE_SIZE = 110;
+    public static final int TILE_SIZE = 110;
 
     private static Image TILE_IMAGE = new ImageIcon("resources/sprites/tile/grasstile.png").getImage().getScaledInstance(TILE_SIZE, TILE_SIZE, Image.SCALE_DEFAULT);
 
     /**
-     * Initializes a tile with no sprites, default background, and a mouse listener
+     * Creates a Tile with coordinates and adds a plantpanel. Initializes sprite structures and adds a listener.
+     * @param gridX grid x-coordinate from left
+     * @param gridY grid y-coordinate from top
+     * @param pp plantpanel to add
      */
     public Tile(int gridX, int gridY, PlantPanel pp){
         this.gridX = gridX;
@@ -68,7 +74,7 @@ public class Tile extends JComponent implements MouseListener{
         this.projectiles = new LinkedList<>();
 
         this.setPreferredSize(new Dimension(TILE_SIZE, TILE_SIZE));
-        this.setBorder(BorderFactory.createLineBorder(new Color(0, 180, 0)));
+        this.setBorder(BorderFactory.createLineBorder(new Color(0, 190, 0)));
         this.addMouseListener(this);
     }
 
@@ -186,7 +192,7 @@ public class Tile extends JComponent implements MouseListener{
 
     /**
      * Checks if any zombie has reached player end of grid
-     * @return
+     * @return True if any zombies has reached grid end
      */
     public boolean checkZombieDistance(){
         for(Zombie z: zombies){
@@ -197,18 +203,30 @@ public class Tile extends JComponent implements MouseListener{
         return false;
     }
 
+    /**
+     * Returns preferred dimension
+     * @return preferred dimension
+     */
     @Override
     public Dimension getPreferredSize()
     {
         return new Dimension(TILE_SIZE, TILE_SIZE);
     }
 
+    /**
+     * Returns maximum size allowed
+     * @return maximum size
+     */
     @Override
     public Dimension getMaximumSize()
     {
         return new Dimension(TILE_SIZE, TILE_SIZE);
     }
 
+    /**
+     * Returns minimum size
+     * @return minimum size
+     */
     @Override
     public Dimension getMinimumSize()
     {
@@ -217,6 +235,7 @@ public class Tile extends JComponent implements MouseListener{
 
     /**
      * Calls tileClicked from PlantPanel
+     * @param e Mouse click
      */
     @Override
     public void mouseClicked(MouseEvent e)
@@ -224,24 +243,40 @@ public class Tile extends JComponent implements MouseListener{
         plantPanel.tileClicked(this);
     }
 
+    /**
+     * Does nothing when pressed
+     * @param e Mouse press
+     */
     @Override
     public void mousePressed(MouseEvent e)
     {
         return;
     }
 
+    /**
+     * Does nothing when released
+     * @param e Mouse release
+     */
     @Override
     public void mouseReleased(MouseEvent e)
     {
         return;
     }
 
+    /**
+     * Does nothing when entered
+     * @param e Mouse entry
+     */
     @Override
     public void mouseEntered(MouseEvent e)
     {
         return;
     }
 
+    /**
+     * Does nothing when exited
+     * @param e Mouse exit
+     */
     @Override
     public void mouseExited(MouseEvent e)
     {

@@ -11,13 +11,13 @@ import javax.swing.ImageIcon;
  */
 public class Walnut extends Plant{
     /**
-     * {@value #FULL_HEALTH} Full health of Wallnut
+     * {@value #FULL_HEALTH} - Full health of Walnut
      */
-    public static final int FULL_HEALTH = 4000;
+    public static final int FULL_HEALTH = 2500;
     private static final int DAMAGE = 0;
 
     /**
-     * {@value #COST} Cost of Wallnut
+     * {@value #COST} - Cost of Walnut
      */
     public static final int COST = 10;
 
@@ -36,7 +36,7 @@ public class Walnut extends Plant{
     private static final Image hurt2Img = new ImageIcon("resources/sprites/plants/walnut/wn.hurt2.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
     
     /**
-     * Initializes grid/screen coordinates, health, damage, and attack rate
+     * Initializes grid/screen coordinates, health, damage, attack rate, and sets up sound
      * @param gridX grid x-coordinate starting from left
      * @param gridY grid y-coordinate starting from top
      */
@@ -80,6 +80,10 @@ public class Walnut extends Plant{
         g.drawImage(getCurrentImg(), getScreenX(), getScreenY(), null);
     }
 
+    /**
+     * Returns false since walnut doesn't attack
+     * @return false
+     */
     @Override
     public boolean attackReady()
     {

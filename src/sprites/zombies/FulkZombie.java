@@ -1,19 +1,20 @@
 package sprites.zombies;
-import music.MusicPlayer;
  
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 
+import music.MusicPlayer;
+
 /**
- * The Fulk zomibe class
+ * The Fulk zombie class
  * @author Madhan M., Andrew X., Nate M.
  * @version 2023-05-28
  */
 public class FulkZombie extends Zombie{
 
-    private static final int FULL_HEALTH = 1000;
-    private static final int DAMAGE = 200;
+    private static final int FULL_HEALTH = 1200;
+    private static final int DAMAGE = 100;
 
     private static final int HEIGHT = 100;
     private static final int WIDTH = 60;
@@ -21,14 +22,11 @@ public class FulkZombie extends Zombie{
     private static final int VERT_OFFSET = 10;
     private static final int HORIZ_OFFSET = 50;
 
-    public static final int START_X = 900;
-    public static final int START_Y = 0;
-
     private static final int TILE_THRESHOLD = 60;
     private static final int OFFSET = -10;
 
     private static final int WALK_RATE = 4;
-    private static final int ATTACK_RATE = 90;
+    private static final int ATTACK_RATE = 60;
     private static final int ACTION_RATE = 10;
     private static final int DEATH_RATE = 5;
 
@@ -44,12 +42,12 @@ public class FulkZombie extends Zombie{
     private static final Image death2Img = new ImageIcon("resources/sprites/zombies/zombie/die2.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
 
     /**
-     * {@value #NAME} Name of FulkZombie
+     * {@value #NAME} - Name of FulkZombie
      */
     public static final String NAME = "FulkZombie";
 
     /**
-     * Initializes grid/screen coordinates, health, damage, and attack rate
+     * Initializes grid/screen coordinates, health, damage, attack rate, and sets up sound
      * @param gridX grid x-coordinate starting from left
      * @param gridY grid y-coordinate starting from top
      * @param x_offset amount to offset initial screen x-coordinate by

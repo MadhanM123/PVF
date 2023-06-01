@@ -3,6 +3,8 @@ package sprites.projectile;
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+
+import music.MusicPlayer;
 import sprites.Sprite;
 
 /**
@@ -35,7 +37,7 @@ public class Projectile extends Sprite {
     private boolean nextTile;
 
     /**
-     * Initializes grid/screen coordinates, health, damage, and attack rate
+     * Initializes grid/screen coordinates, health, damage, attack rate, and sets up sound
      * @param gridX grid x-coordinate starting from left
      * @param gridY grid y-coordinate starting from top
      */
@@ -43,6 +45,7 @@ public class Projectile extends Sprite {
     {
         super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, 0);
         setCurrentImg(idleImg);
+        setClip(MusicPlayer.SPLAT);
     }
 
     /**
@@ -85,6 +88,7 @@ public class Projectile extends Sprite {
             if(getDeathCounter() > DEATH_RATE){
                 if(getCurrentImg() == deathImg){
                     setCurrentImg(null);
+                    playClip();
                 }
                 else{
                     setDoneDeath(true);

@@ -1,6 +1,11 @@
+package main;
+
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
+
 import music.MusicPlayer;
+
+//javadoc -d docs *.java
 
 /**
  * The Main class holds a JFrame that holds the main panels, a music player, and calls the end screen.
@@ -22,8 +27,7 @@ public class Main{
 
         // sound test
         MusicPlayer mp = new MusicPlayer();
-        mp.setFile(MusicPlayer.PVZ_TRACK);
-        //mp.play();
+        mp.setFile(MusicPlayer.SNEK_TRACK);
         mp.loop();
 
         PlantPanel pp = new PlantPanel();
@@ -44,6 +48,7 @@ public class Main{
         gp.run();
 
         ip.displayDeath();
+        mp.stop();
         mp.setFile(MusicPlayer.SCREAM);
         mp.loop();
         while(window.isActive()){

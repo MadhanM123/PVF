@@ -1,3 +1,5 @@
+package main;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -5,6 +7,8 @@ import java.awt.GridLayout;
 import java.util.Iterator;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+
+import music.MusicPlayer;
 import sprites.plants.PeaShooter;
 import sprites.plants.Repeater;
 import sprites.plants.SunFlower;
@@ -32,17 +36,17 @@ public class GamePanel extends JPanel implements Runnable{
     private static final int SUN_INCREMENT = 10;
 
     /**
-     * {@value #ZOMBIE_RANGE} Minimum distance between zombies
+     * {@value #ZOMBIE_RANGE} - Minimum distance between zombies
      */
     public static final int ZOMBIE_RANGE = 10;
 
     /**
-     * {@value #PROJECTILE_HITBOX} Hitbox between projectiles and zombies
+     * {@value #PROJECTILE_HITBOX} - Hitbox between projectiles and zombies
      */
     public static final int PROJECTILE_HITBOX = 3;
 
     /**
-     * {@value #LAST_TILE_RANGE} Minimum distance from end of grid for zombies to player-side of grid and projectiles to zombie-side of grid
+     * {@value #LAST_TILE_RANGE} - Minimum distance from end of grid for zombies to player-side of grid and projectiles to zombie-side of grid
      */
     public static final int LAST_TILE_RANGE = 5;
 
@@ -54,6 +58,8 @@ public class GamePanel extends JPanel implements Runnable{
     private int wave;
 
     private long frame;
+
+    private MusicPlayer mp;
 
     /**
      * Initializes stats, grid, and sets panels
@@ -67,7 +73,7 @@ public class GamePanel extends JPanel implements Runnable{
         this.infoPanel = infoPanel;
 
         this.health = 5;
-        this.sun = 50;
+        this.sun = 100;
         this.wave = 0;
 
         this.frame = 0;
@@ -82,6 +88,9 @@ public class GamePanel extends JPanel implements Runnable{
                 this.add(grid[r][c]);
             }
         }
+
+        mp = new MusicPlayer();
+        mp.setFile(MusicPlayer.BRAINS);
     }
 
     /**
@@ -173,6 +182,8 @@ public class GamePanel extends JPanel implements Runnable{
                     if(sf.getProduced()){
                         sun += SUN_INCREMENT;
                         sf.setProduced(false);
+                        mp.setFile(MusicPlayer.SUN_PROD);
+                        mp.play();
                     }
                 }
 
@@ -187,7 +198,7 @@ public class GamePanel extends JPanel implements Runnable{
     private void addZombieWave(){
         int col = SCREEN_COL - 1, row = 0;
    
-        if(frame % 300 == 0 ){
+        if(frame % 3 == 0 ){
             infoPanel.setWave(wave++);
             for(int i = 0; i < frame/300; i++){
                 row = (int) (Math.random()*5);
@@ -216,6 +227,8 @@ public class GamePanel extends JPanel implements Runnable{
                     }
                 }
             }
+            // mp.setFile(MusicPlayer.BRAINS);
+            // mp.play();
         }
     }   
 
@@ -258,6 +271,10 @@ public class GamePanel extends JPanel implements Runnable{
         return sun;
     } 
 
+    /**
+     * Draws grid
+     * @param g Graphics context
+     */
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         for(int r = 0; r < grid.length; r++){

@@ -1,7 +1,9 @@
 package sprites.zombies;
 
 import java.awt.Graphics;
+
 import sprites.Sprite;
+
 /**
  * The zombie abstract class that is template for other zombie classes
  * @author Madhan M., Andrew X.
@@ -49,7 +51,7 @@ public abstract class Zombie extends Sprite{
     }
 
     /**
-     * returns if the zomibe has moved to next tile
+     * returns if the zombie has moved to next tile
      * @return if the zombie has moved to next tile
      */
     public boolean hasMovedNextTile(){

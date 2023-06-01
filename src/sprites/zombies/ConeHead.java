@@ -1,30 +1,32 @@
 package sprites.zombies;
-import music.MusicPlayer;
 
 import java.awt.Graphics;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+
+import music.MusicPlayer;
+
 /**
- * The Conehead zomibe class
+ * The Conehead zombie class
  * @author Madhan M., Andrew X., Nate M.
  * @version 2023-05-28
  */
 public class ConeHead extends Zombie{
 
-    private static final int FULL_HEALTH = 1000;
+    private static final int FULL_HEALTH = 1500;
     private static final int DAMAGE = 200;
 
-    private static final int HEIGHT = 110;
+    private static final int HEIGHT = 120;
     private static final int WIDTH = 60;
 
-    private static final int VERT_OFFSET = 3;
+    private static final int VERT_OFFSET = -4;
     private static final int HORIZ_OFFSET = 70;
 
     private static final int TILE_THRESHOLD = 60;
     private static final int OFFSET = -10;
 
     private static final int WALK_RATE = 3;
-    private static final int ATTACK_RATE = 25;
+    private static final int ATTACK_RATE = 21;
     private static final int ACTION_RATE = 3;
     private static final int DEATH_RATE = 3;
 
@@ -40,12 +42,12 @@ public class ConeHead extends Zombie{
     private static final Image death2Img = new ImageIcon("resources/sprites/zombies/conehead/die2.png").getImage().getScaledInstance(WIDTH + 10, HEIGHT, Image.SCALE_SMOOTH);
 
     /**
-     * {@value #NAME} Name of ConeHead
+     * {@value #NAME} - Name of ConeHead
      */
     public static final String NAME = "ConeHead";
 
     /**
-     * Initializes grid/screen coordinates, health, damage, and attack rate
+     * Initializes grid/screen coordinates, health, damage, attack rate, and sets up sound
      * @param gridX grid x-coordinate starting from left
      * @param gridY grid y-coordinate starting from top
      * @param x_offset amount to offset initial screen x-coordinate by
