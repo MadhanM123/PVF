@@ -198,7 +198,7 @@ public class GamePanel extends JPanel implements Runnable{
     private void addZombieWave(){
         int col = SCREEN_COL - 1, row = 0;
    
-        if(frame % 3 == 0 ){
+        if(frame % 300 == 0 ){
             infoPanel.setWave(wave++);
             for(int i = 0; i < frame/300; i++){
                 row = (int) (Math.random()*5);

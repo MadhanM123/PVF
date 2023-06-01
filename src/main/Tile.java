@@ -152,6 +152,7 @@ public class Tile extends JComponent implements MouseListener{
         for(Zombie zomb: zombies){
             if(zomb.getName().equals(className)){
                 count++;
+                System.out.println(className + "" + count);
             }
         }
         return count;

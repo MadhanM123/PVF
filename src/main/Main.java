@@ -5,8 +5,6 @@ import javax.swing.JFrame;
 
 import music.MusicPlayer;
 
-//javadoc -d docs *.java
-
 /**
  * The Main class holds a JFrame that holds the main panels, a music player, and calls the end screen.
  * @author Madhan M., Nate M.

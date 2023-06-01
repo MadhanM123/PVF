@@ -25,7 +25,7 @@ public class ConeHead extends Zombie{
     private static final int TILE_THRESHOLD = 60;
     private static final int OFFSET = -10;
 
-    private static final int WALK_RATE = 3;
+    private static final int WALK_RATE = 4;
     private static final int ATTACK_RATE = 21;
     private static final int ACTION_RATE = 3;
     private static final int DEATH_RATE = 3;

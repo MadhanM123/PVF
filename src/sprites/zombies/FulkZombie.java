@@ -53,7 +53,7 @@ public class FulkZombie extends Zombie{
      * @param x_offset amount to offset initial screen x-coordinate by
      */
     public FulkZombie(int gridX, int gridY, int x_offset){
-        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE, NAME);
+        super(gridX, gridY, gridX * TILE_SIZE + HORIZ_OFFSET + x_offset, gridY * TILE_SIZE + VERT_OFFSET, FULL_HEALTH, DAMAGE, ATTACK_RATE, NAME);
         setCurrentImg(walk1Img);
         setClip(MusicPlayer.ZOMBIE_BITE);
     }
