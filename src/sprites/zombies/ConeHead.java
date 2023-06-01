@@ -13,7 +13,7 @@ import music.MusicPlayer;
  */
 public class ConeHead extends Zombie{
 
-    private static final int FULL_HEALTH = 1500;
+    private static final int FULL_HEALTH = 1300;
     private static final int DAMAGE = 200;
 
     private static final int HEIGHT = 120;
@@ -27,7 +27,7 @@ public class ConeHead extends Zombie{
 
     private static final int WALK_RATE = 4;
     private static final int ATTACK_RATE = 21;
-    private static final int ACTION_RATE = 3;
+    private static final int ACTION_RATE = 6;
     private static final int DEATH_RATE = 3;
 
     private static final Image walk1Img = new ImageIcon("resources/sprites/zombies/conehead/walk1.png").getImage().getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);

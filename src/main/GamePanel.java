@@ -227,8 +227,8 @@ public class GamePanel extends JPanel implements Runnable{
                     }
                 }
             }
-            // mp.setFile(MusicPlayer.BRAINS);
-            // mp.play();
+            mp.setFile(MusicPlayer.BRAINS);
+            mp.play();
         }
     }   
 

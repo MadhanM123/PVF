@@ -27,7 +27,7 @@ public class InfoPanel extends JPanel {
     private StringBuffer sunStr;
     private JLabel sunBoard;
 
-    private final String deathStr;
+    private StringBuffer deathStr;
     private JLabel deathBoard;
 
     private FlowLayout flowLayout;
@@ -48,8 +48,8 @@ public class InfoPanel extends JPanel {
         this.sunStr = new StringBuffer("SUN: ");
         setupSunBoard();
 
-        this.deathStr = "CS Teachers Ate Your Brain!";
-        this.deathBoard = new JLabel(deathStr);
+        this.deathStr = new StringBuffer("CS Teachers Ate Your Brain on Wave ");
+        this.deathBoard = new JLabel(deathStr.toString());
         setUpDeathBoard();
 
         flowLayout = new FlowLayout();
@@ -104,8 +104,6 @@ public class InfoPanel extends JPanel {
         deathBoard.setVerticalAlignment(JLabel.CENTER);
         deathBoard.setHorizontalAlignment(JLabel.CENTER);
         deathBoard.setForeground(Color.PINK);
-
-        deathBoard.setText(deathStr);
         deathBoard.setFont(new Font("DialogInput", Font.BOLD, 60));
         deathBoard.setVerticalTextPosition(JLabel.CENTER);
         deathBoard.setHorizontalTextPosition(JLabel.CENTER);
@@ -139,6 +137,7 @@ public class InfoPanel extends JPanel {
      * Clears data and displays death message
      */
     public void displayDeath(){
+        deathBoard.setText(deathStr.append(waveStr.substring(6)).toString());
         removeAll();
         this.add(deathBoard);
         validate();
