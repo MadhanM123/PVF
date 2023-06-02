@@ -23,7 +23,6 @@ public class Main{
         window.setResizable(false);
         window.setTitle("PVZ");
 
-        // sound test
         MusicPlayer mp = new MusicPlayer();
         mp.setFile(MusicPlayer.SNEK_TRACK);
         mp.loop();
